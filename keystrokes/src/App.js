@@ -1,83 +1,45 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import jsonVal from './info.json';
 import './App.css';
 
 class App extends Component {
   constructor() {
     super()
+    //I dont know where to put the stuff to handle key strokes, it feels wrong to put it in the constuctor but i didnt know where else to put it
+    this.body = document.querySelector('body'); 
+    var modifier = ""
+    this.body.onkeydown = function(e) {
+      if (!e.metaKey) {
+        e.preventDefault();
+      }
+      if(e.key !== "Shift" && e.key !== "Alt" && e.key !== "Control"){
+        console.log(e);
+      }
 
+    }
+    //do i have to bind every function in the constructor?
+    this.pickRandomElement = this.pickRandomElement.bind(this);
     this.state = {
-      items: [
-        {
-          name: 'Fruit',
-          expiration: 'june'
-        },
-        {
-          name: 'veg'
-        }
-      ],
-      newVeg: '',
+      options : jsonVal.options,
+      keys: jsonVal.keys
     }
   }
-  
-  // asnc loading 
-  // async componentDidMount() {
-  //   const items = await getItem();
 
-  //   this.setState({
-  //     items,
-  //   })
-  // }
 
-  handleChange(event) {
-    const newVeg = event.target.value;
-    this.setState({
-      newVeg,
-    })
-  }
 
-  handleAddItem() {
-    console.log('adding item')
+  pickRandomElement() {
+    return this.state.keys[Math.floor(Math.random()*(this.state.keys.length))];
   }
 
   render() {
-    const { items, newVeg } = this.state;
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-
-        {items.map(({name, expiration}) => {
-          return <Item name={name} expiration={expiration} />
-        })}
-
-        <button onClick={() => {
-          this.handleAddItem()
-        }}
-        >
-          Add
-        </button>
-        <input 
-          value={newVeg} 
-          onChange={(event) => {
-            this.handleChange(event)
-          }}
-        />
-      </div>
+      <React.Fragment>
+      <div className="App App-header"> {this.state.options[this.pickRandom()].name} </div>,
+      <button onClick={this.functionDo}>PRESSME</button>
+      </React.Fragment>
     );
   }
+  
 }
 
 export default App;
-
-function Item({name, expiration}) {
-  return (
-    <div>{name} {expiration ? <span>{expiration}</span> : null}
-    </div>
-    )
-}
