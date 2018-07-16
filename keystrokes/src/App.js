@@ -34,7 +34,7 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
-      <div className="App App-header"> {this.state.options[this.pickRandom()].name} </div>,
+      <div className="App App-header"> {this.state.options[this.pickRandomElement()].name} </div>,
       <button onClick={this.functionDo}>PRESSME</button>
       </React.Fragment>
     );
