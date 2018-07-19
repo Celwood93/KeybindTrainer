@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react';
 import jsonVal from './info.json';
 import './App.css';
 
+import { ref } from './config/constants';
+
 class App extends Component {
 	constructor() {
 		super();
@@ -14,9 +16,19 @@ class App extends Component {
 		};
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
 		this.body = document.querySelector('body');
 		this.body.onkeydown = this.handleKeyPress;
+
+		try {
+			const snapshot = await ref.child('/options').once('value');
+			const options = snapshot.val();
+			console.log('options from the server', options);
+
+			this.setState({ options });
+		} catch (error) {
+			console.warn(error);
+		}
 	}
 
 	handleKeyPress(e) {
@@ -36,7 +48,7 @@ class App extends Component {
 
 	render() {
 		const randomKey = this.pickRandomElement();
-		
+
 		return (
 			<Fragment>
 				<div className="App App-header">
