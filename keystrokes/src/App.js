@@ -1,45 +1,51 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import jsonVal from './info.json';
 import './App.css';
 
 class App extends Component {
-  constructor() {
-    super()
-    //I dont know where to put the stuff to handle key strokes, it feels wrong to put it in the constuctor but i didnt know where else to put it
-    this.body = document.querySelector('body'); 
-    var modifier = ""
-    this.body.onkeydown = function(e) {
-      if (!e.metaKey) {
-        e.preventDefault();
-      }
-      if(e.key !== "Shift" && e.key !== "Alt" && e.key !== "Control"){
-        console.log(e);
-      }
+	constructor() {
+		super();
 
-    }
-    //do i have to bind every function in the constructor?
-    this.pickRandomElement = this.pickRandomElement.bind(this);
-    this.state = {
-      options : jsonVal.options,
-      keys: jsonVal.keys
-    }
-  }
+		this.body = null;
 
+		this.state = {
+			options: jsonVal.options,
+			keys: jsonVal.keys,
+		};
+	}
 
+	componentDidMount() {
+		this.body = document.querySelector('body');
+		this.body.onkeydown = this.handleKeyPress;
+	}
 
-  pickRandomElement() {
-    return this.state.keys[Math.floor(Math.random()*(this.state.keys.length))];
-  }
+	handleKeyPress(e) {
+		if (!e.metaKey) {
+			e.preventDefault();
+		}
+		if (e.key !== 'Shift' && e.key !== 'Alt' && e.key !== 'Control') {
+			console.log(e);
+		}
+	}
 
-  render() {
-    return (
-      <React.Fragment>
-      <div className="App App-header"> {this.state.options[this.pickRandomElement()].name} </div>,
-      <button onClick={this.functionDo}>PRESSME</button>
-      </React.Fragment>
-    );
-  }
-  
+	pickRandomElement() {
+		return this.state.keys[
+			Math.floor(Math.random() * this.state.keys.length)
+		];
+	}
+
+	render() {
+		const randomKey = this.pickRandomElement();
+		
+		return (
+			<Fragment>
+				<div className="App App-header">
+					{this.state.options[randomKey].name}
+				</div>
+				<button onClick={this.functionDo}>PRESS ME</button>
+			</Fragment>
+		);
+	}
 }
 
 export default App;
