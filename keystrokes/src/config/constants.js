@@ -1,9 +1,9 @@
 import firebase from 'firebase';
 
 const config = {
-	apiKey: 'AIzaSyCBeZaStvDTvqD6WCjZEBtA4UNHbCRTEAw',
-	databaseURL: 'https://keybindtrainer.firebaseio.com',
-	projectId: 'keybindtrainer',
+	apiKey: 'AIzaSyDIKqaQX9sWRkCY2WIvIDrVGEzYWtPeLEQ',
+	databaseURL: 'https://keystrokes-eb786.firebaseio.com',
+	projectId: 'keystrokes-eb786',
 };
 firebase.initializeApp(config);
 
