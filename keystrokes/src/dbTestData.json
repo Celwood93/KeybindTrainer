@@ -1,0 +1,184 @@
+{
+    "Spells": {
+        "Moonfire": {
+            "class": "DRUID",
+            "spellName": "Moonfire",
+            "spec": "ALL",
+            "spellType": "DAMAGE",
+            "specificSpellType": "DAMAGE",
+            "specificAttributes": ["DOT", "SPAMMABLE"],
+            "cooldown": 0,
+            "duration": 12,
+            "range": 35
+        },
+        "Rejuvination": {
+            "class": "DRUID",
+            "spellName": "Rejuvination",
+            "spec": "RESTORATION",
+            "spellType": "HEALING",
+            "specificSpellType": "HEALING",
+            "specificAttributes": ["HOT", "SPAMMABLE"],
+            "cooldown": 0,
+            "duration": 18,
+            "range": 35
+        },
+        "SwiftMend": {
+            "class": "DRUID",
+            "spellName": "SwiftMend",
+            "spec": "RESTORATION",
+            "spellType": "HEALING",
+            "specificSpellType": "HEALING",
+            "specificAttributes": ["cooldownMedium"],
+            "cooldown": 22,
+            "duration": 0,
+            "range": 35
+        },
+        "Entangling Roots": {
+            "class": "DRUID",
+            "spellName": "Entangling Roots",
+            "spec": "ALL",
+            "spellType": "CC",
+            "specificSpellType": "ROOT",
+            "specificAttributes": ["SPAMMABLE"],
+            "cooldown": 0,
+            "duration": 8,
+            "range": 35
+        }
+    },
+    "Users": {
+        "goodUserName": {
+            "password": "goodPassword",
+            "username": "goodUserName",
+            "characters": {
+                "RiftWood": "RiftWood"
+            }
+        }
+    },
+    "Characters": {
+        "RiftWood": {
+            "class": "DRUID",
+            "race": "NIGHT_ELF",
+            "name": "RiftWood",
+            "specs": {
+                "Restoration": {
+                    "spec": "RESTORATION",
+                    "enabled": true,
+                    "active": true,
+                    "keyBindings": "1"
+                },
+                "FERAL": {
+                    "spec": "FERAL",
+                    "enabled": false
+                },
+                "GUARDIAN": {
+                    "spec": "GUARDIAN",
+                    "enabled": false
+                },
+                "BALANCE": {
+                    "spec": "BALANCE",
+                    "enabled": false
+                }
+            }
+        }
+    },
+    "Keybindings": {
+        "1": {
+            "1": { 
+                "key": "a",
+                "spell": "Moonfire",
+                "target": "PRIMARY",
+                "modifier": "NONE"
+            },
+            "2": { 
+                "key": "a",
+                "spell": "Moonfire",
+                "target": "ARENA_1",
+                "modifier": "SHIFT"
+            },
+            "3": { 
+                "key": "a",
+                "spell": "Moonfire",
+                "target": "ARENA_2",
+                "modifier": "ALT"
+            },
+            "4": { 
+                "key": "a",
+                "spell": "Moonfire",
+                "target": "ARENA_3",
+                "modifier": "CONTROL"
+            },
+            "5": { 
+                "key": "r",
+                "spell": "Rejuvination",
+                "target": "PRIMARY",
+                "modifier": "NONE"
+            },
+            "6": { 
+                "key": "r",
+                "spell": "Rejuvination",
+                "target": "PARTY_1",
+                "modifier": "SHIFT"
+            },
+            "7": { 
+                "key": "r",
+                "spell": "Rejuvination",
+                "target": "PARTY_2",
+                "modifier": "ALT"
+            },
+            "8": { 
+                "key": "r",
+                "spell": "Rejuvination",
+                "target": "PARTY_3",
+                "modifier": "CONTROL"
+            },
+            "9": { 
+                "key": "2",
+                "spell": "SwiftMend",
+                "target": "PRIMARY",
+                "modifier": "NONE"
+            },
+            "10": { 
+                "key": "2",
+                "spell": "SwiftMend",
+                "target": "PARTY_1",
+                "modifier": "SHIFT"
+            },
+            "11": { 
+                "key": "2",
+                "spell": "SwiftMend",
+                "target": "PARTY_2",
+                "modifier": "ALT"
+            },
+            "12": { 
+                "key": "2",
+                "spell": "SwiftMend",
+                "target": "PARTY_3",
+                "modifier": "CONTROL"
+            },
+            "13": { 
+                "key": "3",
+                "spell": "Entangling Roots",
+                "target": "PRIMARY",
+                "modifier": "NONE"
+            },
+            "14": { 
+                "key": "3",
+                "spell": "Entangling Roots",
+                "target": "ARENA_1",
+                "modifier": "SHIFT"
+            },
+            "15": { 
+                "key": "3",
+                "spell": "Entangling Roots",
+                "target": "ARENA_2",
+                "modifier": "ALT"
+            },
+            "16": { 
+                "key": "3",
+                "spell": "Entangling Roots",
+                "target": "ARENA_3",
+                "modifier": "CONTROL"
+            }
+        }
+    }
+}

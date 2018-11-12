@@ -1,0 +1,80 @@
+{
+    "Spells": {
+        "spellHash": {
+            "class": "ENUM_CLASS",
+            "spellName": "spell_name",
+            "spec": "ENUM_SPEC",
+            "spellType": "ENUM_GENERAL_TYPE",
+            "specificSpellType": "ENUM_SPECIFIC_TYPE",
+            "specificAttributes": ["ENUM_SPECIFIC_TYPE_QUALITY"],
+            "cooldown": 10,
+            "duration": 10,
+            "range": 10
+        }
+    },
+    "Users": {
+        "username": {
+            "password": "goodPassword",
+            "username": "user1",
+            "characters": {
+                "characterName1": "hashValueChar"
+            }
+        }
+    },
+    "Characters": {
+        "hashValueChar": {
+            "class": "ENUM_CLASS",
+            "race": "ENUM_RACE",
+            "name": "character name",
+            "specs": {
+                "hashValue1": {
+                    "spec": "ENUM_SPEC",
+                    "enabled": true,
+                    "active": true,
+                    "keyBindings": "hashValueKeyB1"
+                },
+                "hashValue2": {
+                    "spec": "ENUM_SPEC",
+                    "enabled": true,
+                    "active": false,
+                    "keybindingName": "hashValueKeyB2"
+                },
+                "hashValue3": {
+                    "spec": "ENUM_SPEC",
+                    "enabled": false
+                }
+            }
+        }
+
+    },
+    "Keybindings": {
+        "hashValueKeyB1": {
+            "hashValue1": { 
+                "key": "ENUM or askii or something?",
+                "spell": "spellHash",
+                "target": "ENUM",
+                "modifier": "ENUM"
+            },
+            "hashValue2": { 
+                "key": "ENUM or askii or something?",
+                "spell": "spellHash",
+                "target": "ENUM",
+                "modifier": "ENUM"
+            }
+        },
+        "hashValueKeyB2": {
+            "hashValue1": { 
+                "key": "ENUM or askii or something?",
+                "spell": "spellHash",
+                "target": "ENUM",
+                "modifier": "ENUM"
+            },
+            "hashValue2": { 
+                "key": "ENUM or askii or something?",
+                "spell": "spellHash",
+                "target": "ENUM",
+                "modifier": "ENUM"
+            }
+        }
+    }
+}
