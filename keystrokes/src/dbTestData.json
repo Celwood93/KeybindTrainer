@@ -99,13 +99,13 @@
                 "key": "a",
                 "spell": "Moonfire",
                 "target": "ARENA_2",
-                "modifier": "CONTROL"
+                "modifier": "ALT"
             },
             "4": { 
                 "key": "a",
                 "spell": "Moonfire",
                 "target": "ARENA_3",
-                "modifier": "ALT"
+                "modifier": "CONTROL"
             },
             "5": { 
                 "key": "r",

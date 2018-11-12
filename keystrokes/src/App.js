@@ -8,8 +8,6 @@ class App extends Component {
 		super();
 
 		this.body = null;
-		this.pickRandomElement = this.pickRandomElement.bind(this);
-		this.handleKeyPress = this.handleKeyPress.bind(this);
 
 		//Initial values, I think these should be set from a webpage that occurs before here. None of these db calls should be done in this class tbh
 		//they should be passed from something above (no idea how to do that yet)
@@ -28,24 +26,34 @@ class App extends Component {
 			const snapshot = await ref.child('/Keybindings/1').once('value');
 			const keybindings = snapshot.val();
 			console.log('keybindings from the server', keybindings);
-			const keyOptions =  Object.keys(keybindings).reduce(function(map, obj){ 
+			const keyOptions =  Object.keys(keybindings).reduce((map, obj) => { 
 				map[obj] = keybindings['1'][obj];
 				return map
 			}, {});
 
 
-			this.setState({ keybindings, keys: Object.keys(keybindings), key: "1"});
-			this.pickRandomElement();
+			this.setState({ 
+				keybindings, 
+				keys: Object.keys(keybindings), 
+				key: "1"
+			}, () => {
+				this.pickRandomElement();
+			});
 		} catch (error) {
 			console.warn(error);
 		}
 	}
 
-	handleKeyPress(e) {
+	handleKeyPress = (e) => {
 		if (!e.metaKey) {
 			e.preventDefault();
 		} 
-		const keyPressed = {'key': e.code.toLowerCase().replace(/digit|key|left|right/i, ''), 'altKey': e.altKey, 'ctrlKey': e.ctrlKey, 'shiftKey': e.shiftKey}
+		const keyPressed = {
+			'key': e.code.toLowerCase().replace(/digit|key|left|right/i, ''),
+			'altKey': e.altKey,
+			'ctrlKey': e.ctrlKey,
+			'shiftKey': e.shiftKey
+		}
 		if (keyPressed.key !== 'shift' && keyPressed.key !== 'alt' && keyPressed.key !== 'control') {
 			let expectedKey = this.state.keybindings[this.state.key];
 			//there is an issue here if the key is not a letter or a number, such as ` or ,
@@ -60,7 +68,7 @@ class App extends Component {
 		}
 	}
 
-	pickRandomElement() {
+	pickRandomElement = () => {
 		const randomKey = this.state.keys[
 			Math.floor(Math.random() * this.state.keys.length)
 		];
