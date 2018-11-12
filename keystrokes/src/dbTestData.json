@@ -90,22 +90,94 @@
                 "modifier": "NONE"
             },
             "2": { 
+                "key": "a",
+                "spell": "Moonfire",
+                "target": "ARENA_1",
+                "modifier": "SHIFT"
+            },
+            "3": { 
+                "key": "a",
+                "spell": "Moonfire",
+                "target": "ARENA_2",
+                "modifier": "CONTROL"
+            },
+            "4": { 
+                "key": "a",
+                "spell": "Moonfire",
+                "target": "ARENA_3",
+                "modifier": "ALT"
+            },
+            "5": { 
                 "key": "r",
                 "spell": "Rejuvination",
                 "target": "PRIMARY",
                 "modifier": "NONE"
             },
-            "3": { 
+            "6": { 
+                "key": "r",
+                "spell": "Rejuvination",
+                "target": "PARTY_1",
+                "modifier": "SHIFT"
+            },
+            "7": { 
+                "key": "r",
+                "spell": "Rejuvination",
+                "target": "PARTY_2",
+                "modifier": "ALT"
+            },
+            "8": { 
+                "key": "r",
+                "spell": "Rejuvination",
+                "target": "PARTY_3",
+                "modifier": "CONTROL"
+            },
+            "9": { 
                 "key": "2",
                 "spell": "SwiftMend",
                 "target": "PRIMARY",
                 "modifier": "NONE"
             },
-            "4": { 
+            "10": { 
+                "key": "2",
+                "spell": "SwiftMend",
+                "target": "PARTY_1",
+                "modifier": "SHIFT"
+            },
+            "11": { 
+                "key": "2",
+                "spell": "SwiftMend",
+                "target": "PARTY_2",
+                "modifier": "ALT"
+            },
+            "12": { 
+                "key": "2",
+                "spell": "SwiftMend",
+                "target": "PARTY_3",
+                "modifier": "CONTROL"
+            },
+            "13": { 
                 "key": "3",
                 "spell": "Entangling Roots",
                 "target": "PRIMARY",
                 "modifier": "NONE"
+            },
+            "14": { 
+                "key": "3",
+                "spell": "Entangling Roots",
+                "target": "ARENA_1",
+                "modifier": "SHIFT"
+            },
+            "15": { 
+                "key": "3",
+                "spell": "Entangling Roots",
+                "target": "ARENA_2",
+                "modifier": "ALT"
+            },
+            "16": { 
+                "key": "3",
+                "spell": "Entangling Roots",
+                "target": "ARENA_3",
+                "modifier": "CONTROL"
             }
         }
     }

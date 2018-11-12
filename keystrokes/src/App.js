@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import jsonVal from './info.json';
 import './App.css';
 
 import { ref } from './config/constants';
@@ -12,10 +11,12 @@ class App extends Component {
 		this.pickRandomElement = this.pickRandomElement.bind(this);
 		this.handleKeyPress = this.handleKeyPress.bind(this);
 
+		//Initial values, I think these should be set from a webpage that occurs before here. None of these db calls should be done in this class tbh
+		//they should be passed from something above (no idea how to do that yet)
 		this.state = {
-			options: jsonVal.options,
-			keys: jsonVal.keys,
-			key: 'a'
+			keybindings: {'gettingStarted': {'spell': 'getting started!'}},	
+			keys: ['gettingStarted'],
+			key: 'gettingStarted'
 		};
 	}
 
@@ -24,12 +25,17 @@ class App extends Component {
 		this.body.onkeydown = this.handleKeyPress;
 
 		try {
-			const snapshot = await ref.child('/options').once('value');
-			const options = snapshot.val();
-			console.log('options from the server', options);
+			const snapshot = await ref.child('/Keybindings/1').once('value');
+			const keybindings = snapshot.val();
+			console.log('keybindings from the server', keybindings);
+			const keyOptions =  Object.keys(keybindings).reduce(function(map, obj){ 
+				map[obj] = keybindings['1'][obj];
+				return map
+			}, {});
 
-			this.setState({ options });
-			this.setState({ keys: Object.keys(options) });
+
+			this.setState({ keybindings, keys: Object.keys(keybindings), key: "1"});
+			this.pickRandomElement();
 		} catch (error) {
 			console.warn(error);
 		}
@@ -39,28 +45,36 @@ class App extends Component {
 		if (!e.metaKey) {
 			e.preventDefault();
 		} 
-		const keyPressed = {'key': e.key.toLowerCase(), 'altKey': e.altKey, 'ctrlKey': e.ctrlKey, 'shiftKey': e.shiftKey}
-		if (e.key !== 'shift' && e.key !== 'alt' && e.key !== 'control') {
-			console.log(e);
-			if(e.key === this.state.key){
+		const keyPressed = {'key': e.code.toLowerCase().replace(/digit|key|left|right/i, ''), 'altKey': e.altKey, 'ctrlKey': e.ctrlKey, 'shiftKey': e.shiftKey}
+		if (keyPressed.key !== 'shift' && keyPressed.key !== 'alt' && keyPressed.key !== 'control') {
+			let expectedKey = this.state.keybindings[this.state.key];
+			//there is an issue here if the key is not a letter or a number, such as ` or ,
+			if (keyPressed.key === expectedKey.key && 
+				((expectedKey.modifier==='CONTROL' && keyPressed.ctrlKey) ||
+				(expectedKey.modifier==='SHIFT' && keyPressed.shiftKey) ||
+				(expectedKey.modifier==='ALT' && keyPressed.altKey) ||
+				(expectedKey.modifier==='NONE' && !keyPressed.ctrlKey && !keyPressed.altKey && !keyPressed.shiftKey))
+				) {
 				this.pickRandomElement();
 			}
 		}
 	}
 
 	pickRandomElement() {
-		const j = this.state.keys[
+		const randomKey = this.state.keys[
 			Math.floor(Math.random() * this.state.keys.length)
 		];
-		this.setState({ key: j});
-		console.log("pass", this.state);
+		this.setState({ key: randomKey});
 	}
 
 	render() {
 		return (
 			<Fragment>
 				<div className="App App-header">
-					{this.state.options[this.state.key].name}
+					{this.state.keybindings[this.state.key].spell}
+				</div>
+				<div className="App App-header">
+					On {this.state.keybindings[this.state.key].target}
 				</div>
 			</Fragment>
 		);
