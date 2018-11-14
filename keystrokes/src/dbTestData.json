@@ -516,12 +516,219 @@
 
         },
         "Monk": {
+            "Paralysis": {
+                "spec": ["MISTWEAVER", "BREWMASTER", "WINDWALKER"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_MEDIUM", "LOC"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 45,
+                "duration": 6,
+                "range": 20
+            },
+            "Renewing Mist": {
+                "spec": ["MISTWEAVER"],
+                "spellType": "HEALING",
+                "attributes": ["COOLDOWN_SHORT", "HOT"],
+                "targetType": "MANY_FRIENDLY",
+                "cooldown": 9,
+                "duration": 20,
+                "range": 40
+            },
+            "Enveloping Mist": {
+                "spec": ["MISTWEAVER"],
+                "spellType": "HEALING",
+                "attributes": ["SPAMMABLE", "HOT"],
+                "targetType": "MANY_FRIENDLY",
+                "cooldown": 0,
+                "duration": 6,
+                "range": 40
+            },
+            "Soothing Mist": {
+                "spec": ["MISTWEAVER"],
+                "spellType": "HEALING",
+                "attributes": ["SPAMMABLE", "HOT"],
+                "targetType": "MANY_FRIENDLY",
+                "cooldown": 0,
+                "duration": 6,
+                "range": 40
+            },
+            "Life Cocoon": {
+                "spec": ["MISTWEAVER"],
+                "spellType": "HEALING",
+                "attributes": ["COOLDOWN_LONG", "BUFF"],
+                "targetType": "ONE_FRIENDLY",
+                "cooldown": 120,
+                "duration": 12,
+                "range": 40
+            },
+            "Spear Hand Strike": {
+                "spec": ["BREWMASTER", "WINDWALKER"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_SHORT", "INTERRUPT"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 15,
+                "duration": 4,
+                "range": 0
+            },
+            "Leg Sweep": {
+                "spec": ["MISTWEAVER", "BREWMASTER", "WINDWALKER"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_LONG", "STUN"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 60,
+                "duration": 3,
+                "range": 5
+            },
+            "Tiger's Lust": {
+                "spec": ["MISTWEAVER", "BREWMASTER", "WINDWALKER"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_MEDIUM", "BUFF"],
+                "targetType": "ONE_FRIENDLY",
+                "cooldown": 30,
+                "duration": 6,
+                "range": 20
+            },
+            "Detox": {
+                "spec": ["MISTWEAVER"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_SHORT", "CLEANSE"],
+                "targetType": "ONE_FRIENDLY",
+                "cooldown": 8,
+                "duration": 0,
+                "range": 40
+            },
+            "Grapple Weapon": {
+                "spec": ["MISTWEAVER", "WINDWALKER", "BREWMASTER"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_LONG", "DEBUFF"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 60,
+                "duration": 6,
+                "range": 30
+            }
 
         },
         "Death Knight": {
+            "Death Grip": {
+                "spec": ["BLOOD", "UNHOLY", "FROST"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_MEDIUM", "GAP_CLOSER"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 25,
+                "duration": 6,
+                "range": 30
+            },
+            "Asphyxiate": {
+                "spec": ["BLOOD", "UNHOLY", "FROST"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_MEDIUM", "STUN"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 45,
+                "duration": 4,
+                "range": 20
+            },
+            "Mind Freeze": {
+                "spec": ["BLOOD", "UNHOLY", "FROST"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_SHORT", "INTERRUPT"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 15,
+                "duration": 3,
+                "range": 15
+            },
+            "Chains of Ice": {
+                "spec": ["UNHOLY", "FROST"],
+                "spellType": "UTILITY",
+                "attributes": ["SPAMMABLE", "SLOW"],
+                "targetType": "MANY_ENEMY",
+                "cooldown": 0,
+                "duration": 8,
+                "range": 30
+            },
+            "Reap Magic": {
+                "spec": ["BLOOD", "UNHOLY", "FROST"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_SHORT", "PURGE"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 10,
+                "duration": 0,
+                "range": 40
+            },
+            "Dark Simulacrum": {
+                "spec": ["BLOOD", "UNHOLY", "FROST"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_MEDIUM", "DEBUFF"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 25,
+                "duration": 12,
+                "range": 40
+            }
 
         },
         "Warrior": {
+            "Pummel": {
+                "spec": ["ARMS", "FURY", "PROTECTION"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_SHORT", "INTERRUPT"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 15,
+                "duration": 4,
+                "range": 0
+            },
+            "Storm Bolt": {
+                "spec": ["ARMS", "FURY", "PROTECTION"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_MEDIUM", "STUN"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 30,
+                "duration": 4,
+                "range": 20
+            },
+            "Hamstring": {
+                "spec": ["ARMS"],
+                "spellType": "UTILITY",
+                "attributes": ["SPAMMABLE", "SLOW"],
+                "targetType": "MANY_ENEMY",
+                "cooldown": 0,
+                "duration": 15,
+                "range": 0
+            },
+            "Intimidating Shout": {
+                "spec": ["ARMS", "FURY", "PROTECTION"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_LONG", "LOC"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 90,
+                "duration": 8,
+                "range": 8
+            },
+            "Charge": {
+                "spec": ["ARMS", "FURY", "PROTECTION"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_SHORT", "GAP_CLOSER"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 20,
+                "duration": 8,
+                "range": 8
+            },
+            "Spell Reflect": {
+                "spec": ["ARMS", "FURY", "PROTECTION"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_MEDIUM", "AVOID_CC"],
+                "targetType": "SELF",
+                "cooldown": 25,
+                "duration": 3,
+                "range": 0
+            },
+            "Disarm": {
+                "spec": ["ARMS", "FURY", "PROTECTION"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_LONG", "DEBUFF"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 45,
+                "duration": 4,
+                "range": 0
+            }
 
         },
         "Demon Hunter": {
