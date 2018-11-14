@@ -732,6 +732,87 @@
 
         },
         "Demon Hunter": {
+            "Disrupt": {
+                "spec": ["HAVOC", "VENGEANCE"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_SHORT", "INTERRUPT"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 15,
+                "duration": 3,
+                "range": 10
+            },
+            "Throw Glaive": {
+                "spec": ["HAVOC", "VENGEANCE"],
+                "spellType": "DAMAGE",
+                "attributes": ["COOLDOWN_SHORT"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 9,
+                "duration": 0,
+                "range": 30
+            },
+            "Imprison": {
+                "spec": ["HAVOC", "VENGEANCE"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_LONG", "LOC"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 45,
+                "duration": 6,
+                "range": 20
+            },
+            "Consume Magic": {
+                "spec": ["HAVOC", "VENGEANCE"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_SHORT", "PURGE"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 10,
+                "duration": 0,
+                "range": 30
+            },
+            "Darkness": {
+                "spec": ["HAVOC"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_LONG", "BUFF", "AVOID_DAMAGE"],
+                "targetType": "SELF",
+                "cooldown": 180,
+                "duration": 8,
+                "range": 8
+            },
+            "Felblade": {
+                "spec": ["HAVOC"],
+                "spellType": "DAMAGE",
+                "attributes": ["COOLDOWN_SHORT", "GAP_CLOSER"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 15,
+                "duration": 0,
+                "range": 15
+            },
+            "Neatherwalk": {
+                "spec": ["HAVOC"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_LONG", "GAP_CLOSER", "AVOID_DAMAGE"],
+                "targetType": "SELF",
+                "cooldown": 120,
+                "duration": 5,
+                "range": 0
+            },
+            "Fel Eruption": {
+                "spec": ["HAVOC"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_MEDIUM", "STUN"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 30,
+                "duration": 4,
+                "range": 20
+            },
+            "Chaos Nova": {
+                "spec": ["HAVOC", "VENGEANCE"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_LONG", "STUN"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 60,
+                "duration": 2,
+                "range": 5
+            }
 
         }
     },
