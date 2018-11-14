@@ -26,10 +26,6 @@ class App extends Component {
 			const snapshot = await ref.child('/Keybindings/1').once('value');
 			const keybindings = snapshot.val();
 			console.log('keybindings from the server', keybindings);
-			const keyOptions = Object.keys(keybindings).reduce((map, obj) => {
-				map[obj] = keybindings['1'][obj];
-				return map;
-			}, {});
 
 			this.setState(
 				{
