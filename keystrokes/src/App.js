@@ -1,12 +1,16 @@
 import React, { Component, Fragment } from 'react';
 import './App.css';
+import {handleKeyPress} from './keyStrokeHandler';
+
+import { pickRandomElement } from './utils/utils.js';
 
 import { ref } from './config/constants';
 
 class App extends Component {
 	constructor() {
 		super();
-
+		this.pickRandomElement = pickRandomElement.bind();
+		this.handleKeyPress = handleKeyPress.bind(this, 'Parameter');
 		this.body = null;
 
 		//Initial values, I think these should be set from a webpage that occurs before here. None of these db calls should be done in this class tbh
@@ -34,52 +38,13 @@ class App extends Component {
 					key: '1',
 				},
 				() => {
-					this.pickRandomElement();
+					this.pickRandomElement(this);
 				}
 			);
 		} catch (error) {
 			console.warn(error);
 		}
 	}
-
-	handleKeyPress = e => {
-		if (!e.metaKey) {
-			e.preventDefault();
-		}
-		const keyPressed = {
-			key: e.code.toLowerCase().replace(/digit|key|left|right/i, ''),
-			altKey: e.altKey,
-			ctrlKey: e.ctrlKey,
-			shiftKey: e.shiftKey,
-		};
-		if (
-			keyPressed.key !== 'shift' &&
-			keyPressed.key !== 'alt' &&
-			keyPressed.key !== 'control'
-		) {
-			let expectedKey = this.state.keybindings[this.state.key];
-			//there is an issue here if the key is not a letter or a number, such as ` or ,
-			if (
-				keyPressed.key === expectedKey.key &&
-				((expectedKey.modifier === 'CONTROL' && keyPressed.ctrlKey) ||
-					(expectedKey.modifier === 'SHIFT' && keyPressed.shiftKey) ||
-					(expectedKey.modifier === 'ALT' && keyPressed.altKey) ||
-					(expectedKey.modifier === 'NONE' &&
-						!keyPressed.ctrlKey &&
-						!keyPressed.altKey &&
-						!keyPressed.shiftKey))
-			) {
-				this.pickRandomElement();
-			}
-		}
-	};
-
-	pickRandomElement = () => {
-		const randomKey = this.state.keys[
-			Math.floor(Math.random() * this.state.keys.length)
-		];
-		this.setState({ key: randomKey });
-	};
 
 	render() {
 		return (
