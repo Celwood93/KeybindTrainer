@@ -1,12 +1,14 @@
 import React, { Component, Fragment } from 'react';
 import './App.css';
 
+import { getRandomKey } from './utils/utils.js';
+
 import { ref } from './config/constants';
 
 class App extends Component {
 	constructor() {
 		super();
-
+		this.getRandomKey = getRandomKey.bind();
 		this.body = null;
 
 		//Initial values, I think these should be set from a webpage that occurs before here. None of these db calls should be done in this class tbh
@@ -34,7 +36,8 @@ class App extends Component {
 					key: '1',
 				},
 				() => {
-					this.pickRandomElement();
+					const randomKey = this.getRandomKey(this);
+					this.setState({ key: randomKey });
 				}
 			);
 		} catch (error) {
@@ -42,7 +45,7 @@ class App extends Component {
 		}
 	}
 
-	handleKeyPress = e => {
+	handleKeyPress = (e) => {
 		if (!e.metaKey) {
 			e.preventDefault();
 		}
@@ -57,8 +60,9 @@ class App extends Component {
 			keyPressed.key !== 'alt' &&
 			keyPressed.key !== 'control'
 		) {
-			let expectedKey = this.state.keybindings[this.state.key];
+			const expectedKey = this.state.keybindings[this.state.key];
 			//there is an issue here if the key is not a letter or a number, such as ` or ,
+			//also issue with tab related commands (ctrl w)
 			if (
 				keyPressed.key === expectedKey.key &&
 				((expectedKey.modifier === 'CONTROL' && keyPressed.ctrlKey) ||
@@ -69,16 +73,10 @@ class App extends Component {
 						!keyPressed.altKey &&
 						!keyPressed.shiftKey))
 			) {
-				this.pickRandomElement();
+				const randomKey = this.getRandomKey(this);
+				this.setState({ key: randomKey });
 			}
 		}
-	};
-
-	pickRandomElement = () => {
-		const randomKey = this.state.keys[
-			Math.floor(Math.random() * this.state.keys.length)
-		];
-		this.setState({ key: randomKey });
 	};
 
 	render() {
