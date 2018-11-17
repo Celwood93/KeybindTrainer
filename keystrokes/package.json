@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "babel-jest": "^23.6.0",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.7.0",
+    "enzyme-to-json": "^3.3.4",
     "jest": "^23.6.0",
     "prettier": "^1.13.7"
   },
@@ -28,5 +30,9 @@
     "trailingComma": "es5",
     "jsxBracketSameLine": false,
     "proseWrap": "never"
+  },
+  "jest": {
+    "setupFiles": ["./src/setupTests.js"],
+    "snapshotSerializers": ["enzyme-to-json/serializer"]
   }
 }
