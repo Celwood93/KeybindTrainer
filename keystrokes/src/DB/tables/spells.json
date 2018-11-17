@@ -1,0 +1,819 @@
+{
+    "Spells": {
+        "Druid": {
+            "Moonfire": {
+                "spec": ["FERAL", "RESTORATION", "GUARDIAN", "BALANCE"],
+                "spellType": "DAMAGE",
+                "attributes": ["DOT", "SPAMMABLE"],
+                "targetType": "MANY_ENEMY",
+                "cooldown": 0,
+                "duration": 16,
+                "range": 40
+            },
+            "Sunfire": {
+                "spec": ["RESTORATION", "BALANCE"],
+                "spellType": "DAMAGE",
+                "attributes": ["DOT", "SPAMMABLE"],
+                "targetType": "MANY_ENEMY",
+                "cooldown": 0,
+                "duration": 12,
+                "range": 40
+            },
+            "Rejuvination": {
+                "spec": ["RESTORATION"],
+                "spellType": "HEALING",
+                "attributes": ["HOT", "SPAMMABLE"],
+                "targetType": "MANY_FRIENDLY",
+                "cooldown": 0,
+                "duration": 18,
+                "range": 40
+            },
+            "SwiftMend": {
+                "spec": ["RESTORATION"],
+                "spellType": "HEALING",
+                "attributes": ["COOLDOWN_MEDIUM"],
+                "targetType": "ONE_FRIENDLY",
+                "cooldown": 25,
+                "duration": 0,
+                "range": 40
+            },
+            "Entangling Roots": {
+                "spec": ["FERAL", "RESTORATION", "GUARDIAN", "BALANCE"],
+                "spellType": "CC",
+                "attributes": ["ROOT", "SPAMMABLE"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 0,
+                "duration": 8,
+                "range": 40
+            },
+            "Nature's Cure": {
+                "spec": ["RESTORATION"],
+                "spellType": "UTILITY",
+                "attributes": ["CLEANSE","COOLDOWN_SHORT", "MAGIC", "CURSE", "POISON"],
+                "targetType": "ONE_FRIENDLY",
+                "cooldown": 8,
+                "duration": 0,
+                "range": 40
+            },
+            "Wild Charge": {
+                "spec": ["FERAL", "RESTORATION", "GUARDIAN", "BALANCE"],
+                "spellType": "CC",
+                "attributes": ["ROOT", "GAP_CLOSER", "COOLDOWN_SHORT"],
+                "targetType": "ONE_ANY",
+                "cooldown": 15,
+                "duration": 0,
+                "range": 25
+            },
+            "Lifebloom": {
+                "spec": ["RESTORATION"],
+                "spellType": "HEALING",
+                "attributes": ["HOT", "SPAMMABLE"],
+                "targetType": "ONE_FRIENDLY",
+                "cooldown": 0,
+                "duration": 15,
+                "range": 40
+            },
+            "Ironbark": {
+                "spec": ["RESTORATION"],
+                "spellType": "UTILITY",
+                "attributes": ["DEFENSIVE", "BUFF", "COOLDOWN_LONG"],
+                "targetType": "ONE_FRIENDLY",
+                "cooldown": 60,
+                "duration": 12,
+                "range": 40
+            },
+            "Mighty Bash": {
+                "spec": ["FERAL", "RESTORATION", "GUARDIAN", "BALANCE"],
+                "spellType": "UTILITY",
+                "attributes": ["STUN", "COOLDOWN_LONG"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 50,
+                "duration": 5,
+                "range": 0
+            },
+            "Soothe": {
+                "spec": ["FERAL", "RESTORATION", "GUARDIAN", "BALANCE"],
+                "spellType": "UTILITY",
+                "attributes": ["PURGE", "COOLDOWN_SHORT", "ENRAGE"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 10,
+                "duration": 0,
+                "range": 40
+            },
+            "Cyclone": {
+                "spec": ["RESTORATION", "BALANCE"],
+                "spellType": "UTILITY",
+                "attributes": ["LOC", "SPAMMABLE"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 0,
+                "duration": 6,
+                "range": 20
+            },
+            "Overgrowth": {
+                "spec": ["RESTORATION"],
+                "spellType": "HEALING",
+                "attributes": ["DEFENSIVE", "COOLDOWN_LONG"],
+                "targetType": "ONE_FRIENDLY",
+                "cooldown": 45,
+                "duration": 0,
+                "range": 40
+            },
+            "Bear Form": {
+                "spec": ["FERAL", "RESTORATION", "GUARDIAN", "BALANCE"],
+                "spellType": "UTILITY",
+                "attributes": ["AVOID_CC", "DEFENSIVE", "SPAMMABLE"],
+                "targetType": "SELF",
+                "cooldown": 0,
+                "duration": 0,
+                "range": 0
+            },
+            "Bark Skin": {
+                "spec": ["RESTORATION", "GUARDIAN"],
+                "spellType": "UTILITY",
+                "attributes": ["DEFENSIVE", "COOLDOWN_LONG"],
+                "targetType": "SELF",
+                "cooldown": 60,
+                "duration": 12,
+                "range": 0
+            },
+            "Skull Bash": {
+                "spec": ["FERAL", "GUARDIAN"],
+                "spellType": "UTILITY",
+                "attributes": ["INTERRUPT", "COOLDOWN_SHORT"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 15,
+                "duration": 4,
+                "range": 13
+            },
+            "Solar Beam": {
+                "spec": ["BALANCE"],
+                "spellType": "UTILITY",
+                "attributes": ["INTERRUPT", "COOLDOWN_LONG"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 60,
+                "duration": 8,
+                "range": 40
+            }
+        },
+        "Paladin": {
+            "Hammer of Justice": {
+                "spec": ["PROTECTION", "HOLY", "RETRIBUTION"],
+                "spellType": "UTILITY",
+                "attributes": ["STUN", "COOLDOWN_LONG"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 60,
+                "duration": 6,
+                "range": 10
+            },
+            "Repentance": {
+                "spec": ["PROTECTION", "HOLY", "RETRIBUTION"],
+                "spellType": "UTILITY",
+                "attributes": ["LOC", "COOLDOWN_LONG"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 15,
+                "duration": 8,
+                "range": 30
+            },
+            "Blessing of Sacrifice": {
+                "spec": ["HOLY", "RETRIBUTION"],
+                "spellType": "UTILITY",
+                "attributes": ["BUFF", "COOLDOWN_LONG"],
+                "targetType": "ONE_FRIENDLY",
+                "cooldown": 120,
+                "duration": 10,
+                "range": 40
+            },
+            "Blessing of Protection": {
+                "spec": ["PROTECTION", "HOLY", "RETRIBUTION"],
+                "spellType": "UTILITY",
+                "attributes": ["BUFF", "COOLDOWN_LONG"],
+                "targetType": "ONE_FRIENDLY",
+                "cooldown": 300,
+                "duration": 10,
+                "range": 40
+            },
+            "Blessing of Freedom": {
+                "spec": ["PROTECTION", "HOLY", "RETRIBUTION"],
+                "spellType": "UTILITY",
+                "attributes": ["BUFF", "COOLDOWN_LONG"],
+                "targetType": "ONE_FRIENDLY",
+                "cooldown": 25,
+                "duration": 8,
+                "range": 40
+            },
+            "Cleanse": {
+                "spec": ["HOLY"],
+                "spellType": "UTILITY",
+                "attributes": ["CLEANSE", "COOLDOWN_SHORT", "MAGIC", "POISON", "DISEASE"],
+                "targetType": "ONE_FRIENDLY",
+                "cooldown": 8,
+                "duration": 0,
+                "range": 40
+            },
+            "Judgement": {
+                "spec": ["HOLY", "RETRIBUTION"],
+                "spellType": "DAMAGE",
+                "attributes": ["COOLDOWN_SHORT"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 12,
+                "duration": 0,
+                "range": 30
+            },
+            "Light of the Martyr": {
+                "spec": ["HOLY"],
+                "spellType": "HEALING",
+                "attributes": ["SPAMMABLE"],
+                "targetType": "ONE_FRIENDLY",
+                "cooldown": 0,
+                "duration": 0,
+                "range": 40
+            },
+            "Bestow Faith": {
+                "spec": ["HOLY"],
+                "spellType": "HEALING",
+                "attributes": ["COOLDOWN_SHORT"],
+                "targetType": "ONE_FRIENDLY",
+                "cooldown": 12,
+                "duration": 5,
+                "range": 40
+            },
+            "Holy Shock": {
+                "spec": ["HOLY"],
+                "spellType": "DAMAGE_HEALING",
+                "attributes": ["COOLDOWN_SHORT"],
+                "targetType": "ONE_ANY",
+                "cooldown": 9,
+                "duration": 0,
+                "range": 40
+            },
+            "Cleanse Toxins": {
+                "spec": ["RETRIBUTION"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_SHORT", "CLEANSE", "POISON", "DISEASE"],
+                "targetType": "ONE_FRIENDLY",
+                "cooldown": 8,
+                "duration": 0,
+                "range": 40
+            },
+            "Hand of Hinderance": {
+                "spec": ["RETRIBUTION"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_MEDIUM", "SLOW"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 30,
+                "duration": 10,
+                "range": 30
+            },
+            "Rebuke": {
+                "spec": ["RETRIBUTION"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_SHORT", "INTERRUPT"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 15,
+                "duration": 4,
+                "range": 0
+            },
+            "Beacon of Light": {
+                "spec": ["HOLY"],
+                "spellType": "UTILITY",
+                "attributes": ["SPAMMABLE", "BUFF"],
+                "targetType": "ONE_FRIENDLY",
+                "cooldown": 0,
+                "duration": -1,
+                "range": 60
+            },
+            "Blessing of Sanctuary": {
+                "spec": ["RETRIBUTION"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_LONG", "BUFF"],
+                "targetType": "ONE_FRIENDLY",
+                "cooldown": 45,
+                "duration": 5,
+                "range": 40
+            }
+        },
+        "Priest": {
+            "Preminition": {
+                "spec": ["DISCIPLINE"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_SHORT", "AVOID_CC"],
+                "targetType": "SELF",
+                "cooldown": 12,
+                "duration": 0,
+                "range": 20
+            },
+            "Pain Suppression": {
+                "spec": ["DISCIPLINE"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_LONG", "BUFF"],
+                "targetType": "ONE_FRIENDLY",
+                "cooldown": 180,
+                "duration": 8,
+                "range": 40
+            },
+            "Power Word: Shield": {
+                "spec": ["DISCIPLINE"],
+                "spellType": "HEALING",
+                "attributes": ["SPAMMABLE", "BUFF"],
+                "targetType": "MANY_FRIENDLY",
+                "cooldown": 0,
+                "duration": 15,
+                "range": 40
+            },
+            "Purge the Wicked": {
+                "spec": ["DISCIPLINE"],
+                "spellType": "DAMAGE",
+                "attributes": ["SPAMMABLE", "DOT"],
+                "targetType": "MANY_ENEMY",
+                "cooldown": 0,
+                "duration": 20,
+                "range": 40
+            },
+            "Power Word: Solace": {
+                "spec": ["DISCIPLINE"],
+                "spellType": "DAMAGE",
+                "attributes": ["COOLDOWN_SHORT"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 12,
+                "duration": 0,
+                "range": 40
+            },
+            "Mind Control": {
+                "spec": ["DISCIPLINE", "SHADOW", "HOLY"],
+                "spellType": "DAMAGE",
+                "attributes": ["SPAMMABLE", "LOC"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 0,
+                "duration": 8,
+                "range": 30
+            },
+            "Purge Magic": {
+                "spec": ["DISCIPLINE", "SHADOW", "HOLY"],
+                "spellType": "UTILITY",
+                "attributes": ["SPAMMABLE", "PURGE"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 0,
+                "duration": 0,
+                "range": 30
+            },
+            "Purify": {
+                "spec": ["DISCIPLINE", "HOLY"],
+                "spellType": "UTILITY",
+                "attributes": ["CLEANSE", "COOLDOWN_SHORT", "MAGIC", "DISEASE"],
+                "targetType": "ONE_FRIENDLY",
+                "cooldown": 8,
+                "duration": 0,
+                "range": 40
+            },
+            "Penance": {
+                "spec": ["DISCIPLINE"],
+                "spellType": "DAMAGE_HEALING",
+                "attributes": ["COOLDOWN_SHORT"],
+                "targetType": "ONE_ANY",
+                "cooldown": 9,
+                "duration": 2,
+                "range": 40
+            }
+        },
+        "Shaman": {
+            "Wind Shear": {
+                "spec": ["RESTORATION", "ELEMENTAL", "ENHANCEMENT"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_SHORT", "INTERRUPT"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 12,
+                "duration": 3,
+                "range": 30
+            },
+            "Purge": {
+                "spec": ["RESTORATION", "ELEMENTAL", "ENHANCEMENT"],
+                "spellType": "UTILITY",
+                "attributes": ["PURGE", "SPAMMABLE"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 0,
+                "duration": 0,
+                "range": 30
+            },
+            "Hex": {
+                "spec": ["RESTORATION", "ELEMENTAL", "ENHANCEMENT"],
+                "spellType": "UTILITY",
+                "attributes": ["LOC", "COOLDOWN_MEDIUM"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 30,
+                "duration": 8,
+                "range": 30
+            },
+            "Purify Spirit": {
+                "spec": ["RESTORATION"],
+                "spellType": "UTILITY",
+                "attributes": ["CLEANSE", "COOLDOWN_SHORT", "MAGIC", "CURSE"],
+                "targetType": "ONE_FRIENDLY",
+                "cooldown": 8,
+                "duration": 0,
+                "range": 40
+            },
+            "Grounding Totem": {
+                "spec": ["RESTORATION", "ELEMENTAL", "ENHANCEMENT"],
+                "spellType": "UTILITY",
+                "attributes": ["AVOID_CC", "COOLDOWN_MEDIUM"],
+                "targetType": "SELF",
+                "cooldown": 30,
+                "duration": 3,
+                "range": 0
+            },
+            "Tremor Totem": {
+                "spec": ["RESTORATION", "ELEMENTAL", "ENHANCEMENT"],
+                "spellType": "UTILITY",
+                "attributes": ["AVOID_CC", "COOLDOWN_LONG", "FEAR", "CHARM", "SLEEP"],
+                "targetType": "SELF",
+                "cooldown": 60,
+                "duration": 10,
+                "range": 30
+            },
+            "Riptide": {
+                "spec": ["RESTORATION"],
+                "spellType": "HEALING",
+                "attributes": ["HOT", "COOLDOWN_SHORT"],
+                "targetType": "MANY_FRIENDLY",
+                "cooldown": 6,
+                "duration": 15,
+                "range": 40
+            },
+            "Earth Shield": {
+                "spec": ["RESTORATION", "ENHANCEMENT", "ELEMENTAL"],
+                "spellType": "HEALING",
+                "attributes": ["BUFF", "SPAMMABLE"],
+                "targetType": "ONE_FRIENDLY",
+                "cooldown": 0,
+                "duration": -1,
+                "range": 40
+            },
+            "Flame Shock": {
+                "spec": ["RESTORATION", "ELEMENTAL"],
+                "spellType": "DAMAGE",
+                "attributes": ["DOT", "COOLDOWN_SHORT"],
+                "targetType": "MANY_ENEMY",
+                "cooldown": 6,
+                "duration": 21,
+                "range": 40
+            },
+            "Lava Burst": {
+                "spec": ["RESTORATION", "ELEMENTAL"],
+                "spellType": "DAMAGE",
+                "attributes": ["COOLDOWN_SHORT"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 8,
+                "duration": 0,
+                "range": 40
+            }
+        },
+        "Mage": {
+            "Counter Spell": {
+                "spec": ["FIRE", "FROST", "ARCANE"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_MEDIUM", "INTERRUPT"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 24,
+                "duration": 6,
+                "range": 40
+            },
+            "Polymorph": {
+                "spec": ["FIRE", "FROST", "ARCANE"],
+                "spellType": "UTILITY",
+                "attributes": ["SPAMMABLE", "LOC"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 0,
+                "duration": 8,
+                "range": 30
+            },
+            "Spell Steal": {
+                "spec": ["FIRE", "FROST", "ARCANE"],
+                "spellType": "UTILITY",
+                "attributes": ["SPAMMABLE", "PURGE"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 0,
+                "duration": -1,
+                "range": 40
+            },
+            "Remove Curse": {
+                "spec": ["FIRE", "FROST", "ARCANE"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_SHORT", "CLEANSE"],
+                "targetType": "ONE_FRIENDLY",
+                "cooldown": 0,
+                "duration": -1,
+                "range": 40
+            },
+            "Slow": {
+                "spec": ["ARCANE"],
+                "spellType": "UTILITY",
+                "attributes": ["SPAMMABLE", "SLOW"],
+                "targetType": "ONE_FRIENDLY",
+                "cooldown": 0,
+                "duration": 15,
+                "range": 35
+            }
+
+        },
+        "Monk": {
+            "Paralysis": {
+                "spec": ["MISTWEAVER", "BREWMASTER", "WINDWALKER"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_MEDIUM", "LOC"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 45,
+                "duration": 6,
+                "range": 20
+            },
+            "Renewing Mist": {
+                "spec": ["MISTWEAVER"],
+                "spellType": "HEALING",
+                "attributes": ["COOLDOWN_SHORT", "HOT"],
+                "targetType": "MANY_FRIENDLY",
+                "cooldown": 9,
+                "duration": 20,
+                "range": 40
+            },
+            "Enveloping Mist": {
+                "spec": ["MISTWEAVER"],
+                "spellType": "HEALING",
+                "attributes": ["SPAMMABLE", "HOT"],
+                "targetType": "MANY_FRIENDLY",
+                "cooldown": 0,
+                "duration": 6,
+                "range": 40
+            },
+            "Soothing Mist": {
+                "spec": ["MISTWEAVER"],
+                "spellType": "HEALING",
+                "attributes": ["SPAMMABLE", "HOT"],
+                "targetType": "MANY_FRIENDLY",
+                "cooldown": 0,
+                "duration": 6,
+                "range": 40
+            },
+            "Life Cocoon": {
+                "spec": ["MISTWEAVER"],
+                "spellType": "HEALING",
+                "attributes": ["COOLDOWN_LONG", "BUFF"],
+                "targetType": "ONE_FRIENDLY",
+                "cooldown": 120,
+                "duration": 12,
+                "range": 40
+            },
+            "Spear Hand Strike": {
+                "spec": ["BREWMASTER", "WINDWALKER"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_SHORT", "INTERRUPT"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 15,
+                "duration": 4,
+                "range": 0
+            },
+            "Leg Sweep": {
+                "spec": ["MISTWEAVER", "BREWMASTER", "WINDWALKER"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_LONG", "STUN"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 60,
+                "duration": 3,
+                "range": 5
+            },
+            "Tiger's Lust": {
+                "spec": ["MISTWEAVER", "BREWMASTER", "WINDWALKER"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_MEDIUM", "BUFF"],
+                "targetType": "ONE_FRIENDLY",
+                "cooldown": 30,
+                "duration": 6,
+                "range": 20
+            },
+            "Detox": {
+                "spec": ["MISTWEAVER"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_SHORT", "CLEANSE"],
+                "targetType": "ONE_FRIENDLY",
+                "cooldown": 8,
+                "duration": 0,
+                "range": 40
+            },
+            "Grapple Weapon": {
+                "spec": ["MISTWEAVER", "WINDWALKER", "BREWMASTER"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_LONG", "DEBUFF"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 60,
+                "duration": 6,
+                "range": 30
+            }
+
+        },
+        "Death Knight": {
+            "Death Grip": {
+                "spec": ["BLOOD", "UNHOLY", "FROST"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_MEDIUM", "GAP_CLOSER"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 25,
+                "duration": 6,
+                "range": 30
+            },
+            "Asphyxiate": {
+                "spec": ["BLOOD", "UNHOLY", "FROST"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_MEDIUM", "STUN"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 45,
+                "duration": 4,
+                "range": 20
+            },
+            "Mind Freeze": {
+                "spec": ["BLOOD", "UNHOLY", "FROST"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_SHORT", "INTERRUPT"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 15,
+                "duration": 3,
+                "range": 15
+            },
+            "Chains of Ice": {
+                "spec": ["UNHOLY", "FROST"],
+                "spellType": "UTILITY",
+                "attributes": ["SPAMMABLE", "SLOW"],
+                "targetType": "MANY_ENEMY",
+                "cooldown": 0,
+                "duration": 8,
+                "range": 30
+            },
+            "Reap Magic": {
+                "spec": ["BLOOD", "UNHOLY", "FROST"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_SHORT", "PURGE"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 10,
+                "duration": 0,
+                "range": 40
+            },
+            "Dark Simulacrum": {
+                "spec": ["BLOOD", "UNHOLY", "FROST"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_MEDIUM", "DEBUFF"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 25,
+                "duration": 12,
+                "range": 40
+            }
+
+        },
+        "Warrior": {
+            "Pummel": {
+                "spec": ["ARMS", "FURY", "PROTECTION"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_SHORT", "INTERRUPT"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 15,
+                "duration": 4,
+                "range": 0
+            },
+            "Storm Bolt": {
+                "spec": ["ARMS", "FURY", "PROTECTION"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_MEDIUM", "STUN"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 30,
+                "duration": 4,
+                "range": 20
+            },
+            "Hamstring": {
+                "spec": ["ARMS"],
+                "spellType": "UTILITY",
+                "attributes": ["SPAMMABLE", "SLOW"],
+                "targetType": "MANY_ENEMY",
+                "cooldown": 0,
+                "duration": 15,
+                "range": 0
+            },
+            "Intimidating Shout": {
+                "spec": ["ARMS", "FURY", "PROTECTION"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_LONG", "LOC"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 90,
+                "duration": 8,
+                "range": 8
+            },
+            "Charge": {
+                "spec": ["ARMS", "FURY", "PROTECTION"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_SHORT", "GAP_CLOSER"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 20,
+                "duration": 8,
+                "range": 8
+            },
+            "Spell Reflect": {
+                "spec": ["ARMS", "FURY", "PROTECTION"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_MEDIUM", "AVOID_CC"],
+                "targetType": "SELF",
+                "cooldown": 25,
+                "duration": 3,
+                "range": 0
+            },
+            "Disarm": {
+                "spec": ["ARMS", "FURY", "PROTECTION"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_LONG", "DEBUFF"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 45,
+                "duration": 4,
+                "range": 0
+            }
+
+        },
+        "Demon Hunter": {
+            "Disrupt": {
+                "spec": ["HAVOC", "VENGEANCE"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_SHORT", "INTERRUPT"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 15,
+                "duration": 3,
+                "range": 10
+            },
+            "Throw Glaive": {
+                "spec": ["HAVOC", "VENGEANCE"],
+                "spellType": "DAMAGE",
+                "attributes": ["COOLDOWN_SHORT"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 9,
+                "duration": 0,
+                "range": 30
+            },
+            "Imprison": {
+                "spec": ["HAVOC", "VENGEANCE"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_LONG", "LOC"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 45,
+                "duration": 6,
+                "range": 20
+            },
+            "Consume Magic": {
+                "spec": ["HAVOC", "VENGEANCE"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_SHORT", "PURGE"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 10,
+                "duration": 0,
+                "range": 30
+            },
+            "Darkness": {
+                "spec": ["HAVOC"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_LONG", "BUFF", "AVOID_DAMAGE"],
+                "targetType": "SELF",
+                "cooldown": 180,
+                "duration": 8,
+                "range": 8
+            },
+            "Felblade": {
+                "spec": ["HAVOC"],
+                "spellType": "DAMAGE",
+                "attributes": ["COOLDOWN_SHORT", "GAP_CLOSER"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 15,
+                "duration": 0,
+                "range": 15
+            },
+            "Neatherwalk": {
+                "spec": ["HAVOC"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_LONG", "GAP_CLOSER", "AVOID_DAMAGE"],
+                "targetType": "SELF",
+                "cooldown": 120,
+                "duration": 5,
+                "range": 0
+            },
+            "Fel Eruption": {
+                "spec": ["HAVOC"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_MEDIUM", "STUN"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 30,
+                "duration": 4,
+                "range": 20
+            },
+            "Chaos Nova": {
+                "spec": ["HAVOC", "VENGEANCE"],
+                "spellType": "UTILITY",
+                "attributes": ["COOLDOWN_LONG", "STUN"],
+                "targetType": "ONE_ENEMY",
+                "cooldown": 60,
+                "duration": 2,
+                "range": 5
+            }
+
+        }
+    }
+}

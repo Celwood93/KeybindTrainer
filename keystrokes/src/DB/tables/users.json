@@ -1,0 +1,11 @@
+{
+    "Users": {
+        "goodUserName": {
+            "password": "goodPassword",
+            "username": "goodUserName",
+            "characters": {
+                "RiftWood": "RiftWood"
+            }
+        }
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "Characters": {
+        "RiftWood": {
+            "class": "DRUID",
+            "race": "NIGHT_ELF",
+            "name": "RiftWood",
+            "specs": {
+                "Restoration": {
+                    "spec": "RESTORATION",
+                    "enabled": true,
+                    "configured": true,
+                    "keyBindings": "1"
+                },
+                "FERAL": {
+                    "spec": "FERAL",
+                    "enabled": false,
+                    "configured": false
+                },
+                "GUARDIAN": {
+                    "spec": "GUARDIAN",
+                    "enabled": false,
+                    "configured": false
+                },
+                "BALANCE": {
+                    "spec": "BALANCE",
+                    "enabled": false,
+                    "configured": false
+                }
+            }
+        }
+    }
+}
