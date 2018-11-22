@@ -1,32 +1,48 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import { auth, googleProvider, emailProvider } from '../config/constants';
+import { FirebaseAuth } from 'react-firebaseui';
+import 'firebaseui/dist/firebaseui.css';
 
-const ui = new firebaseui.auth.AuthUI(firebase.auth());
+const propTypes = {
+	signInSuccess: PropTypes.func,
+	loginText: PropTypes.string,
+};
 
-let uiConfig = {
-    callbacks: {
-      signInSuccessWithAuthResult: function(authResult, redirectUrl) {
-        // User successfully signed in.
-        // Return type determines whether we continue the redirect automatically
-        // or whether we leave that to developer to handle.
-        return true;
-      },
-      uiShown: function() {
-        // The widget is rendered.
-        // Hide the loader.
-        document.getElementById('loader').style.display = 'none';
-      }
-    },
-    // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
-    signInFlow: 'popup',
-    signInSuccessUrl: 'test.html',
-    signInOptions: [
-      // Leave the lines as is for the providers you want to offer your users.
-      firebase.auth.EmailAuthProvider.PROVIDER_ID
-    ],
-    // Terms of service url.
-    tosUrl: 'test2.html',
-    // Privacy policy url.
-    privacyPolicyUrl: '<your-privacy-policy-url>'
-  };
+const defaultProps = {
+	signInSuccess: () => {},
+	loginText: 'Login',
+};
 
+class Auth extends React.Component {
+	constructor(props) {
+		super(props);
 
-ui.start('#firebaseui-auth-container', uiConfig);
+		this.uiConfig = {
+			signInOptions: [
+				googleProvider,
+				emailProvider,
+			]
+		};
+
+		this.state = {
+			signedIn: false,
+		};
+	}
+
+	render() {
+		return (
+			<div className="card">
+				<div className="card-content">
+					<p className="title has-text-centered">{this.props.loginText}</p>
+					<FirebaseAuth uiConfig={this.uiConfig} firebaseAuth={auth}/>
+				</div>
+			</div>
+		);
+	}
+}
+
+Auth.propTypes = propTypes;
+Auth.defaultProps = defaultProps;
+
+export default Auth;
