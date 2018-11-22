@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react';
-import '../stylesheets/App.css';
+import '../../stylesheets/App.css';
 
-import { getNextKey } from './utils/utils.js';
+import { getNextKey } from '../utils/utils.js';
 
-import { ref } from '../config/constants';
+import { ref } from '../../config/constants';
 
 class App extends Component {
 	constructor() {
