@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { auth, googleProvider, emailProvider } from '../config/constants';
 import { FirebaseAuth } from 'react-firebaseui';
-import 'firebaseui/dist/firebaseui.css';
 
 const propTypes = {
 	signInSuccess: PropTypes.func,
