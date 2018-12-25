@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { auth, googleProvider, emailProvider } from '../config/constants';
-import { FirebaseAuth } from 'react-firebaseui';
+import { auth } from '../../config/constants';
+import Home from './home';
+import Login from './login';
 
 const propTypes = {
 	signInSuccess: PropTypes.func,
@@ -11,31 +12,46 @@ const propTypes = {
 const defaultProps = {
 	signInSuccess: () => {},
 	loginText: 'Login',
+	homeText: 'PLACEHOLDER HOME PAGE'
 };
 
 class Auth extends React.Component {
 	constructor(props) {
 		super(props);
-
-		this.uiConfig = {
-			signInOptions: [
-				googleProvider,
-				emailProvider,
-			]
-		};
+		this.authListener = this.authListener.bind(this);
 
 		this.state = {
-			signedIn: false,
+			user: {},
 		};
 	}
+
+	async componentDidMount() {
+		await this.authListener();
+	}
+
+	componentWillUnMount() {
+		this.authListener.off();
+	}
+
+	async authListener(){
+		console.log(this.state.user);
+		auth.onAuthStateChanged((user) => {
+			console.log(user);
+			if (user) {
+				this.setState({user});
+			} else {
+				this.setState({user: null});
+			}
+
+		});
+	}
+
+
 
 	render() {
 		return (
 			<div className="card">
-				<div className="card-content">
-					<p className="title has-text-centered">{this.props.loginText}</p>
-					<FirebaseAuth uiConfig={this.uiConfig} firebaseAuth={auth}/>
-				</div>
+				{ this.state.user ? (<Home />) : (<Login />) }
 			</div>
 		);
 	}
