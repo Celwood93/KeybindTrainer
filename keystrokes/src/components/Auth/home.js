@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { FirebaseAuth } from 'react-firebaseui';
-import { auth, googleProvider, emailProvider } from '../../config/constants';
+import { auth } from '../../config/constants';
 
 
 class Home extends Component {
