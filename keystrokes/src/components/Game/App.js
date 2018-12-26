@@ -45,7 +45,7 @@ class App extends Component {
 		}
 	}
 
-	handleKeyPress = (e) => {
+	handleKeyPress = e => {
 		if (!e.metaKey) {
 			e.preventDefault();
 		}

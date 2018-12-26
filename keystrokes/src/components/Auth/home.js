@@ -1,31 +1,21 @@
 import React, { Component } from 'react';
 import { auth } from '../../config/constants';
 
-
 class Home extends Component {
-    constructor(props) {
-        super(props);
+	logout = e => {
+		auth.signOut();
+	};
 
-        this.uiConfig = {
-            blah: {}
-		};
-
-    }
-
-    logout = (e) => {
-        auth.signOut();
-    }
-
-    render() {
-        return (
+	render() {
+		return (
 			<div className="card">
 				<div className="card-content">
-					<p className="title has-text-centered">{this.props.homeText}</p>
+					<p className="title has-text-centered">Home Page</p>
 					<button onClick={this.logout}>LOGOUT</button>
 				</div>
 			</div>
-        )
-    }
+		);
+	}
 }
 
 export default Home;

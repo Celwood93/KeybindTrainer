@@ -1,19 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { auth } from '../../config/constants';
 import Home from './home';
 import Login from './login';
-
-const propTypes = {
-	signInSuccess: PropTypes.func,
-	loginText: PropTypes.string,
-};
-
-const defaultProps = {
-	signInSuccess: () => {},
-	loginText: 'Login',
-	homeText: 'PLACEHOLDER HOME PAGE'
-};
 
 class Auth extends React.Component {
 	constructor(props) {
@@ -21,7 +9,7 @@ class Auth extends React.Component {
 		this.authListener = this.authListener.bind(this);
 
 		this.state = {
-			user: {},
+			user: null,
 		};
 	}
 
@@ -33,31 +21,23 @@ class Auth extends React.Component {
 		this.authListener.off();
 	}
 
-	async authListener(){
+	async authListener() {
 		console.log(this.state.user);
-		auth.onAuthStateChanged((user) => {
+		auth.onAuthStateChanged(user => {
 			console.log(user);
 			if (user) {
-				this.setState({user});
+				this.setState({ user });
 			} else {
-				this.setState({user: null});
+				this.setState({ user: null });
 			}
-
 		});
 	}
 
-
-
 	render() {
 		return (
-			<div className="card">
-				{ this.state.user ? (<Home />) : (<Login />) }
-			</div>
+			<div className="card">{this.state.user ? <Home /> : <Login />}</div>
 		);
 	}
 }
-
-Auth.propTypes = propTypes;
-Auth.defaultProps = defaultProps;
 
 export default Auth;
