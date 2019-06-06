@@ -1,5 +1,5 @@
-export function getNextKey(givenThis) {
-	return givenThis.state.keys[
-		Math.floor(Math.random() * givenThis.state.keys.length)
+export function getNextKey(keys) {
+	return keys[
+		Math.floor(Math.random() * keys.length)
 	];
 }

@@ -11,8 +11,9 @@ class App extends Component {
 		this.getNextKey = getNextKey.bind();
 		this.body = null;
 
-		//Initial values, I think these should be set from a webpage that occurs before here. None of these db calls should be done in this class tbh
-		//they should be passed from something above (no idea how to do that yet)
+		// Initial values, I think these should be set from a webpage that occurs 
+		// before here. None of these db calls should be done in this class tbh
+		// they should be passed from something above (no idea how to do that yet)
 		this.state = {
 			keybindings: { gettingStarted: { spell: 'getting started!' } },
 			keys: ['gettingStarted'],
@@ -27,7 +28,7 @@ class App extends Component {
 		try {
 			const snapshot = await ref.child('/Keybindings/1').once('value');
 			const keybindings = snapshot.val();
-			console.log('keybindings from the server', keybindings);
+			//console.log('keybindings from the server', keybindings);
 
 			this.setState(
 				{
@@ -36,7 +37,7 @@ class App extends Component {
 					key: '1',
 				},
 				() => {
-					const newKey = this.getNextKey(this);
+					const newKey = this.getNextKey(this.state.keys);
 					this.setState({ key: newKey });
 				}
 			);
