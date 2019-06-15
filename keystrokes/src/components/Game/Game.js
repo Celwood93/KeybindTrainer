@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import '../../stylesheets/App.css';
+import '../../stylesheets/App.scss';
 
 import { getNextKey } from '../utils/utils.js';
 
@@ -11,7 +11,7 @@ class App extends Component {
 		this.getNextKey = getNextKey.bind();
 		this.body = null;
 
-		// Initial values, I think these should be set from a webpage that occurs 
+		// Initial values, I think these should be set from a webpage that occurs
 		// before here. None of these db calls should be done in this class tbh
 		// they should be passed from something above (no idea how to do that yet)
 		this.state = {
@@ -83,10 +83,10 @@ class App extends Component {
 	render() {
 		return (
 			<Fragment>
-				<div className="App App-header">
+				<div className="App-header">
 					{this.state.keybindings[this.state.key].spell}
 				</div>
-				<div className="App App-header">
+				<div className="App-header">
 					On {this.state.keybindings[this.state.key].target}
 				</div>
 			</Fragment>

@@ -1,7 +1,6 @@
 import React from 'react';
 import Game from '../Game/Game';
 import Nav from '../NavBar/NavBar';
-import '../../stylesheets/App.css';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 function Home() {
