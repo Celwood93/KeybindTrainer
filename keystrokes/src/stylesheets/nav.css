@@ -1,7 +1,9 @@
-nav {
+.nav-general {
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
+	font-size: 0.25em;
+	font-size: large;
 	background: grey;
 	color: white;
 }
@@ -10,6 +12,8 @@ nav {
 	width: 40%;
 	display: flex;
 	justify-content: space-around;
+	font-size: 1.25em;
+	font-size: medium;
 	align-items: center;
 	list-style: none;
 }

@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import '../../stylesheets/App.scss';
+import '../../stylesheets/App.css';
 
 import { getNextKey } from '../utils/utils.js';
 

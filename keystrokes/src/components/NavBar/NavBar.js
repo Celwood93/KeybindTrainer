@@ -1,7 +1,7 @@
 import React from 'react';
 import { auth } from '../../config/constants';
 import { Link } from 'react-router-dom';
-import '../../stylesheets/nav.scss';
+import '../../stylesheets/nav.css';
 
 function NavBar() {
 	const logout = e => {
@@ -9,11 +9,11 @@ function NavBar() {
 	};
 
 	const navStyle = {
-		color: 'white',
+		color: 'White',
 	};
 
 	return (
-		<nav>
+		<nav className="nav-general">
 			<h3>Logo</h3>
 			<u1 className="nav-links">
 				<Link style={navStyle} to="/Game">
