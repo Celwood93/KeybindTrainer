@@ -33,7 +33,9 @@ class Auth extends React.Component {
 
 	render() {
 		return (
-			<div className="card">{this.state.user ? <Home /> : <Login />}</div>
+			<div className="card">
+				{this.state.user ? <Home user={this.state.user} /> : <Login />}
+			</div>
 		);
 	}
 }
