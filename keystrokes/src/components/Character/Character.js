@@ -1,12 +1,22 @@
 import React from 'react';
-import Game from '../Game/Game';
-import Nav from '../NavBar/NavBar';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import '../../stylesheets/character.css';
 
 function Character() {
+	const characterNames = ['MyMain', 'MyFavorite', 'TheBestGuy'];
+	const currentCharacter = 'Choose a Character'; //default if nothing is selected
 	return (
 		<div>
-			<h1>CharacterPage</h1>
+			<div>{currentCharacter}</div>
+			<button>Create Character</button>
+			<div>
+				{characterNames.map((comp, i) => {
+					return (
+						<li className="character-links">
+							<button>{comp}</button>
+						</li>
+					);
+				})}
+			</div>
 		</div>
 	);
 }
