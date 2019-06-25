@@ -645,15 +645,6 @@
                 "duration": 8,
                 "range": 30
             },
-            "Reap Magic": {
-                "spec": ["BLOOD", "UNHOLY", "FROST"],
-                "spellType": "UTILITY",
-                "attributes": ["COOLDOWN_SHORT", "PURGE"],
-                "targetType": "ONE_ENEMY",
-                "cooldown": 10,
-                "duration": 0,
-                "range": 40
-            },
             "Dark Simulacrum": {
                 "spec": ["BLOOD", "UNHOLY", "FROST"],
                 "spellType": "UTILITY",

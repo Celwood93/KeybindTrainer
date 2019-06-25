@@ -19,6 +19,9 @@ function NavBar() {
 				<Link style={navStyle} to="/Game">
 					<li>GamePage</li>
 				</Link>
+				<Link style={navStyle} to="/Character">
+					<li>Character Management</li>
+				</Link>
 				<Link style={navStyle} to="/">
 					<li>Home</li>
 				</Link>
