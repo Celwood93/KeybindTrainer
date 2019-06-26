@@ -809,8 +809,7 @@
     },
     "Users": {
         "goodUserName": {
-            "password": "goodPassword",
-            "username": "goodUserName",
+            "currentCharacter": "RiftWood",
             "characters": {
                 "RiftWood": "RiftWood"
             }

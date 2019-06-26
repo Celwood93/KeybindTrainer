@@ -23,6 +23,7 @@ class Auth extends React.Component {
 
 	async authListener() {
 		auth.onAuthStateChanged(user => {
+			console.log(user);
 			if (user) {
 				this.setState({ user });
 			} else {
