@@ -1,15 +1,24 @@
-import { React, useState, useEffect } from 'react';
+import React from 'react';
+import useEffect from 'react';
+import useState from 'react';
 import Game from '../Game/Game';
 import Nav from '../NavBar/NavBar';
 import Character from '../Character/Character';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { ref } from '../../config/constants';
 
-async function Home(props) {
-	//need to be using some use state and use effect stuff
-	const k = `/Users/${props.user.email.replace(/[\.\$#\[\]]/g, '')}`;
-	const snapShot = await ref.child(k).once('value');
-	const userInfo = snapShot.exists() ? snapShot.val() : {};
+function Home(props) {
+	const [user, setUser] = useState({ userInfo: {} });
+
+	useEffect(() => {
+		const collectUserInfo = async () => {
+			const k = `/Users/${props.user.email.replace(/[\.\$#\[\]]/g, '')}`;
+			const snapShot = await ref.child(k).once('value');
+			const userInfo = snapShot.exists() ? snapShot.val() : {};
+			setUser(userInfo);
+		};
+		collectUserInfo();
+	}, []);
 
 	return (
 		<BrowserRouter>
@@ -21,13 +30,13 @@ async function Home(props) {
 						path="/character"
 						exact
 						component={Character}
-						userInfo={userInfo}
+						userInfo={user.userInfo}
 					/>
 					<Route
 						path="/game"
 						exact
 						component={Game}
-						userInfo={userInfo}
+						userInfo={user.userInfo}
 					/>
 				</Switch>
 			</div>
