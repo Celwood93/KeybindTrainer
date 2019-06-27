@@ -1,6 +1,4 @@
-import React from 'react';
-import useEffect from 'react';
-import useState from 'react';
+import React, { useState, useEffect } from 'react';
 import Game from '../Game/Game';
 import Nav from '../NavBar/NavBar';
 import Character from '../Character/Character';
@@ -15,7 +13,7 @@ function Home(props) {
 			const k = `/Users/${props.user.email.replace(/[\.\$#\[\]]/g, '')}`;
 			const snapShot = await ref.child(k).once('value');
 			const userInfo = snapShot.exists() ? snapShot.val() : {};
-			setUser(userInfo);
+			//setUser(userInfo);
 		};
 		collectUserInfo();
 	}, []);
@@ -30,13 +28,13 @@ function Home(props) {
 						path="/character"
 						exact
 						component={Character}
-						userInfo={user.userInfo}
+						userInfo={props.userInfo}
 					/>
 					<Route
 						path="/game"
 						exact
 						component={Game}
-						userInfo={user.userInfo}
+						userInfo={props.userInfo}
 					/>
 				</Switch>
 			</div>
