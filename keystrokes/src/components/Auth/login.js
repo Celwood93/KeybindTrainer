@@ -13,8 +13,8 @@ class Login extends Component {
 
 	render() {
 		return (
-			<div className="card">
-				<div className="card-content">
+			<div>
+				<div>
 					<p className="title has-text-centered">Login Page!</p>
 					<FirebaseAuth
 						uiConfig={this.uiConfig}

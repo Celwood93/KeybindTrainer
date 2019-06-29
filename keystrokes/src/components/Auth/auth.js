@@ -1,6 +1,6 @@
 import React from 'react';
 import { auth } from '../../config/constants';
-import Home from './home';
+import Home from '../Home/Home';
 import Login from './login';
 
 class Auth extends React.Component {
