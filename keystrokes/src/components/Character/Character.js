@@ -1,15 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../../stylesheets/character.css';
+import { ref } from '../../config/constants';
+//import CharacterCreationPage from 'CharacterCreationPage';
 
 function Character(props) {
 	console.log(props);
+	const [name, setName] = useState();
+	//const [className, setClassName] = useState({ className: '' });
+	//const [specName, setSpecName] = useState({ specName: '' });
 	//check to see if user in props is empty
 	//if it is empty have choose character as default, otherwise set it as the current character
 	//if it isnt empty have last character as current character, and list the new characters below
 	//upon clicking create character take the user to a character creation page -> stub for now?
 	//Inside of this character creation page is where we need to save the user values?
 
-	let currentCharacterId = 'Create A New Character'; //default if nothing is selected
+	//So we want to make it so that the render value is a variable that is saved in state
+	//when we click the button we will change that variable, and then we will remount (i think it will auto update)
+	//
+
+	let currentCharacterId = 'Create A New Character'; //default if no character exists
 	let characterIds = [];
 	if (props.user && !!props.user.currentCharacterId) {
 		currentCharacterId = props.user.currentCharacterId;
@@ -22,12 +31,40 @@ function Character(props) {
 			currentCharacterId = 'Select A Character';
 		}
 	}
+
+	function handleChange(event) {
+		console.log(event, name);
+		setName(event.target.value);
+	}
+
+	async function handleSubmit(event) {
+		event.preventDefault();
+		let snapshot = await ref.child(props.userPath).once('value');
+		const id = props.userId;
+		if (snapshot.exists()) {
+			//needs alot of work
+			ref.child(id).update({
+				currentCharacter: name,
+			});
+			ref.child(id)
+				.child(characters)
+				.update({ name: name });
+		}
+		console.log(snapshot);
+	}
+
 	return (
 		<div>
-			<div>{currentCharacter}</div>
-			<button onClick={createCharacter}>Create Character</button>
+			<div>{currentCharacterId}</div>
+			<form onSubmit={handleSubmit}>
+				<label>
+					Name?
+					<input type="text" value={name} onChange={handleChange} />
+				</label>
+				<input type="submit" value="Submit" />
+			</form>
 			<div>
-				{characterNames.map((comp, i) => {
+				{characterIds.map((comp, i) => {
 					return (
 						<li className="character-links">
 							<button>{comp}</button>

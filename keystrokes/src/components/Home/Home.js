@@ -6,12 +6,13 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { ref } from '../../config/constants';
 
 function Home(props) {
+	const userId = props.user.email.replace(/[\.\$#\[\]]/g, '');
+	const userPath = `/Users/${userId}`;
 	const [user, setUser] = useState({ userInfo: {} });
 
 	useEffect(() => {
 		const collectUserInfo = async () => {
-			const k = `/Users/${props.user.email.replace(/[\.\$#\[\]]/g, '')}`;
-			const snapShot = await ref.child(k).once('value');
+			const snapShot = await ref.child(userPath).once('value');
 			const userInfo = snapShot.exists() ? snapShot.val() : {};
 			setUser(userInfo);
 		};
@@ -28,13 +29,24 @@ function Home(props) {
 						path="/character"
 						exact
 						render={props => (
-							<Character {...props} userInfo={user} />
+							<Character
+								{...props}
+								userInfo={user}
+								userPath={userPath}
+								userId={userId}
+							/>
 						)}
 					/>
 					<Route
 						path="/game"
 						exact
-						render={props => <Game {...props} userInfo={user} />}
+						render={props => (
+							<Game
+								{...props}
+								userInfo={user}
+								userPath={userPath}
+							/>
+						)}
 					/>
 				</Switch>
 			</div>
