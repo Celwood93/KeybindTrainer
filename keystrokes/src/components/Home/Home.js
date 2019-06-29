@@ -13,7 +13,7 @@ function Home(props) {
 			const k = `/Users/${props.user.email.replace(/[\.\$#\[\]]/g, '')}`;
 			const snapShot = await ref.child(k).once('value');
 			const userInfo = snapShot.exists() ? snapShot.val() : {};
-			//setUser(userInfo);
+			setUser(userInfo);
 		};
 		collectUserInfo();
 	}, []);
@@ -27,14 +27,14 @@ function Home(props) {
 					<Route
 						path="/character"
 						exact
-						component={Character}
-						userInfo={props.userInfo}
+						render={props => (
+							<Character {...props} userInfo={user} />
+						)}
 					/>
 					<Route
 						path="/game"
 						exact
-						component={Game}
-						userInfo={props.userInfo}
+						render={props => <Game {...props} userInfo={user} />}
 					/>
 				</Switch>
 			</div>
