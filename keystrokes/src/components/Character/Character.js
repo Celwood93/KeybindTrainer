@@ -39,18 +39,26 @@ function Character(props) {
 
 	async function handleSubmit(event) {
 		event.preventDefault();
-		let snapshot = await ref.child(props.userPath).once('value');
+		let snapshot = await ref.child(props.userPath);
+		let tests = await snapshot.once('value');
 		const id = props.userId;
-		if (snapshot.exists()) {
+		if (tests.exists()) {
 			//needs alot of work
-			ref.child(id).update({
-				currentCharacter: name,
+			snapshot.update({
+				"currentCharacter": name,
 			});
-			ref.child(id)
-				.child(characters)
-				.update({ name: name });
+			snapshot
+				.child('characters').child(name)
+				.set({ "name": name });
+		} else {
+			snapshot.set({
+					"currentCharacter": name,
+					"characters": {}
+			});
+			snapshot
+				.child('characters').child(name)
+				.set({ "name": name });
 		}
-		console.log(snapshot);
 	}
 
 	return (
