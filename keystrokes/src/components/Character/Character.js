@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
 import '../../stylesheets/character.css';
 import { ref } from '../../config/constants';
+import {
+	Button,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogContentText,
+	DialogTitle,
+	Typography,
+} from '@material-ui/core';
 //import CharacterCreationPage from 'CharacterCreationPage';
 
 function Character(props) {
@@ -45,19 +54,21 @@ function Character(props) {
 		if (tests.exists()) {
 			//needs alot of work
 			snapshot.update({
-				"currentCharacter": name,
+				currentCharacter: name,
 			});
 			snapshot
-				.child('characters').child(name)
-				.set({ "name": name });
+				.child('characters')
+				.child(name)
+				.set({ name: name });
 		} else {
 			snapshot.set({
-					"currentCharacter": name,
-					"characters": {}
+				currentCharacter: name,
+				characters: {},
 			});
 			snapshot
-				.child('characters').child(name)
-				.set({ "name": name });
+				.child('characters')
+				.child(name)
+				.set({ name: name });
 		}
 	}
 
@@ -75,7 +86,7 @@ function Character(props) {
 				{characterIds.map((comp, i) => {
 					return (
 						<li className="character-links">
-							<button>{comp}</button>
+							<Button>{comp}</Button>
 						</li>
 					);
 				})}
