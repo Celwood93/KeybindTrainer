@@ -821,7 +821,7 @@
             "race": "NIGHT_ELF",
             "name": "RiftWood",
             "specs": {
-                "Restoration": {
+                "RESTORATION": {
                     "spec": "RESTORATION",
                     "enabled": true,
                     "configured": true,

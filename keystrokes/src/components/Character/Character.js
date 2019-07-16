@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../../stylesheets/character.css';
 import { ref } from '../../config/constants';
+import CharacterCreationModal from './CharacterCreationModal';
 import {
 	Button,
 	Dialog,
@@ -52,7 +53,6 @@ function Character(props) {
 		let tests = await snapshot.once('value');
 		const id = props.userId;
 		if (tests.exists()) {
-			//needs alot of work
 			snapshot.update({
 				currentCharacter: name,
 			});
@@ -70,6 +70,8 @@ function Character(props) {
 				.child(name)
 				.set({ name: name });
 		}
+
+		//
 	}
 
 	return (
