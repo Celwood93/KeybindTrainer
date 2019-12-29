@@ -645,15 +645,6 @@
                 "duration": 8,
                 "range": 30
             },
-            "Reap Magic": {
-                "spec": ["BLOOD", "UNHOLY", "FROST"],
-                "spellType": "UTILITY",
-                "attributes": ["COOLDOWN_SHORT", "PURGE"],
-                "targetType": "ONE_ENEMY",
-                "cooldown": 10,
-                "duration": 0,
-                "range": 40
-            },
             "Dark Simulacrum": {
                 "spec": ["BLOOD", "UNHOLY", "FROST"],
                 "spellType": "UTILITY",
@@ -818,8 +809,7 @@
     },
     "Users": {
         "goodUserName": {
-            "password": "goodPassword",
-            "username": "goodUserName",
+            "currentCharacter": "RiftWood",
             "characters": {
                 "RiftWood": "RiftWood"
             }
@@ -831,7 +821,7 @@
             "race": "NIGHT_ELF",
             "name": "RiftWood",
             "specs": {
-                "Restoration": {
+                "RESTORATION": {
                     "spec": "RESTORATION",
                     "enabled": true,
                     "configured": true,

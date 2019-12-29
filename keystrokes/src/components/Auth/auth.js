@@ -23,6 +23,7 @@ class Auth extends React.Component {
 
 	async authListener() {
 		auth.onAuthStateChanged(user => {
+			console.log(user);
 			if (user) {
 				this.setState({ user });
 			} else {
@@ -33,7 +34,9 @@ class Auth extends React.Component {
 
 	render() {
 		return (
-			<div className="card">{this.state.user ? <Home /> : <Login />}</div>
+			<div className="card">
+				{this.state.user ? <Home user={this.state.user} /> : <Login />}
+			</div>
 		);
 	}
 }
