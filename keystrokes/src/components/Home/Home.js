@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import Game from '../Game/Game';
 import Nav from '../NavBar/NavBar';
-import Character from '../Character/Character';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { ref } from '../../config/constants';
+import CharacterList from '../Character/CharacterList';
 
 function Home(props) {
-	const userId = props.user.email.replace(/[\.\$#\[\]]/g, '');
+	const userId = props.user.email.replace(/[.$#[\]]/g, '');
 	const userPath = `/Users/${userId}`;
-	const [user, setUser] = useState({ userInfo: {} });
+	const [user, setUser] = useState({characters: {}, currentCharacter: null});
 
 	useEffect(() => {
 		const collectUserInfo = async () => {
 			const snapShot = await ref.child(userPath).once('value');
-			const userInfo = snapShot.exists() ? snapShot.val() : {};
+			const userInfo = snapShot.exists() ? snapShot.val() : user;
 			setUser(userInfo);
 		};
 		collectUserInfo();
@@ -26,10 +26,10 @@ function Home(props) {
 				<Switch>
 					<Route path="/" exact component={LandingPage} />
 					<Route
-						path="/character"
+						path="/characterList"
 						exact
 						render={props => (
-							<Character
+							<CharacterList
 								{...props}
 								userInfo={user}
 								userPath={userPath}
