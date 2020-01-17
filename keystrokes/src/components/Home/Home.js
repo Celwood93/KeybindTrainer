@@ -8,13 +8,17 @@ import CharacterList from '../Character/CharacterList';
 function Home(props) {
 	const userId = props.user.email.replace(/[.$#[\]]/g, '');
 	const userPath = `/Users/${userId}`;
-	const [user, setUser] = useState({characters: {}, currentCharacter: null});
+	const [user, setUser] = useState({
+		characters: {},
+		currentCharacter: null,
+	});
 
 	useEffect(() => {
 		const collectUserInfo = async () => {
 			const snapShot = await ref.child(userPath).once('value');
-			const userInfo = snapShot.exists() ? snapShot.val() : user;
-			setUser(userInfo);
+			if (snapShot.exists()) {
+				setUser(snapShot.val());
+			}
 		};
 		collectUserInfo();
 	}, []);
