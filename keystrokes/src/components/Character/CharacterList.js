@@ -24,34 +24,27 @@ function CharacterList(props) {
 	async function handleSubmit(fields) {
 		const {name, characterClass, spec, race} = fields
 		let charactersSnapShot = await ref.child("/Characters");
-		let doesCharacterExist = await charactersSnapShot.child(name).once('value');
-		if (doesCharacterExist.exists()) {
-			console.log("error")
-			//throw error since name is currently id - replace with real key eventually
-			return;
-		} else {
-			charactersSnapShot
-			.child(name).set({
-				"class": characterClass, 
-				"race": race, 
-				"name": name, 
-				"specs": {}
-			});
-			charactersSnapShot
-			.child(name)
-			.child("specs")
-			.child(spec)
-			.set({
-				"spec": spec, 
-				"selected": true,
-				"configured": false
-			});
-		}
+		const id = charactersSnapShot
+		.push({
+			"class": characterClass, 
+			"race": race, 
+			"name": name,
+		});
+		const idKey = id.key;
+		charactersSnapShot
+		.child(idKey)
+		.child("specs")
+		.child(spec)
+		.set({
+			"spec": spec, 
+			"selected": true,
+			"configured": false
+		});
 		let snapshot = await ref.child(props.userPath);
 		let userCharacterData = await snapshot.once('value');
 		if (userCharacterData.exists()) {
 			snapshot
-				.child('characters').child(name) //name should probably be a real key
+				.child('characters').child(idKey) //name should probably be a real key
 				.set({ "name": name });
 		} else {
 			snapshot.set({
@@ -59,10 +52,10 @@ function CharacterList(props) {
 					"characters": {}
 			});
 			snapshot
-				.child('characters').child(name)
+				.child('characters').child(idKey)
 				.set({ "name": name });
 		}
-		setCharacters({...characters, name: {"name": name}}) //immutabilityHelper here
+		setCharacters({...characters, idKey: {"name": name}}) //immutabilityHelper here
 	}
 
 	return (
