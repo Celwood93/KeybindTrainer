@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { List, ListItem, Typography, Divider } from '@material-ui/core';
+import CharacterCreationModal from './CharacterCreationModal';
 import '../../stylesheets/character.css';
 import styleGuide from '../../stylesheets/style';
 import { ref } from '../../config/constants';
-import { List, ListItem, Typography, Divider } from '@material-ui/core';
-import CharacterCreationModal from './CharacterCreationModal';
-import PropTypes from 'prop-types';
 
 CharacterList.propTypes = {
 	userInfo: PropTypes.object.isRequired,
@@ -21,10 +21,6 @@ function CharacterList({ userInfo, userPath }) {
 		setCharacters(userInfo.characters || {});
 		setCurrentCharacter(userInfo.currentCharacter);
 	}, [userInfo]);
-
-	const handleOpen = () => {
-		setOpen(true);
-	};
 
 	async function handleSubmit(fields) {
 		const { name, characterClass, spec, race } = fields;
@@ -44,24 +40,12 @@ function CharacterList({ userInfo, userPath }) {
 		});
 		const idKey = id.key;
 		let snapshot = await ref.child(userPath);
-		let userCharacterData = await snapshot.once('value');
-
-		if (userCharacterData.exists()) {
-			snapshot
-				.child('characters')
-				.child(idKey) //name should probably be a real key
-				.set({ name: name });
-		} else {
-			snapshot.set({
-				currentCharacter: name,
-				characters: {
-					[idKey]: {
-						name,
-					},
-				},
-			});
-		}
-		setCharacters({ ...characters, idKey: { name: name } }); //immutabilityHelper here
+		snapshot
+			.child('characters')
+			.child(idKey)
+			.set({ name });
+		setCurrentCharacter(idKey);
+		setCharacters({ ...characters, [idKey]: { name } });
 	}
 
 	return (
@@ -86,7 +70,7 @@ function CharacterList({ userInfo, userPath }) {
 			</Typography>
 			<div className={classes.characterList}>
 				<List>
-					{!!currentCharacter && (
+					{characters[currentCharacter] && (
 						<React.Fragment>
 							<div className={classes.characterListItemSelected}>
 								<ListItem
@@ -103,7 +87,6 @@ function CharacterList({ userInfo, userPath }) {
 								</ListItem>
 								<Divider />
 							</div>
-							<div style={{ paddingTop: '1rem' }} />
 						</React.Fragment>
 					)}
 					{Object.keys(characters)
@@ -128,12 +111,11 @@ function CharacterList({ userInfo, userPath }) {
 										</ListItem>
 										<Divider />
 									</div>
-									<div style={{ paddingTop: '1rem' }} />
 								</React.Fragment>
 							);
 						})}
 					<div className={classes.newCharacterListItem}>
-						<ListItem button onClick={handleOpen}>
+						<ListItem button onClick={() => setOpen(true)}>
 							<div className={classes.newCharListItem}>
 								<Typography align="center">
 									Create A New Character
