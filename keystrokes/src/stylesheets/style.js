@@ -15,10 +15,12 @@ const styleGuide = makeStyles(theme => ({
 		boxShadow: theme.shadows[5],
 		padding: theme.spacing(2, 4, 3),
 	},
+	tabRoot: {
+		flexGrow: 1,
+		width: '100%',
+		backgroundColor: theme.palette.background.paper,
+	},
 	characterList: {
-		paddingLeft: '25%',
-		paddingRight: '25%',
-		width: '50%',
 		display: 'flex',
 		justifyContent: 'center',
 	},

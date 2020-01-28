@@ -7,8 +7,10 @@ function Auth() {
 	const [user, setUser] = useState();
 
 	useEffect(() => {
-		const unsubscribe = onAuthStateChange();
-		return unsubscribe;
+		setUser({ email: 'celwood93@gmail.com' }); //added for work offline
+		//removed these two lines for work offline.
+		//const unsubscribe = onAuthStateChange();
+		//return unsubscribe;
 	}, []);
 
 	function onAuthStateChange() {

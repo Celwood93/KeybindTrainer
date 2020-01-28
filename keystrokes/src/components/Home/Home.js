@@ -4,9 +4,10 @@ import Nav from '../NavBar/NavBar';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { ref } from '../../config/constants';
 import CharacterList from '../Character/CharacterList';
+import CharacterDetailPage from '../Character/CharacterDetailPage';
 
 function Home(props) {
-	console.log(props);
+	console.log(props.user);
 	const userId = props.user.email.replace(/[.$#[\]]/g, '');
 	const userPath = `/Users/${userId}`;
 	const [user, setUser] = useState({
@@ -21,7 +22,19 @@ function Home(props) {
 				setUser(snapShot.val());
 			}
 		}
-		collectUserInfo();
+		function workOffline() {
+			setUser({
+				characters: {
+					randomId1: { name: 'bill' },
+					randomId2: { name: 'joe' },
+					randomId3: { name: 'steve' },
+				},
+				currentCharacter: 'randomId1',
+			});
+		}
+		workOffline();
+		//removing for offline use
+		//collectUserInfo();
 	}, []);
 
 	return (
@@ -40,6 +53,12 @@ function Home(props) {
 								userPath={userPath}
 								userId={userId}
 							/>
+						)}
+					/>
+					<Route
+						path="/characterList/*"
+						render={props => (
+							<CharacterDetailPage {...props} userId={userId} /> //this will probably need more stuff to make it so you cant just jump on someones account. maybe this is where i need privilages?
 						)}
 					/>
 					<Route

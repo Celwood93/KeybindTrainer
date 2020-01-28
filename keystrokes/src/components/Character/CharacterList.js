@@ -11,7 +11,7 @@ CharacterList.propTypes = {
 	userPath: PropTypes.string.isRequired,
 };
 
-function CharacterList({ userInfo, userPath }) {
+function CharacterList({ userInfo, userPath, ...props }) {
 	const [characters, setCharacters] = useState({});
 	const [currentCharacter, setCurrentCharacter] = useState('');
 	const [open, setOpen] = useState(false);
@@ -50,13 +50,11 @@ function CharacterList({ userInfo, userPath }) {
 
 	return (
 		<React.Fragment>
-			{open && (
-				<CharacterCreationModal
-					isOpen={open}
-					setIsOpen={setOpen}
-					handleSubmit={handleSubmit}
-				/>
-			)}
+			<CharacterCreationModal
+				isOpen={open}
+				setIsOpen={setOpen}
+				handleSubmit={handleSubmit}
+			/>
 			<Typography variant="h1" align="center">
 				Character List
 			</Typography>
@@ -70,50 +68,42 @@ function CharacterList({ userInfo, userPath }) {
 			</Typography>
 			<div className={classes.characterList}>
 				<List>
-					{characters[currentCharacter] && (
-						<React.Fragment>
-							<div className={classes.characterListItemSelected}>
-								<ListItem
-									button
-									onClick={() => {
-										console.log('hello');
-									}}
+					{[
+						currentCharacter,
+						...Object.keys(characters).filter(
+							details => details !== currentCharacter
+						),
+					].map(id => {
+						return (
+							<React.Fragment key={id}>
+								<div
+									className={
+										id === currentCharacter
+											? classes.characterListItemSelected
+											: classes.characterListItem
+									}
 								>
-									<div className={classes.charListItem}>
-										<Typography align="center">
-											{characters[currentCharacter].name}
-										</Typography>
-									</div>
-								</ListItem>
-								<Divider />
-							</div>
-						</React.Fragment>
-					)}
-					{Object.keys(characters)
-						.filter(details => details !== currentCharacter)
-						.map(id => {
-							return (
-								<React.Fragment key={id}>
-									<div className={classes.characterListItem}>
-										<ListItem
-											button
-											onClick={() => {
-												console.log('hello');
-											}}
-										>
-											<div
-												className={classes.charListItem}
-											>
-												<Typography align="center">
-													{characters[id].name}
-												</Typography>
-											</div>
-										</ListItem>
-										<Divider />
-									</div>
-								</React.Fragment>
-							);
-						})}
+									<ListItem
+										button
+										onClick={() => {
+											console.log(id);
+											props.history.push(
+												`${props.location.pathname}/${id}`
+											);
+										}}
+									>
+										<div className={classes.charListItem}>
+											<Typography align="center">
+												{characters[id] &&
+													characters[id].name}
+											</Typography>
+										</div>
+									</ListItem>
+									<Divider />
+								</div>
+							</React.Fragment>
+						);
+					})}
 					<div className={classes.newCharacterListItem}>
 						<ListItem button onClick={() => setOpen(true)}>
 							<div className={classes.newCharListItem}>
