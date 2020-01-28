@@ -17,8 +17,12 @@ const styleGuide = makeStyles(theme => ({
 	},
 	tabRoot: {
 		flexGrow: 1,
-		width: '100%',
+		width: '80%',
 		backgroundColor: theme.palette.background.paper,
+	},
+	tabPageContainer: {
+		paddingLeft: '2rem',
+		paddingRight: '2rem',
 	},
 	characterList: {
 		display: 'flex',

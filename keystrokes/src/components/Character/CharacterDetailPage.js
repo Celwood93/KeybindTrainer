@@ -18,55 +18,64 @@ function CharacterDetailPage(props) {
 	};
 
 	return (
-		<div className={styleGuide.tabRoot}>
-			<AppBar position="static" color="default">
-				<Tabs
-					value={spec}
-					onChange={handleSpecChange}
-					textColor="primary"
-					variant="fullWidth"
-					scrollButtons="auto"
-					aria-label="scrollable auto tabs example"
-				>
-					{[0, 1].map(val => {
-						const tabLabel = `Item ${val}`;
-						return (
-							<Tab
-								label={tabLabel}
-								key={val}
-								{...a11yProps(val)}
-							/>
-						);
-					})}
-				</Tabs>
-			</AppBar>
-			<AppBar position="static">
-				<Tabs
-					value={keyBinding}
-					onChange={handleKeybindChange}
-					variant="scrollable"
-					scrollButtons="auto"
-					aria-label="nav tabs example"
-				>
-					{[0, 1, 2].map(val => {
-						const tabLabel = `Keybinding ${val}`;
-						return (
-							<Tab
-								label={tabLabel}
-								key={val}
-								{...a11yProps(val)}
-							/>
-						);
-					})}
-				</Tabs>
-			</AppBar>
-			{[0, 1, 2].map(val => {
-				return (
-					<TabPanel value={keyBinding} key={val} index={val}>
-						keybinding {val}
-					</TabPanel>
-				);
-			})}
+		<div style={{ marginLeft: '1rem', marginRight: '1rem' }}>
+			<div style={{ paddingLeft: '5rem', textAlign: 'left' }}>hello</div>
+			<div className={styleGuide.tabRoot}>
+				<AppBar position="static" color="default">
+					<Tabs
+						value={spec}
+						onChange={handleSpecChange}
+						textColor="primary"
+						variant="fullWidth"
+						scrollButtons="auto"
+						aria-label="scrollable auto tabs example"
+					>
+						{[0, 1].map(val => {
+							const tabLabel = `Item ${val}`;
+							return (
+								<Tab
+									label={tabLabel}
+									key={val}
+									{...a11yProps(val)}
+								/>
+							);
+						})}
+					</Tabs>
+				</AppBar>
+				<AppBar position="static">
+					<Tabs
+						value={keyBinding}
+						onChange={handleKeybindChange}
+						variant="scrollable"
+						scrollButtons="auto"
+						aria-label="nav tabs example"
+					>
+						{[0, 1, 2].map(val => {
+							const tabLabel = `Keybinding ${val}`;
+							return (
+								<Tab
+									label={tabLabel}
+									key={val}
+									{...a11yProps(val)}
+								/>
+							);
+						})}
+						<Tab
+							onClick={() => {
+								console.log('hello'); //create a new keybinding settup
+							}}
+							label="new thing"
+						/>
+					</Tabs>
+				</AppBar>
+				{[0, 1, 2].map(val => {
+					return (
+						<TabPanel value={keyBinding} key={val} index={val}>
+							keybinding {val}
+						</TabPanel>
+					);
+				})}
+			</div>
 		</div>
 	);
 }
