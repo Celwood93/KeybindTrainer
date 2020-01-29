@@ -35,6 +35,7 @@ function CharacterList({ userInfo, userPath, ...props }) {
 					spec,
 					selected: true,
 					configured: false,
+					keybindings: [],
 				},
 			},
 		});
@@ -76,31 +77,34 @@ function CharacterList({ userInfo, userPath, ...props }) {
 					].map(id => {
 						return (
 							<React.Fragment key={id}>
-								<div
-									className={
-										id === currentCharacter
-											? classes.characterListItemSelected
-											: classes.characterListItem
-									}
-								>
-									<ListItem
-										button
-										onClick={() => {
-											console.log(id);
-											props.history.push(
-												`${props.location.pathname}/${id}`
-											);
-										}}
+								{id && (
+									<div
+										className={
+											id === currentCharacter
+												? classes.characterListItemSelected
+												: classes.characterListItem
+										}
 									>
-										<div className={classes.charListItem}>
-											<Typography align="center">
-												{characters[id] &&
-													characters[id].name}
-											</Typography>
-										</div>
-									</ListItem>
-									<Divider />
-								</div>
+										<ListItem
+											button
+											onClick={() => {
+												props.history.push(
+													`${props.location.pathname}/${id}`
+												);
+											}}
+										>
+											<div
+												className={classes.charListItem}
+											>
+												<Typography align="center">
+													{characters[id] &&
+														characters[id].name}
+												</Typography>
+											</div>
+										</ListItem>
+										<Divider />
+									</div>
+								)}
 							</React.Fragment>
 						);
 					})}

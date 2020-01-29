@@ -22,19 +22,7 @@ function Home(props) {
 				setUser(snapShot.val());
 			}
 		}
-		function workOffline() {
-			setUser({
-				characters: {
-					randomId1: { name: 'bill' },
-					randomId2: { name: 'joe' },
-					randomId3: { name: 'steve' },
-				},
-				currentCharacter: 'randomId1',
-			});
-		}
-		workOffline();
-		//removing for offline use
-		//collectUserInfo();
+		collectUserInfo();
 	}, []);
 
 	return (
