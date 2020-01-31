@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography, Box } from '@material-ui/core';
+import { Typography, Box, Grid } from '@material-ui/core';
 import '../../stylesheets/character.css';
 
 //this whole thing could probably be moved into its own file
@@ -11,9 +11,10 @@ TabPanel.propTypes = {
 };
 export function TabPanel(props) {
 	const { children, value, index, ...other } = props;
-
+	console.log(children, value, index);
 	return (
-		<Typography
+		<Grid
+			container
 			component="div"
 			role="tabpanel"
 			hidden={value !== index}
@@ -21,8 +22,8 @@ export function TabPanel(props) {
 			aria-labelledby={`scrollable-auto-tab-${index}`}
 			{...other}
 		>
-			{value === index && <Box p={3}>{children}</Box>}
-		</Typography>
+			{value === index && children}
+		</Grid>
 	);
 }
 

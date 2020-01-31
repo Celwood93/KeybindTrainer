@@ -35,69 +35,91 @@ function CharacterDetailPage({ userId, match, ...props }) {
 			const snapShot = await ref.child(path).once('value');
 			if (snapShot.exists()) {
 				const charDetails = snapShot.val();
-				//holy shit there has to be a better way to figure out what spec you currently are... DB needs a cleanup for sure...
-				setSpec(
-					characterDetails.class[charDetails.class].findIndex(
-						ele =>
-							ele ===
-							Object.keys(charDetails.specs).filter(
-								spec => charDetails.specs[spec].selected
-							)[0]
-					)
-				);
+				setSpec(charDetails.selectedSpec);
 				setCharacter(charDetails);
 			}
+			//Set something to say "character not found"
 			setLoading(false);
 		}
 		if (!fields) {
 			collectCharacterInfo();
 		} else {
 			//should be in a function
+			//I think im doing alot of immutability violations here...
 			const { name, characterClass, race } = fields;
-			const curSpec = fields.spec;
+			const selectedSpec = fields.spec;
 			const specs = {};
 			characterDetails.class[characterClass].forEach(spec => {
 				specs[spec] = {
-					spec,
-					selected: spec === curSpec,
 					configured: false,
 				};
 			});
+
 			const newCharacter = {
 				class: characterClass,
 				race,
+				selectedSpec,
 				name,
 				specs,
 			};
-			setSpec(
-				characterDetails.class[characterClass].findIndex(
-					ele => ele === curSpec
-				)
-			);
+
+			//this logic will probably be reused so make this into a function.
+			const key = ref.child('/Keybindings').push().key;
+			newCharacter.specs[
+				characterDetails.class[characterClass][selectedSpec]
+			]['selectedKeybindings'] = key;
+			newCharacter.specs[
+				characterDetails.class[characterClass][selectedSpec]
+			]['keybindings'] = {
+				[key]: {
+					description: '',
+					talents: { 1: 1, 2: 2, 3: 3 }, //placeholder for now
+				},
+			};
+			console.log(newCharacter);
+			setSpec(selectedSpec);
 			setCharacter(newCharacter);
 			setLoading(false);
 		}
 	}, []);
 
 	const handleSpecChange = (event, newSpec) => {
+		//here i also need to know which keybinding to call, can use current spec
 		setSpec(newSpec);
 	};
 	const handleKeybindingsChange = (event, newKeybindings) => {
+		//this is where i want to call for a new call for the keybindings -> need some one to know which
 		setKeybinding(newKeybindings);
 	};
 
-	async function makeNewKeybindings() {
-		const keybindingSnapshot = await ref
-			.child('/Keybindings')
-			.once('value');
-		const id = await keybindingSnapshot.push({
-			//i think these should not be in keybindings, only in characters (description and talents)
-			description,
-			talents,
-			keybindings: keyBinds,
-		});
-
-		setKeybinding(id);
+	function makeNewKeybindings() {
+		const key = ref.child('/Keybindings').push().key;
+		if (
+			!character.specs[characterDetails.class[character.class][spec]]
+				.keybindings
+		) {
+			character.specs[characterDetails.class[character.class][spec]][
+				'selectedKeybindings'
+			] = key;
+			character.specs[characterDetails.class[character.class][spec]][
+				'keybindings'
+			] = {
+				[key]: {
+					description: '',
+					talents: { 1: 1, 2: 2, 3: 3 }, //placeholder for now
+				},
+			};
+		}
+		character.specs[
+			characterDetails.class[character.class][spec]
+		].keybindings[key] = {
+			description: '',
+			talents: { 1: 1, 2: 2, 3: 3 }, //placeholder for now
+		};
+		//these will NOT have the actual keybindings, those are retrieved when switching keybindings, with a loadbar on the dropdown if the dropdown is clicked.
+		//or when switching specs. This also means i need to cancel requests if i switch specs or keybindings.
+		//this is where configured will come into play, since technically you only need 1 keybinding to do anything, it just needs to be activated.
+		setCharacter({ ...character });
 	}
 
 	return !loading ? (
@@ -110,15 +132,7 @@ function CharacterDetailPage({ userId, match, ...props }) {
 					<AppBar position="static" color="default">
 						<Tabs
 							//also should be an easier way to do this... this is insane
-							value={characterDetails.class[
-								character.class
-							].findIndex(
-								ele =>
-									ele ===
-									characterDetails.class[character.class][
-										spec
-									]
-							)}
+							value={spec}
 							onChange={handleSpecChange}
 							textColor="primary"
 							variant="fullWidth"
@@ -146,10 +160,17 @@ function CharacterDetailPage({ userId, match, ...props }) {
 							scrollButtons="auto"
 							aria-label="nav tabs example"
 						>
-							{character.specs[spec] &&
-								character.specs[spec].keybindings &&
-								character.specs[spec].keybindings.map(val => {
-									const tabLabel = `Keybinding ${val}`;
+							{character.specs[
+								characterDetails.class[character.class][spec]
+							].keybindings &&
+								Object.keys(
+									character.specs[
+										characterDetails.class[character.class][
+											spec
+										]
+									].keybindings
+								).map((val, index) => {
+									const tabLabel = `Keybindings-${index + 1}`;
 									return (
 										<Tab
 											label={tabLabel}
@@ -164,28 +185,48 @@ function CharacterDetailPage({ userId, match, ...props }) {
 							/>
 						</Tabs>
 					</AppBar>
-					{character.specs[spec] &&
-						character.specs[spec].keybindings &&
-						character.specs[spec].keybindings.map(val => {
+					{//So, you create a new character, then you go to your character page. you then hit create new keybindings
+					//if no keybindings exist yet then there is a thing HERE that says "click create new keybiindings to get started!"
+					character.specs[
+						characterDetails.class[character.class][spec]
+					].keybindings ? (
+						Object.keys(
+							character.specs[
+								characterDetails.class[character.class][spec]
+							].keybindings
+						).map((val, index) => {
+							console.log(val);
 							return (
 								<TabPanel
 									value={keyBinding}
 									key={val}
-									index={val}
+									index={index}
 								>
 									<Grid container spacing={1}>
 										<Grid container direction="row">
 											<Grid item>
 												<Paper>Description</Paper>
 											</Grid>
+										</Grid>
+										<Grid container direction="row">
 											<Grid item>
-												<Paper>blah</Paper>
+												<Paper>Talents</Paper>
+											</Grid>
+										</Grid>
+										<Grid container direction="row">
+											<Grid item>
+												<Paper>Keybindings</Paper>
 											</Grid>
 										</Grid>
 									</Grid>
 								</TabPanel>
 							);
-						})}
+						})
+					) : (
+						<div>
+							Click 'Create new keybindings' to get started!
+						</div>
+					)}
 				</div>
 			</div>
 		</React.Fragment>

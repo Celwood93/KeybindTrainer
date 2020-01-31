@@ -107,7 +107,12 @@ function CharacterCreationModal({ handleSubmit, isOpen, setIsOpen }) {
 							>
 								{characterDetails.class[characterClass].map(
 									spec => (
-										<MenuItem key={spec} value={spec}>
+										<MenuItem
+											key={spec}
+											value={characterDetails.class[
+												characterClass
+											].findIndex(ele => ele === spec)}
+										>
 											{spec}
 										</MenuItem>
 									)
