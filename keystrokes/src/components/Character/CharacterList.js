@@ -18,35 +18,19 @@ function CharacterList({ userInfo, userPath, ...props }) {
 	const classes = styleGuide();
 
 	useEffect(() => {
+		console.log(characters); //currently creating a new character does not add it to this list if a play goes back. pretty sure its due to user info. may want a sitewide state
 		setCharacters(userInfo.characters || {});
 		setCurrentCharacter(userInfo.currentCharacter);
 	}, [userInfo]);
 
 	async function handleSubmit(fields) {
-		const { name, characterClass, spec, race } = fields;
-		let charactersSnapShot = await ref.child('/Characters');
-
-		const id = charactersSnapShot.push({
-			class: characterClass,
-			race,
-			name,
-			specs: {
-				[spec]: {
-					spec,
-					selected: true,
-					configured: false,
-					keybindings: [],
-				},
-			},
-		});
-		const idKey = id.key;
-		let snapshot = await ref.child(userPath);
-		snapshot
-			.child('characters')
-			.child(idKey)
-			.set({ name });
-		setCurrentCharacter(idKey);
-		setCharacters({ ...characters, [idKey]: { name } });
+		const name = fields.name;
+		const key = ref.child('/Characters').push().key;
+		setCurrentCharacter(key);
+		setCharacters({ ...characters, [key]: { name } });
+		props.history.push(
+			`${props.location.pathname}/${key}/${JSON.stringify(fields)}`
+		);
 	}
 
 	return (

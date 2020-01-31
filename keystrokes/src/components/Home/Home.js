@@ -44,7 +44,7 @@ function Home(props) {
 						)}
 					/>
 					<Route
-						path="/characterList/*"
+						path="/characterList/:id/:fields?"
 						render={props => (
 							<CharacterDetailPage {...props} userId={userId} /> //this will probably need more stuff to make it so you cant just jump on someones account. maybe this is where i need privilages?
 						)}
