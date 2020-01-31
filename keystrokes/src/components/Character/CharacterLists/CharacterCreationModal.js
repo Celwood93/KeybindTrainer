@@ -10,8 +10,8 @@ import {
 	Grid,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import { characterDetails } from '../../config/constants';
-import styleGuide from '../../stylesheets/style';
+import { characterDetails } from '../../../config/constants';
+import styleGuide from '../../../stylesheets/style';
 
 CharacterCreationModal.propTypes = {
 	handleSubmit: PropTypes.func.isRequired,

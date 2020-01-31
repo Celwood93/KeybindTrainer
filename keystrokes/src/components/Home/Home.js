@@ -3,8 +3,8 @@ import Game from '../Game/Game';
 import Nav from '../NavBar/NavBar';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { ref } from '../../config/constants';
-import CharacterList from '../Character/CharacterList';
-import CharacterDetailPage from '../Character/CharacterDetailPage';
+import CharacterList from '../Character/CharacterLists/CharacterList';
+import CharacterDetailPage from '../Character/CharacterDetails/CharacterDetailPage';
 
 function Home(props) {
 	console.log(props.user);

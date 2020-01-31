@@ -6,12 +6,19 @@ import {
 	AppBar,
 	CircularProgress,
 	Grid,
+	Button,
+	Typography,
 	Paper,
+	ExpansionPanel,
+	ExpansionPanelSummary,
+	ExpansionPanelDetails,
+	Snackbar,
 } from '@material-ui/core';
-import '../../stylesheets/character.css';
-import styleGuide from '../../stylesheets/style';
-import { TabPanel, a11yProps } from './TabPanels';
-import { ref, characterDetails } from '../../config/constants';
+import MuiAlert from '@material-ui/lab/Alert';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import styleGuide from '../../../stylesheets/style';
+import { TabPanel, a11yProps } from '../helpers/TabPanels';
+import { ref, characterDetails } from '../../../config/constants';
 
 PropTypes.propTypes = {
 	userId: PropTypes.string,
@@ -21,13 +28,22 @@ function CharacterDetailPage({ userId, match, ...props }) {
 	const [spec, setSpec] = useState(0);
 	const [keyBinding, setKeybinding] = useState(0);
 	const [loading, setLoading] = useState(true);
+	const [alert, setAlert] = useState({
+		open: false,
+		message: 'placeholder',
+		type: 'placeholder',
+	});
 	const [character, setCharacter] = useState(0);
 	const [description, setDescription] = useState();
 	const [talents, setTalents] = useState();
-	const [keyBinds, setKeybinds] = useState();
+	const [allKeybindings, setAllKeybindings] = useState();
 	const characterId = match.params && match.params.id;
 	const fields =
 		match.params && match.params.fields && JSON.parse(match.params.fields);
+
+	function Alert(props) {
+		return <MuiAlert elevation={6} variant="filled" {...props} />;
+	}
 
 	useEffect(() => {
 		async function collectCharacterInfo() {
@@ -39,6 +55,7 @@ function CharacterDetailPage({ userId, match, ...props }) {
 				setCharacter(charDetails);
 			}
 			//Set something to say "character not found"
+			//need to add abunch more shit based on stored data.
 			setLoading(false);
 		}
 		if (!fields) {
@@ -65,6 +82,7 @@ function CharacterDetailPage({ userId, match, ...props }) {
 
 			//this logic will probably be reused so make this into a function.
 			const key = ref.child('/Keybindings').push().key;
+			setAllKeybindings({ ...allKeybindings, [key]: { hello: 'there' } });
 			newCharacter.specs[
 				characterDetails.class[characterClass][selectedSpec]
 			]['selectedKeybindings'] = key;
@@ -76,7 +94,6 @@ function CharacterDetailPage({ userId, match, ...props }) {
 					talents: { 1: 1, 2: 2, 3: 3 }, //placeholder for now
 				},
 			};
-			console.log(newCharacter);
 			setSpec(selectedSpec);
 			setCharacter(newCharacter);
 			setLoading(false);
@@ -92,8 +109,40 @@ function CharacterDetailPage({ userId, match, ...props }) {
 		setKeybinding(newKeybindings);
 	};
 
+	async function saveCharacter() {
+		let updates = {};
+		updates['/Characters/' + characterId] = character;
+		updates['/Users/' + userId + '/characters/' + characterId] = {
+			name: character.name,
+		};
+		Object.keys(allKeybindings).forEach(key => {
+			updates['/Keybindings/' + key] = allKeybindings[key];
+		});
+
+		const error = await ref.update(updates);
+		if (error) {
+			//could specify the error in here, if i knew what it was....
+			setAlert({
+				open: true,
+				message: 'Failed to save',
+				type: 'error',
+			});
+		} else {
+			setAlert({
+				open: true,
+				message: 'Saved successfully!',
+				type: 'success',
+			});
+		}
+	}
+
+	function selectCharacter() {
+		console.log('hello');
+	}
+
 	function makeNewKeybindings() {
 		const key = ref.child('/Keybindings').push().key;
+		setAllKeybindings({ ...allKeybindings, [key]: { hello: 'there' } });
 		if (
 			!character.specs[characterDetails.class[character.class][spec]]
 				.keybindings
@@ -124,10 +173,57 @@ function CharacterDetailPage({ userId, match, ...props }) {
 
 	return !loading ? (
 		<React.Fragment>
+			<Snackbar
+				open={alert.open}
+				onClose={() => setAlert({ ...alert, open: false })}
+				autoHideDuration={2000}
+			>
+				<Alert
+					onClose={() => setAlert({ ...alert, open: false })}
+					severity={alert.type}
+				>
+					{alert.message}
+				</Alert>
+			</Snackbar>
 			<div style={{ marginLeft: '1rem', marginRight: '1rem' }}>
-				<div style={{ paddingLeft: '5rem', textAlign: 'left' }}>
-					{character.name}
-				</div>
+				<Grid
+					container
+					direction="row"
+					justify="space-between"
+					alignItems="flex-end"
+				>
+					<Grid item style={{ marginLeft: '2rem' }}>
+						{character.name}
+					</Grid>
+					<Grid item>
+						<Button
+							variant="contained"
+							disabled={
+								character.specs[
+									characterDetails.class[character.class][
+										character.selectedSpec
+									]
+								].configured
+							}
+							style={{
+								marginBottom: '-2rem',
+							}}
+							onClick={selectCharacter}
+						>
+							Select
+						</Button>
+						<Button
+							variant="contained"
+							color="secondary"
+							onClick={saveCharacter}
+							style={{
+								marginBottom: '-2rem',
+							}}
+						>
+							SAVE
+						</Button>
+					</Grid>
+				</Grid>
 				<div className={styleGuide.tabRoot}>
 					<AppBar position="static" color="default">
 						<Tabs
@@ -195,7 +291,6 @@ function CharacterDetailPage({ userId, match, ...props }) {
 								characterDetails.class[character.class][spec]
 							].keybindings
 						).map((val, index) => {
-							console.log(val);
 							return (
 								<TabPanel
 									value={keyBinding}
@@ -203,19 +298,140 @@ function CharacterDetailPage({ userId, match, ...props }) {
 									index={index}
 								>
 									<Grid container spacing={1}>
-										<Grid container direction="row">
+										<Grid
+											container
+											direction="row"
+											justify="space-between"
+											alignItems="flex-end"
+										>
 											<Grid item>
-												<Paper>Description</Paper>
+												<Typography variant="h2">
+													Description
+												</Typography>
+											</Grid>
+											<Grid item>
+												<Button
+													variant="contained"
+													color="primary"
+													style={{
+														marginBottom: '-2rem',
+													}}
+												>
+													Edit
+												</Button>
 											</Grid>
 										</Grid>
 										<Grid container direction="row">
+											<Grid item md={12}>
+												<Paper
+													elevation={3}
+													style={{ padding: '2rem' }}
+												>
+													<Typography
+														align="left"
+														variant="body2"
+													>
+														Hello there
+													</Typography>
+												</Paper>
+											</Grid>
+										</Grid>
+										<br />
+										<Grid
+											container
+											direction="row"
+											justify="space-between"
+											alignItems="flex-end"
+										>
 											<Grid item>
-												<Paper>Talents</Paper>
+												<Typography variant="h2">
+													Talents
+												</Typography>
+											</Grid>
+											<Grid item>
+												<Button
+													variant="contained"
+													color="primary"
+													style={{
+														marginBottom: '-2rem',
+													}}
+												>
+													Edit
+												</Button>
 											</Grid>
 										</Grid>
 										<Grid container direction="row">
+											<Grid item md={12}>
+												<ExpansionPanel>
+													<ExpansionPanelSummary
+														expandIcon={
+															<ExpandMoreIcon />
+														}
+														aria-controls="panel1a-content"
+														id="panel1a-header"
+													>
+														<Typography
+															variant="h5"
+															align="left"
+														>
+															Preview
+														</Typography>
+													</ExpansionPanelSummary>
+													<ExpansionPanelDetails>
+														<Typography>
+															Work In Progress
+														</Typography>
+													</ExpansionPanelDetails>
+												</ExpansionPanel>
+											</Grid>
+										</Grid>
+										<br />
+										<Grid
+											container
+											direction="row"
+											justify="space-between"
+											alignItems="flex-end"
+										>
 											<Grid item>
-												<Paper>Keybindings</Paper>
+												<Typography variant="h2">
+													Keybindings
+												</Typography>
+											</Grid>
+											<Grid item>
+												<Button
+													variant="contained"
+													color="primary"
+													style={{
+														marginBottom: '-2rem',
+													}}
+												>
+													Edit
+												</Button>
+											</Grid>
+										</Grid>
+										<Grid container direction="row">
+											<Grid item md={12}>
+												<ExpansionPanel>
+													<ExpansionPanelSummary
+														expandIcon={
+															<ExpandMoreIcon />
+														}
+														aria-controls="panel1a-content"
+														id="panel1a-header"
+													>
+														<Typography
+															variant="h5"
+															align="left"
+														>
+															Preview
+														</Typography>
+													</ExpansionPanelSummary>
+													<ExpansionPanelDetails>
+														<Typography>
+															Work In Progress
+														</Typography>
+													</ExpansionPanelDetails>
+												</ExpansionPanel>
 											</Grid>
 										</Grid>
 									</Grid>

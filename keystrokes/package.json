@@ -18,6 +18,8 @@
 	},
 	"dependencies": {
 		"@material-ui/core": "^4.8.2",
+		"@material-ui/icons": "^4.5.1",
+		"@material-ui/lab": "^4.0.0-alpha.40",
 		"firebase": "^5.2.0",
 		"firebaseui": "^3.4.1",
 		"prop-types": "^15.6.2",

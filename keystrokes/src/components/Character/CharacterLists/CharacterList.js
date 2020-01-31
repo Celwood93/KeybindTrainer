@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { List, ListItem, Typography, Divider } from '@material-ui/core';
 import CharacterCreationModal from './CharacterCreationModal';
-import '../../stylesheets/character.css';
-import styleGuide from '../../stylesheets/style';
-import { ref } from '../../config/constants';
+import styleGuide from '../../../stylesheets/style';
+import { ref } from '../../../config/constants';
 
 CharacterList.propTypes = {
 	userInfo: PropTypes.object.isRequired,
@@ -18,7 +17,6 @@ function CharacterList({ userInfo, userPath, ...props }) {
 	const classes = styleGuide();
 
 	useEffect(() => {
-		console.log(characters); //currently creating a new character does not add it to this list if a play goes back. pretty sure its due to user info. may want a sitewide state
 		setCharacters(userInfo.characters || {});
 		setCurrentCharacter(userInfo.currentCharacter);
 	}, [userInfo]);
@@ -54,11 +52,11 @@ function CharacterList({ userInfo, userPath, ...props }) {
 			<div className={classes.characterList}>
 				<List>
 					{[
-						currentCharacter,
-						...Object.keys(characters).filter(
-							details => details !== currentCharacter
+						...Object.keys(characters).sort((a, b) =>
+							b === currentCharacter ? 1 : -1
 						),
 					].map(id => {
+						console.log(characters);
 						return (
 							<React.Fragment key={id}>
 								{id && (
