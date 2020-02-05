@@ -66,8 +66,8 @@ function CharacterDetailPage({ userId, match, ...props }) {
 			const { name, characterClass, race } = fields;
 			const selectedSpec = fields.spec;
 			const specs = {};
-			characterDetails.class[characterClass].forEach(spec => {
-				specs[spec] = {
+			characterDetails.class[characterClass].forEach((spec, index) => {
+				specs[index] = {
 					configured: false,
 				};
 			});
@@ -83,12 +83,8 @@ function CharacterDetailPage({ userId, match, ...props }) {
 			//this logic will probably be reused so make this into a function.
 			const key = ref.child('/Keybindings').push().key;
 			setAllKeybindings({ ...allKeybindings, [key]: { hello: 'there' } });
-			newCharacter.specs[
-				characterDetails.class[characterClass][selectedSpec]
-			]['selectedKeybindings'] = key;
-			newCharacter.specs[
-				characterDetails.class[characterClass][selectedSpec]
-			]['keybindings'] = {
+			newCharacter.specs[selectedSpec]['selectedKeybindings'] = key;
+			newCharacter.specs[selectedSpec]['keybindings'] = {
 				[key]: {
 					description: '',
 					talents: { 1: 1, 2: 2, 3: 3 }, //placeholder for now
@@ -101,7 +97,7 @@ function CharacterDetailPage({ userId, match, ...props }) {
 	}, []);
 
 	const handleSpecChange = (event, newSpec) => {
-		//here i also need to know which keybinding to call, can use current spec
+		//here i also need to know which keybinding to call (ie, which keybinding is selected for the spec), can use current spec
 		setSpec(newSpec);
 	};
 	const handleKeybindingsChange = (event, newKeybindings) => {
@@ -142,26 +138,19 @@ function CharacterDetailPage({ userId, match, ...props }) {
 
 	function makeNewKeybindings() {
 		const key = ref.child('/Keybindings').push().key;
+		//TODO spec change / remove placeholder
 		setAllKeybindings({ ...allKeybindings, [key]: { hello: 'there' } });
-		if (
-			!character.specs[characterDetails.class[character.class][spec]]
-				.keybindings
-		) {
-			character.specs[characterDetails.class[character.class][spec]][
-				'selectedKeybindings'
-			] = key;
-			character.specs[characterDetails.class[character.class][spec]][
-				'keybindings'
-			] = {
+		if (!character.specs[spec].keybindings) {
+			character.specs[spec]['selectedKeybindings'] = key;
+			character.specs[spec]['keybindings'] = {
 				[key]: {
 					description: '',
 					talents: { 1: 1, 2: 2, 3: 3 }, //placeholder for now
 				},
 			};
 		}
-		character.specs[
-			characterDetails.class[character.class][spec]
-		].keybindings[key] = {
+		//TODO spec change
+		character.specs[spec].keybindings[key] = {
 			description: '',
 			talents: { 1: 1, 2: 2, 3: 3 }, //placeholder for now
 		};
@@ -199,11 +188,8 @@ function CharacterDetailPage({ userId, match, ...props }) {
 						<Button
 							variant="contained"
 							disabled={
-								character.specs[
-									characterDetails.class[character.class][
-										character.selectedSpec
-									]
-								].configured
+								character.specs[character.selectedSpec]
+									.configured
 							}
 							style={{
 								marginBottom: '-2rem',
@@ -256,15 +242,9 @@ function CharacterDetailPage({ userId, match, ...props }) {
 							scrollButtons="auto"
 							aria-label="nav tabs example"
 						>
-							{character.specs[
-								characterDetails.class[character.class][spec]
-							].keybindings &&
+							{character.specs[spec].keybindings &&
 								Object.keys(
-									character.specs[
-										characterDetails.class[character.class][
-											spec
-										]
-									].keybindings
+									character.specs[spec].keybindings
 								).map((val, index) => {
 									const tabLabel = `Keybindings-${index + 1}`;
 									return (
@@ -283,161 +263,162 @@ function CharacterDetailPage({ userId, match, ...props }) {
 					</AppBar>
 					{//So, you create a new character, then you go to your character page. you then hit create new keybindings
 					//if no keybindings exist yet then there is a thing HERE that says "click create new keybiindings to get started!"
-					character.specs[
-						characterDetails.class[character.class][spec]
-					].keybindings ? (
-						Object.keys(
-							character.specs[
-								characterDetails.class[character.class][spec]
-							].keybindings
-						).map((val, index) => {
-							return (
-								<TabPanel
-									value={keyBinding}
-									key={val}
-									index={index}
-								>
-									<Grid container spacing={1}>
-										<Grid
-											container
-											direction="row"
-											justify="space-between"
-											alignItems="flex-end"
-										>
-											<Grid item>
-												<Typography variant="h2">
-													Description
-												</Typography>
-											</Grid>
-											<Grid item>
-												<Button
-													variant="contained"
-													color="primary"
-													style={{
-														marginBottom: '-2rem',
-													}}
-												>
-													Edit
-												</Button>
-											</Grid>
-										</Grid>
-										<Grid container direction="row">
-											<Grid item md={12}>
-												<Paper
-													elevation={3}
-													style={{ padding: '2rem' }}
-												>
-													<Typography
-														align="left"
-														variant="body2"
-													>
-														Hello there
+					character.specs[spec].keybindings ? (
+						Object.keys(character.specs[spec].keybindings).map(
+							(val, index) => {
+								return (
+									<TabPanel
+										value={keyBinding}
+										key={val}
+										index={index}
+									>
+										<Grid container spacing={1}>
+											<Grid
+												container
+												direction="row"
+												justify="space-between"
+												alignItems="flex-end"
+											>
+												<Grid item>
+													<Typography variant="h2">
+														Description
 													</Typography>
-												</Paper>
+												</Grid>
+												<Grid item>
+													<Button
+														variant="contained"
+														color="primary"
+														style={{
+															marginBottom:
+																'-2rem',
+														}}
+													>
+														Edit
+													</Button>
+												</Grid>
 											</Grid>
-										</Grid>
-										<br />
-										<Grid
-											container
-											direction="row"
-											justify="space-between"
-											alignItems="flex-end"
-										>
-											<Grid item>
-												<Typography variant="h2">
-													Talents
-												</Typography>
-											</Grid>
-											<Grid item>
-												<Button
-													variant="contained"
-													color="primary"
-													style={{
-														marginBottom: '-2rem',
-													}}
-												>
-													Edit
-												</Button>
-											</Grid>
-										</Grid>
-										<Grid container direction="row">
-											<Grid item md={12}>
-												<ExpansionPanel>
-													<ExpansionPanelSummary
-														expandIcon={
-															<ExpandMoreIcon />
-														}
-														aria-controls="panel1a-content"
-														id="panel1a-header"
+											<Grid container direction="row">
+												<Grid item md={12}>
+													<Paper
+														elevation={3}
+														style={{
+															padding: '2rem',
+														}}
 													>
 														<Typography
-															variant="h5"
 															align="left"
+															variant="body2"
 														>
-															Preview
+															Hello there
 														</Typography>
-													</ExpansionPanelSummary>
-													<ExpansionPanelDetails>
-														<Typography>
-															Work In Progress
-														</Typography>
-													</ExpansionPanelDetails>
-												</ExpansionPanel>
+													</Paper>
+												</Grid>
 											</Grid>
-										</Grid>
-										<br />
-										<Grid
-											container
-											direction="row"
-											justify="space-between"
-											alignItems="flex-end"
-										>
-											<Grid item>
-												<Typography variant="h2">
-													Keybindings
-												</Typography>
-											</Grid>
-											<Grid item>
-												<Button
-													variant="contained"
-													color="primary"
-													style={{
-														marginBottom: '-2rem',
-													}}
-												>
-													Edit
-												</Button>
-											</Grid>
-										</Grid>
-										<Grid container direction="row">
-											<Grid item md={12}>
-												<ExpansionPanel>
-													<ExpansionPanelSummary
-														expandIcon={
-															<ExpandMoreIcon />
-														}
-														aria-controls="panel1a-content"
-														id="panel1a-header"
+											<br />
+											<Grid
+												container
+												direction="row"
+												justify="space-between"
+												alignItems="flex-end"
+											>
+												<Grid item>
+													<Typography variant="h2">
+														Talents
+													</Typography>
+												</Grid>
+												<Grid item>
+													<Button
+														variant="contained"
+														color="primary"
+														style={{
+															marginBottom:
+																'-2rem',
+														}}
 													>
-														<Typography
-															variant="h5"
-															align="left"
+														Edit
+													</Button>
+												</Grid>
+											</Grid>
+											<Grid container direction="row">
+												<Grid item md={12}>
+													<ExpansionPanel>
+														<ExpansionPanelSummary
+															expandIcon={
+																<ExpandMoreIcon />
+															}
+															aria-controls="panel1a-content"
+															id="panel1a-header"
 														>
-															Preview
-														</Typography>
-													</ExpansionPanelSummary>
-													<ExpansionPanelDetails>
-														<Typography>
-															Work In Progress
-														</Typography>
-													</ExpansionPanelDetails>
-												</ExpansionPanel>
+															<Typography
+																variant="h5"
+																align="left"
+															>
+																Preview
+															</Typography>
+														</ExpansionPanelSummary>
+														<ExpansionPanelDetails>
+															<Typography>
+																Work In Progress
+															</Typography>
+														</ExpansionPanelDetails>
+													</ExpansionPanel>
+												</Grid>
+											</Grid>
+											<br />
+											<Grid
+												container
+												direction="row"
+												justify="space-between"
+												alignItems="flex-end"
+											>
+												<Grid item>
+													<Typography variant="h2">
+														Keybindings
+													</Typography>
+												</Grid>
+												<Grid item>
+													<Button
+														variant="contained"
+														color="primary"
+														style={{
+															marginBottom:
+																'-2rem',
+														}}
+													>
+														Edit
+													</Button>
+												</Grid>
+											</Grid>
+											<Grid container direction="row">
+												<Grid item md={12}>
+													<ExpansionPanel>
+														<ExpansionPanelSummary
+															expandIcon={
+																<ExpandMoreIcon />
+															}
+															aria-controls="panel1a-content"
+															id="panel1a-header"
+														>
+															<Typography
+																variant="h5"
+																align="left"
+															>
+																Preview
+															</Typography>
+														</ExpansionPanelSummary>
+														<ExpansionPanelDetails>
+															<Typography>
+																Work In Progress
+															</Typography>
+														</ExpansionPanelDetails>
+													</ExpansionPanel>
+												</Grid>
 											</Grid>
 										</Grid>
-									</Grid>
-								</TabPanel>
-							);
-						})
+									</TabPanel>
+								);
+							}
+						)
 					) : (
 						<div>
 							Click 'Create new keybindings' to get started!
