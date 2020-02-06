@@ -5,7 +5,7 @@ import { a11yProps } from '../helpers/TabPanels';
 import { characterDetails } from '../../../config/constants';
 import CharacterKeybindDisplay from './CharacterKeybindDisplay';
 
-PropTypes.propTypes = {
+CharacterSpecNavigation.propTypes = {
 	character: PropTypes.obj,
 	spec: PropTypes.number,
 	setSpec: PropTypes.func,

@@ -13,7 +13,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import styleGuide from '../../../stylesheets/style';
 import { TabPanel } from '../helpers/TabPanels';
 
-PropTypes.propTypes = {
+CharacterKeybindDisplay.propTypes = {
 	val: PropTypes.string,
 	index: PropTypes.number,
 	keyBinding: PropTypes.obj,

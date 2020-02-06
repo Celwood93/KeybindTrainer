@@ -6,7 +6,7 @@ import styleGuide from '../../../stylesheets/style';
 import { ref, characterDetails } from '../../../config/constants';
 import CharacterSpecNavigation from './CharacterSpecNavigation';
 
-PropTypes.propTypes = {
+CharacterDetailPage.propTypes = {
 	userId: PropTypes.string,
 	match: PropTypes.obj,
 };
