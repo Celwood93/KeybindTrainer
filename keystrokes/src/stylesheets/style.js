@@ -24,6 +24,19 @@ const styleGuide = makeStyles(theme => ({
 		paddingLeft: '2rem',
 		paddingRight: '2rem',
 	},
+	paddingTwoRem: {
+		padding: '2rem',
+	},
+	detailPageContainer: {
+		marginLeft: '1rem',
+		marginRight: '1rem',
+	},
+	bottomMarginNegTwo: {
+		marginBottom: '-2rem',
+	},
+	marginLeftTwoRem: {
+		marginLeft: '2rem',
+	},
 	characterList: {
 		display: 'flex',
 		justifyContent: 'center',

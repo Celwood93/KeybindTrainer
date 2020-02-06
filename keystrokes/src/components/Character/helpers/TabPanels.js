@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography, Box, Grid } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
+import styleGuide from '../../../stylesheets/style';
 
 //this whole thing could probably be moved into its own file
 TabPanel.propTypes = {
@@ -10,6 +11,7 @@ TabPanel.propTypes = {
 };
 export function TabPanel(props) {
 	const { children, value, index, ...other } = props;
+	const classes = styleGuide();
 	return (
 		<Grid
 			container
@@ -18,7 +20,7 @@ export function TabPanel(props) {
 			hidden={value !== index}
 			id={`scrollable-auto-tabpanel-${index}`}
 			aria-labelledby={`scrollable-auto-tab-${index}`}
-			style={{ paddingLeft: '2rem', paddingRight: '2rem' }}
+			className={classes.tabPageContainer}
 			{...other}
 		>
 			{value === index && children}
