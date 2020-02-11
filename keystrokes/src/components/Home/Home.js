@@ -18,6 +18,7 @@ function Home(props) {
 	useEffect(() => {
 		async function collectUserInfo() {
 			const snapShot = await ref.child(userPath).once('value');
+			console.log("pass")
 			if (snapShot.exists()) {
 				setUser(snapShot.val());
 			}

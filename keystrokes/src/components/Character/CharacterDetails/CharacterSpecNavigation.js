@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import { Tab, Tabs, AppBar } from '@material-ui/core';
 import { a11yProps } from '../helpers/TabPanels';
@@ -6,21 +6,18 @@ import { characterDetails } from '../../../config/constants';
 import CharacterKeybindDisplay from './CharacterKeybindDisplay';
 
 CharacterSpecNavigation.propTypes = {
-	character: PropTypes.obj,
-	spec: PropTypes.number,
-	setSpec: PropTypes.func,
-	keyBinding: PropTypes.obj,
-	setKeyBinding: PropTypes.func,
+	character: PropTypes.object,
 	makeNewKeybindings: PropTypes.func,
 };
 function CharacterSpecNavigation({
 	character,
-	spec,
-	setSpec,
-	keyBinding,
-	setKeybinding,
 	makeNewKeybindings,
 }) {
+	//starts on the wrong spec
+	//doesnt save the new keybindings as the current ones
+	const [keyBinding, setKeybinding] = useState(0);
+	const [spec, setSpec] = useState(0);
+
 	const handleSpecChange = (event, newSpec) => {
 		setKeybinding(character.specs[newSpec].selectedKeybindings || 0);
 		setSpec(newSpec);

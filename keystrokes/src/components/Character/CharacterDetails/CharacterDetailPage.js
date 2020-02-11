@@ -8,17 +8,15 @@ import CharacterSpecNavigation from './CharacterSpecNavigation';
 
 CharacterDetailPage.propTypes = {
 	userId: PropTypes.string,
-	match: PropTypes.obj,
+	match: PropTypes.object,
 };
-function CharacterDetailPage({ userId, match, ...props }) {
+function CharacterDetailPage({ userId, match }) {
 	const [loading, setLoading] = useState(true);
 	const [alert, setAlert] = useState({
 		open: false,
 		message: 'placeholder',
 		type: 'placeholder',
 	});
-	const [spec, setSpec] = useState(0);
-	const [keyBinding, setKeybinding] = useState(0);
 	const [character, setCharacter] = useState(0);
 	const [allKeybindings, setAllKeybindings] = useState();
 	const classes = styleGuide();
@@ -36,11 +34,6 @@ function CharacterDetailPage({ userId, match, ...props }) {
 			const snapShot = await ref.child(path).once('value');
 			if (snapShot.exists()) {
 				const charDetails = snapShot.val();
-				setSpec(charDetails.selectedSpec);
-				setKeybinding(
-					charDetails.specs[charDetails.selectedSpec]
-						.selectedKeybindings
-				);
 				setCharacter(charDetails);
 			}
 			//Set something to say "character not found"
@@ -49,55 +42,47 @@ function CharacterDetailPage({ userId, match, ...props }) {
 		if (!fields) {
 			collectCharacterInfo();
 		} else {
-			const { name, characterClass, race } = fields;
-			const selectedSpec = fields.spec;
+			const { name, characterClass, race, spec } = fields;
 			const specs = {};
 			characterDetails.class[characterClass].forEach((spec, index) => {
 				specs[index] = {
 					configured: false,
+					keybindings: [],
 				};
 			});
 
 			const newCharacter = {
 				class: characterClass,
 				race,
-				selectedSpec,
+				selectedSpec: spec,
 				name,
 				specs,
 			};
 
-			newKeybindings(selectedSpec, newCharacter);
+			newKeybindings(spec, newCharacter);
 			setLoading(false);
 		}
 	}, []);
+
+	function Spec({configured, keybindings, selectedKeybindings = 0 }) {
+		return {configured, keybindings, selectedKeybindings};
+	}
+
+	function KeyBinding({key, description='', talents}) {
+		const defaultTalents = { 1: 1, 2: 2, 3: 3 } //placeholder for now
+		return {key, description, talents: talents || defaultTalents};
+	}
 
 	function newKeybindings(spec, char) {
 		const key = ref.child('/Keybindings').push().key;
 		//TODO remove placeholder
 		setAllKeybindings({ ...allKeybindings, [key]: { hello: 'there' } });
-		if (!char.specs[spec].keybindings) {
-			char.specs[spec]['selectedKeybindings'] = 0;
-			char.specs[spec]['keybindings'] = [
-				{
-					[key]: {
-						description: '',
-						talents: { 1: 1, 2: 2, 3: 3 }, //placeholder for now
-					},
-				},
-			];
-		} else {
-			char.specs[spec].keybindings = [
-				...char.specs[spec].keybindings,
-				{
-					[key]: {
-						description: '',
-						talents: { 1: 1, 2: 2, 3: 3 }, //placeholder for now
-					},
-				},
-			];
-		}
-		setSpec(spec);
-		setKeybinding(char.specs[spec].keybindings.length - 1);
+		char.specs[spec].keybindings = [
+			...char.specs[spec].keybindings,
+			{
+				[key]: KeyBinding(key),
+			},
+		];
 		setCharacter({ ...char });
 	}
 
@@ -181,10 +166,6 @@ function CharacterDetailPage({ userId, match, ...props }) {
 				<div className={classes.tabRoot}>
 					<CharacterSpecNavigation
 						character={character}
-						spec={spec}
-						setSpec={setSpec}
-						keyBinding={keyBinding}
-						setKeybinding={setKeybinding}
 						makeNewKeybindings={newKeybindings}
 					/>
 				</div>
