@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { CircularProgress, Grid, Button, Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
+import update from 'immutability-helper';
 import styleGuide from '../../../stylesheets/style';
-import { ref, characterDetails } from '../../../config/constants';
+import { ref } from '../../../config/constants';
 import CharacterSpecNavigation from './CharacterSpecNavigation';
+import { Character, Spec } from '../../Factories/CharacterFactories';
 
 CharacterDetailPage.propTypes = {
 	userId: PropTypes.string,
@@ -42,48 +44,20 @@ function CharacterDetailPage({ userId, match }) {
 		if (!fields) {
 			collectCharacterInfo();
 		} else {
-			const { name, characterClass, race, spec } = fields;
-			const specs = {};
-			characterDetails.class[characterClass].forEach((spec, index) => {
-				specs[index] = {
-					configured: false,
-					keybindings: [],
-				};
-			});
-
-			const newCharacter = {
-				class: characterClass,
-				race,
-				selectedSpec: spec,
-				name,
-				specs,
-			};
-
-			newKeybindings(spec, newCharacter);
+			newKeybindings(fields.spec, Character(fields));
 			setLoading(false);
 		}
 	}, []);
-
-	function Spec({configured, keybindings, selectedKeybindings = 0 }) {
-		return {configured, keybindings, selectedKeybindings};
-	}
-
-	function KeyBinding({key, description='', talents}) {
-		const defaultTalents = { 1: 1, 2: 2, 3: 3 } //placeholder for now
-		return {key, description, talents: talents || defaultTalents};
-	}
 
 	function newKeybindings(spec, char) {
 		const key = ref.child('/Keybindings').push().key;
 		//TODO remove placeholder
 		setAllKeybindings({ ...allKeybindings, [key]: { hello: 'there' } });
-		char.specs[spec].keybindings = [
-			...char.specs[spec].keybindings,
-			{
-				[key]: KeyBinding(key),
-			},
-		];
-		setCharacter({ ...char });
+		setCharacter(
+			update(char, {
+				specs: { [spec]: { $set: Spec(char.specs[spec], key) } },
+			})
+		);
 	}
 
 	async function saveCharacter() {
@@ -145,7 +119,7 @@ function CharacterDetailPage({ userId, match }) {
 						<Button
 							variant="contained"
 							disabled={
-								character.specs[character.selectedSpec]
+								!character.specs[character.selectedSpec]
 									.configured
 							}
 							className={classes.bottomMarginNegTwo}

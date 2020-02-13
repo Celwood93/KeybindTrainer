@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Tab, Tabs, AppBar } from '@material-ui/core';
 import { a11yProps } from '../helpers/TabPanels';
@@ -9,14 +9,13 @@ CharacterSpecNavigation.propTypes = {
 	character: PropTypes.object,
 	makeNewKeybindings: PropTypes.func,
 };
-function CharacterSpecNavigation({
-	character,
-	makeNewKeybindings,
-}) {
+function CharacterSpecNavigation({ character, makeNewKeybindings }) {
 	//starts on the wrong spec
 	//doesnt save the new keybindings as the current ones
-	const [keyBinding, setKeybinding] = useState(0);
-	const [spec, setSpec] = useState(0);
+	const [keyBinding, setKeybinding] = useState(
+		character.specs[character.selectedSpec].selectedKeybindings
+	);
+	const [spec, setSpec] = useState(character.selectedSpec);
 
 	const handleSpecChange = (event, newSpec) => {
 		setKeybinding(character.specs[newSpec].selectedKeybindings || 0);
@@ -73,7 +72,7 @@ function CharacterSpecNavigation({
 			</AppBar>
 			{//So, you create a new character, then you go to your character page. you then hit create new keybindings
 			//if no keybindings exist yet then there is a thing HERE that says "click create new keybiindings to get started!"
-			character.specs[spec].keybindings ? (
+			character.specs[spec].keybindings.length > 0 ? (
 				Object.keys(character.specs[spec].keybindings).map(
 					(val, index) => {
 						return (

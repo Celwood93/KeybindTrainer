@@ -16,7 +16,7 @@ import { TabPanel } from '../helpers/TabPanels';
 CharacterKeybindDisplay.propTypes = {
 	val: PropTypes.string,
 	index: PropTypes.number,
-	keyBinding: PropTypes.object,
+	keyBinding: PropTypes.number,
 };
 function CharacterKeybindDisplay({ keyBinding, val, index }) {
 	const classes = styleGuide();
