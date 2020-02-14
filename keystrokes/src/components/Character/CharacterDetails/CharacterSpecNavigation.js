@@ -17,13 +17,13 @@ function CharacterSpecNavigation({ character, makeNewKeybindings }) {
 	);
 	const [spec, setSpec] = useState(character.selectedSpec);
 
-	const handleSpecChange = (event, newSpec) => {
+	function handleSpecChange(event, newSpec) {
 		setKeybinding(character.specs[newSpec].selectedKeybindings || 0);
 		setSpec(newSpec);
-	};
-	const handleKeybindingsChange = (event, newKeybindings) => {
+	}
+	function handleKeybindingsChange(event, newKeybindings) {
 		setKeybinding(newKeybindings);
-	};
+	}
 
 	return (
 		<React.Fragment>
@@ -36,11 +36,9 @@ function CharacterSpecNavigation({ character, makeNewKeybindings }) {
 					scrollButtons="auto"
 					aria-label="scrollable auto tabs example"
 				>
-					{characterDetails.class[character.class].map(spec => {
-						return (
-							<Tab label={spec} key={spec} {...a11yProps(spec)} />
-						);
-					})}
+					{characterDetails.class[character.class].map(spec => (
+						<Tab label={spec} key={spec} {...a11yProps(spec)} />
+					))}
 				</Tabs>
 			</AppBar>
 			<AppBar position="static">
@@ -53,16 +51,13 @@ function CharacterSpecNavigation({ character, makeNewKeybindings }) {
 				>
 					{character.specs[spec].keybindings &&
 						Object.keys(character.specs[spec].keybindings).map(
-							(val, index) => {
-								const tabLabel = `Keybindings-${index + 1}`;
-								return (
-									<Tab
-										label={tabLabel}
-										key={val}
-										{...a11yProps(val)}
-									/>
-								);
-							}
+							(val, index) => (
+								<Tab
+									label={`Keybindings-${index + 1}`}
+									key={val}
+									{...a11yProps(val)}
+								/>
+							)
 						)}
 					<Tab
 						onClick={() => makeNewKeybindings(spec, character)}

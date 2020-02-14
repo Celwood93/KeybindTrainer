@@ -62,12 +62,12 @@ function CharacterDetailPage({ userId, match }) {
 
 	async function saveCharacter() {
 		let updates = {};
-		updates['/Characters/' + characterId] = character;
-		updates['/Users/' + userId + '/characters/' + characterId] = {
+		updates[`/Characters/${characterId}`] = character;
+		updates[`/Users/${userId}/characters/${characterId}`] = {
 			name: character.name,
 		};
 		Object.keys(allKeybindings).forEach(key => {
-			updates['/Keybindings/' + key] = allKeybindings[key];
+			updates[`/Keybindings/${key}`] = allKeybindings[key];
 		});
 
 		const error = await ref.update(updates);

@@ -14,14 +14,13 @@ import styleGuide from '../../../stylesheets/style';
 import { TabPanel } from '../helpers/TabPanels';
 
 CharacterKeybindDisplay.propTypes = {
-	val: PropTypes.string,
 	index: PropTypes.number,
 	keyBinding: PropTypes.number,
 };
-function CharacterKeybindDisplay({ keyBinding, val, index }) {
+function CharacterKeybindDisplay({ keyBinding, index }) {
 	const classes = styleGuide();
 	return (
-		<TabPanel value={keyBinding} key={val} index={index}>
+		<TabPanel value={keyBinding} index={index}>
 			<Grid container spacing={1}>
 				<Grid
 					container

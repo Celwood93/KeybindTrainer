@@ -51,45 +51,35 @@ function CharacterList({ userInfo, userPath, ...props }) {
 			</Typography>
 			<div className={classes.characterList}>
 				<List>
-					{[
-						...Object.keys(characters).sort((a, b) =>
-							b === currentCharacter ? 1 : -1
-						),
-					].map(id => {
-						console.log(characters);
-						return (
-							<React.Fragment key={id}>
-								{id && (
-									<div
-										className={
-											id === currentCharacter
-												? classes.characterListItemSelected
-												: classes.characterListItem
-										}
-									>
-										<ListItem
-											button
-											onClick={() => {
-												props.history.push(
-													`${props.location.pathname}/${id}`
-												);
-											}}
-										>
-											<div
-												className={classes.charListItem}
-											>
-												<Typography align="center">
-													{characters[id] &&
-														characters[id].name}
-												</Typography>
-											</div>
-										</ListItem>
-										<Divider />
+					{Object.keys(characters)
+						.sort((_, b) => (b === currentCharacter ? 1 : -1))
+						.map(id => (
+							<div
+								key={id}
+								className={
+									id === currentCharacter
+										? classes.characterListItemSelected
+										: classes.characterListItem
+								}
+							>
+								<ListItem
+									button
+									onClick={() => {
+										props.history.push(
+											`${props.location.pathname}/${id}`
+										);
+									}}
+								>
+									<div className={classes.charListItem}>
+										<Typography align="center">
+											{characters[id] &&
+												characters[id].name}
+										</Typography>
 									</div>
-								)}
-							</React.Fragment>
-						);
-					})}
+								</ListItem>
+								<Divider />
+							</div>
+						))}
 					<div className={classes.newCharacterListItem}>
 						<ListItem button onClick={() => setOpen(true)}>
 							<div className={classes.newCharListItem}>
