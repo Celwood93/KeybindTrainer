@@ -10,23 +10,14 @@ import {
 	Grid,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import { characterDetails } from '../../config/constants';
-import styleGuide from '../../stylesheets/style';
+import { characterDetails } from '../../../config/constants';
+import styleGuide from '../../../stylesheets/style';
 
 CharacterCreationModal.propTypes = {
 	handleSubmit: PropTypes.func.isRequired,
 	isOpen: PropTypes.bool.isRequired,
-	setIsOpen: PropTypes.bool.isRequired,
+	setIsOpen: PropTypes.func.isRequired,
 };
-
-function canSave() {
-	return (
-		characterName === '' ||
-		characterSpec === '' ||
-		characterRace === '' ||
-		characterName === ''
-	);
-}
 
 function CharacterCreationModal({ handleSubmit, isOpen, setIsOpen }) {
 	const [characterName, setCharacterName] = useState('');
@@ -35,10 +26,19 @@ function CharacterCreationModal({ handleSubmit, isOpen, setIsOpen }) {
 	const [characterSpec, setCharacterSpec] = useState('');
 	const classes = styleGuide();
 
+	function canSave() {
+		return (
+			characterName === '' ||
+			characterSpec === '' ||
+			characterRace === '' ||
+			characterName === ''
+		);
+	}
+
 	return (
 		<Modal
 			open={isOpen}
-			onClose={setIsOpen(true)}
+			onClose={() => setIsOpen(false)}
 			className={classes.modal}
 		>
 			<div className={classes.paper}>
@@ -107,7 +107,12 @@ function CharacterCreationModal({ handleSubmit, isOpen, setIsOpen }) {
 							>
 								{characterDetails.class[characterClass].map(
 									spec => (
-										<MenuItem key={spec} value={spec}>
+										<MenuItem
+											key={spec}
+											value={characterDetails.class[
+												characterClass
+											].findIndex(ele => ele === spec)}
+										>
 											{spec}
 										</MenuItem>
 									)
@@ -118,12 +123,7 @@ function CharacterCreationModal({ handleSubmit, isOpen, setIsOpen }) {
 				</Grid>
 				<Grid container justify="flex-end">
 					<Grid item style={{ paddingTop: '5rem' }}>
-						<Button
-							size="large"
-							onClick={() => {
-								setIsOpen(false);
-							}}
-						>
+						<Button size="large" onClick={() => setIsOpen(false)}>
 							Cancel
 						</Button>
 					</Grid>

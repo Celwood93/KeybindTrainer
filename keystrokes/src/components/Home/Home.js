@@ -3,9 +3,11 @@ import Game from '../Game/Game';
 import Nav from '../NavBar/NavBar';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { ref } from '../../config/constants';
-import CharacterList from '../Character/CharacterList';
+import CharacterList from '../Character/CharacterLists/CharacterList';
+import CharacterDetailPage from '../Character/CharacterDetails/CharacterDetailPage';
 
 function Home(props) {
+	console.log(props.user);
 	const userId = props.user.email.replace(/[.$#[\]]/g, '');
 	const userPath = `/Users/${userId}`;
 	const [user, setUser] = useState({
@@ -14,12 +16,12 @@ function Home(props) {
 	});
 
 	useEffect(() => {
-		const collectUserInfo = async () => {
+		async function collectUserInfo() {
 			const snapShot = await ref.child(userPath).once('value');
 			if (snapShot.exists()) {
 				setUser(snapShot.val());
 			}
-		};
+		}
 		collectUserInfo();
 	}, []);
 
@@ -39,6 +41,12 @@ function Home(props) {
 								userPath={userPath}
 								userId={userId}
 							/>
+						)}
+					/>
+					<Route
+						path="/characterList/:id/:fields?"
+						render={props => (
+							<CharacterDetailPage {...props} userId={userId} /> //this will probably need more stuff to make it so you cant just jump on someones account. maybe this is where i need privilages?
 						)}
 					/>
 					<Route
