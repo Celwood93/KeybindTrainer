@@ -7,11 +7,14 @@ import CharacterKeybindDisplay from './CharacterKeybindDisplay';
 
 CharacterSpecNavigation.propTypes = {
 	character: PropTypes.object,
+	setCharacter: PropTypes.func,
 	makeNewKeybindings: PropTypes.func,
 };
-function CharacterSpecNavigation({ character, makeNewKeybindings }) {
-	//starts on the wrong spec
-	//doesnt save the new keybindings as the current ones
+function CharacterSpecNavigation({
+	character,
+	setCharacter,
+	makeNewKeybindings,
+}) {
 	const [keyBinding, setKeybinding] = useState(
 		character.specs[character.selectedSpec].selectedKeybindings
 	);
@@ -73,6 +76,9 @@ function CharacterSpecNavigation({ character, makeNewKeybindings }) {
 						return (
 							<CharacterKeybindDisplay
 								keyBinding={keyBinding}
+								character={character}
+								setCharacter={setCharacter}
+								spec={spec}
 								key={index}
 								val={val}
 								index={index}
