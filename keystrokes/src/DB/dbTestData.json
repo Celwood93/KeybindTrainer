@@ -825,7 +825,10 @@
                     "spec": "RESTORATION",
                     "enabled": true,
                     "configured": true,
-                    "keyBindings": "1"
+                    "keyBindings": {
+                        "1": 1,
+                        "2": 2
+                    }
                 },
                 "FERAL": {
                     "spec": "FERAL",

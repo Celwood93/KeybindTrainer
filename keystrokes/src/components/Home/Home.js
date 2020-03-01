@@ -1,21 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import Game from '../Game/Game';
 import Nav from '../NavBar/NavBar';
-import Character from '../Character/Character';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { ref } from '../../config/constants';
+import CharacterList from '../Character/CharacterLists/CharacterList';
+import CharacterDetailPage from '../Character/CharacterDetails/CharacterDetailPage';
 
 function Home(props) {
-	const userId = props.user.email.replace(/[\.\$#\[\]]/g, '');
+	console.log(props.user);
+	const userId = props.user.email.replace(/[.$#[\]]/g, '');
 	const userPath = `/Users/${userId}`;
-	const [user, setUser] = useState({ userInfo: {} });
+	const [user, setUser] = useState({
+		characters: {},
+		currentCharacter: null,
+	});
 
 	useEffect(() => {
-		const collectUserInfo = async () => {
+		async function collectUserInfo() {
 			const snapShot = await ref.child(userPath).once('value');
-			const userInfo = snapShot.exists() ? snapShot.val() : {};
-			setUser(userInfo);
-		};
+			if (snapShot.exists()) {
+				setUser(snapShot.val());
+			}
+		}
 		collectUserInfo();
 	}, []);
 
@@ -26,15 +32,21 @@ function Home(props) {
 				<Switch>
 					<Route path="/" exact component={LandingPage} />
 					<Route
-						path="/character"
+						path="/characterList"
 						exact
 						render={props => (
-							<Character
+							<CharacterList
 								{...props}
 								userInfo={user}
 								userPath={userPath}
 								userId={userId}
 							/>
+						)}
+					/>
+					<Route
+						path="/characterList/:id/:fields?"
+						render={props => (
+							<CharacterDetailPage {...props} userId={userId} /> //this will probably need more stuff to make it so you cant just jump on someones account. maybe this is where i need privilages?
 						)}
 					/>
 					<Route
