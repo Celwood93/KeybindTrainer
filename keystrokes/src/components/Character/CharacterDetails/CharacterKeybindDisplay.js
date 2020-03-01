@@ -16,6 +16,7 @@ import update from 'immutability-helper';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import styleGuide from '../../../stylesheets/style';
 import { TabPanel } from '../helpers/TabPanels';
+import KeybindEditor from './KeybindEditor';
 
 CharacterKeybindDisplay.propTypes = {
 	index: PropTypes.number,
@@ -201,43 +202,7 @@ function CharacterKeybindDisplay({
 					</Grid>
 				</Grid>
 				<br />
-				<Grid
-					container
-					direction="row"
-					justify="space-between"
-					alignItems="flex-end"
-				>
-					<Grid item>
-						<Typography variant="h2">Keybindings</Typography>
-					</Grid>
-					<Grid item>
-						<Button
-							variant="contained"
-							color="primary"
-							className={classes.bottomMarginNegTwo}
-						>
-							Edit
-						</Button>
-					</Grid>
-				</Grid>
-				<Grid container direction="row">
-					<Grid item md={12}>
-						<ExpansionPanel>
-							<ExpansionPanelSummary
-								expandIcon={<ExpandMoreIcon />}
-								aria-controls="panel1a-content"
-								id="panel1a-header"
-							>
-								<Typography variant="h5" align="left">
-									Preview
-								</Typography>
-							</ExpansionPanelSummary>
-							<ExpansionPanelDetails>
-								<Typography>Work In Progress</Typography>
-							</ExpansionPanelDetails>
-						</ExpansionPanel>
-					</Grid>
-				</Grid>
+				<KeybindEditor />
 			</Grid>
 		</TabPanel>
 	);

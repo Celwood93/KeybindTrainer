@@ -24,14 +24,14 @@ export function Spec(
 		keybindings: [
 			...keybindings,
 			{
-				[key]: KeyBinding(key),
+				[key]: KeyBindings(key),
 			},
 		],
 		selectedKeybindings,
 	};
 }
 
-export function KeyBinding(key, description = '', talents) {
+export function KeyBindings(key, description = '', talents) {
 	const defaultTalents = { 1: 1, 2: 2, 3: 3 }; //placeholder for now
 	return { key, description, talents: talents || defaultTalents };
 }
