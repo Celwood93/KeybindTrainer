@@ -23,10 +23,17 @@ const styleGuide = makeStyles(theme => ({
 		boxShadow: theme.shadows[5],
 		padding: theme.spacing(2, 4, 3),
 	},
+	paddingTop: {
+		paddingTop: '3rem',
+	},
 	tabRoot: {
 		flexGrow: 1,
 		width: '80%',
 		backgroundColor: theme.palette.background.paper,
+	},
+	keybindingOptions: {
+		paddingLeft: '0.5rem',
+		paddingRight: '0.5rem',
 	},
 	tabPageContainer: {
 		paddingLeft: '2rem',
