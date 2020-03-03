@@ -33,6 +33,7 @@ function KeybindEditor({ character, setCharacter }) {
 		<React.Fragment>
 			<ManualKeybindModal
 				isOpen={manualModal}
+				characterClass={character.class}
 				setIsOpen={setManualModal}
 			/>
 			<RapidFireKeybindModal

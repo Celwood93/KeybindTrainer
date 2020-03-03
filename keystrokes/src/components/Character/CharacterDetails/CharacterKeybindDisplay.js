@@ -202,7 +202,10 @@ function CharacterKeybindDisplay({
 					</Grid>
 				</Grid>
 				<br />
-				<KeybindEditor />
+				<KeybindEditor
+					character={character}
+					setCharacter={setCharacter}
+				/>
 			</Grid>
 		</TabPanel>
 	);
