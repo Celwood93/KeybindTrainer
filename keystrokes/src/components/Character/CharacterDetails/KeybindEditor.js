@@ -16,7 +16,7 @@ import styleGuide from '../../../stylesheets/style';
 import ManualKeybindModal from './ManualKeybindModal';
 import RapidFireKeybindModal from './RapidFireKeybindModal';
 
-function KeybindEditor({ character, setCharacter }) {
+function KeybindEditor({ character, setCharacter, spec }) {
 	const classes = styleGuide();
 	const [editOptions, setEditOptions] = useState();
 	const [rapidFireModal, setRapidFireModal] = useState(false);
@@ -34,6 +34,7 @@ function KeybindEditor({ character, setCharacter }) {
 			<ManualKeybindModal
 				isOpen={manualModal}
 				characterClass={character.class}
+				characterSpec={spec}
 				setIsOpen={setManualModal}
 			/>
 			<RapidFireKeybindModal

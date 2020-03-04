@@ -2,14 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Button, Grid, TextField, MenuItem } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import styleGuide from '../../../stylesheets/style';
-import { ref } from '../../../config/constants';
+import {
+	ref,
+	targetting,
+	mods,
+	characterDetails,
+} from '../../../config/constants';
 
 ManualKeybindModal.propTypes = {
 	isOpen: PropTypes.bool.isRequired,
 	setIsOpen: PropTypes.func.isRequired,
 };
 
-function ManualKeybindModal({ isOpen, setIsOpen, characterClass }) {
+function ManualKeybindModal({
+	isOpen,
+	setIsOpen,
+	characterClass,
+	characterSpec,
+}) {
 	const classes = styleGuide();
 	const [keybinding, setKeybinding] = useState({
 		Spell: null,
@@ -19,18 +29,10 @@ function ManualKeybindModal({ isOpen, setIsOpen, characterClass }) {
 	});
 	const [loading, setLoading] = useState(true);
 	const [Spells, setSpells] = useState();
-	let options = {
-		Target: [
-			'Self',
-			'Arena1',
-			'Arena2',
-			'Arena3',
-			'Party1',
-			'Party2',
-			'Party3',
-		],
-		Mod: ['Shift', 'Ctrl', 'Alt', 'None'],
-	};
+	const [errors, setErrors] = useState();
+	const spec = characterDetails.class[characterClass][
+		characterSpec
+	].toUpperCase();
 
 	useEffect(() => {
 		async function getSpells() {
@@ -94,17 +96,24 @@ function ManualKeybindModal({ isOpen, setIsOpen, characterClass }) {
 										});
 									}}
 								>
-									{Object.keys(Spells).map(option => (
-										<MenuItem key={option} value={option}>
-											{option}
-										</MenuItem>
-									))}
+									{Object.entries(Spells)
+										.filter((spell, index) => {
+											return spell[1].spec.includes(spec);
+										})
+										.map((spell, index) => (
+											<MenuItem
+												key={spell[0]}
+												value={spell[0]}
+											>
+												{spell[0]}
+											</MenuItem>
+										))}
 								</TextField>
 							</Grid>
 							<Grid item className={classes.keybindingOptions}>
 								<TextField
 									className={classes.button}
-									select
+									select={!!keybinding.Spell}
 									disabled={!keybinding.Spell}
 									variant="outlined"
 									value={keybinding.Target || ''}
@@ -116,39 +125,25 @@ function ManualKeybindModal({ isOpen, setIsOpen, characterClass }) {
 										});
 									}}
 								>
-									{options.Target.filter(targ => {}).map(
-										option => (
+									{keybinding.Spell &&
+										targetting[
+											Spells[keybinding.Spell].targetType
+										].map(option => (
 											<MenuItem
 												key={option}
 												value={option}
 											>
 												{option}
 											</MenuItem>
-										)
-									)}
+										))}
 								</TextField>
 							</Grid>
 							<Grid item className={classes.keybindingOptions}>
 								<TextField
 									className={classes.button}
-									style={
-										keybinding.Mod === 'Ctrl'
-											? { marginTop: '31px' }
-											: {}
-									}
 									select
 									disabled={!keybinding.Spell}
 									variant="outlined"
-									// helperText={
-									// 	keybinding.Mod === 'Ctrl' ? (
-									// 		<div style={{ color: 'red' }}>
-									// 			Be careful, command ctrl + w
-									// 			will still work
-									// 		</div>
-									// 	) : (
-									// 		''
-									// 	)
-									// }
 									value={keybinding.Mod || ''}
 									label={'Mod'}
 									onChange={event => {
@@ -158,7 +153,7 @@ function ManualKeybindModal({ isOpen, setIsOpen, characterClass }) {
 										});
 									}}
 								>
-									{options.Mod.map(option => (
+									{mods.map(option => (
 										<MenuItem key={option} value={option}>
 											{option}
 										</MenuItem>
@@ -172,13 +167,27 @@ function ManualKeybindModal({ isOpen, setIsOpen, characterClass }) {
 									variant="outlined"
 									value={keybinding.Key || ''}
 									label={'Key'}
+									error={!!errors}
+									helperText={errors}
 									onChange={event => {
+										const newKey = event.target.value
+											.toLowerCase()
+											.slice(-1);
+										if (
+											!newKey.match(
+												/^[a-z0-9`\-=\[\]\\;',\.\/ ]?$/
+											)
+										) {
+											setErrors(
+												'only valid characters, no shift ones'
+											);
+										} else {
+											setErrors('');
+										}
 										//issues here since we cant tell if it is being pressed by shift or not for things like ` or ~
 										setKeybinding({
 											...keybinding,
-											Key: event.target.value
-												.toLowerCase()
-												.slice(-1),
+											Key: newKey,
 										});
 									}}
 								/>
@@ -187,8 +196,12 @@ function ManualKeybindModal({ isOpen, setIsOpen, characterClass }) {
 								<Button
 									className={classes.button}
 									color="primary"
+									disabled={!!errors}
 									variant="contained"
 									size="large"
+									onClick={() => {
+										console.log(keybinding);
+									}}
 								>
 									Enter
 								</Button>

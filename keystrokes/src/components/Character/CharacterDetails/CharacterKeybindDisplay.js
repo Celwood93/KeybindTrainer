@@ -204,6 +204,7 @@ function CharacterKeybindDisplay({
 				<br />
 				<KeybindEditor
 					character={character}
+					spec={spec}
 					setCharacter={setCharacter}
 				/>
 			</Grid>
