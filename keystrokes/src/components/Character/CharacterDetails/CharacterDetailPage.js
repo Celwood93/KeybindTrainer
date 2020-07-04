@@ -20,7 +20,7 @@ function CharacterDetailPage({ userId, match }) {
 		type: 'placeholder',
 	});
 	const [character, setCharacter] = useState(0);
-	const [allKeybindings, setAllKeybindings] = useState();
+	const [allKeybindings, setAllKeybindings] = useState({});
 	const classes = styleGuide();
 	const characterId = match.params && match.params.id;
 	const fields =
@@ -52,7 +52,7 @@ function CharacterDetailPage({ userId, match }) {
 	function newKeybindings(spec, char) {
 		const key = ref.child('/Keybindings').push().key;
 		//TODO remove placeholder
-		setAllKeybindings({ ...allKeybindings, [key]: { hello: 'there' } }); //this will have to just be an empty object
+		setAllKeybindings({ ...allKeybindings, [key]: [] });
 		// we then need to pass in AllKeybindings... all the way through.
 		setCharacter(
 			update(char, {
@@ -145,6 +145,8 @@ function CharacterDetailPage({ userId, match }) {
 						character={character}
 						setCharacter={setCharacter}
 						makeNewKeybindings={newKeybindings}
+						allKeybindings={allKeybindings}
+						setAllKeybindings={setAllKeybindings}
 					/>
 				</div>
 			</div>

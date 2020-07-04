@@ -15,6 +15,10 @@ const styleGuide = makeStyles(theme => ({
 		boxShadow: theme.shadows[5],
 		padding: theme.spacing(2, 4, 3),
 	},
+	table: {
+		marginTop: '3rem',
+		minWidth: '60%',
+	},
 	manualModalBackground: {
 		width: '70%',
 		height: '80%',

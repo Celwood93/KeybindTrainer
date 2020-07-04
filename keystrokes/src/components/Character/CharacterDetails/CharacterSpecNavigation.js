@@ -9,11 +9,15 @@ CharacterSpecNavigation.propTypes = {
 	character: PropTypes.object,
 	setCharacter: PropTypes.func,
 	makeNewKeybindings: PropTypes.func,
+	allKeybindings: PropTypes.object,
+	setAllKeybindings: PropTypes.func,
 };
 function CharacterSpecNavigation({
 	character,
 	setCharacter,
 	makeNewKeybindings,
+	allKeybindings,
+	setAllKeybindings,
 }) {
 	const [keyBinding, setKeybinding] = useState(
 		character.specs[character.selectedSpec].selectedKeybindings
@@ -78,6 +82,8 @@ function CharacterSpecNavigation({
 								keyBinding={keyBinding}
 								character={character}
 								setCharacter={setCharacter}
+								allKeybindings={allKeybindings}
+								setAllKeybindings={setAllKeybindings}
 								spec={spec}
 								key={index}
 								val={val}

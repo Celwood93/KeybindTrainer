@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, Grid, TextField, MenuItem } from '@material-ui/core';
+import update from 'immutability-helper';
 import PropTypes from 'prop-types';
+import KeybindTable from './KeybindTable';
 import styleGuide from '../../../stylesheets/style';
+import { verifyKey, validatePress } from '../../utils/utils';
 import {
 	ref,
 	targetting,
@@ -12,6 +15,11 @@ import {
 ManualKeybindModal.propTypes = {
 	isOpen: PropTypes.bool.isRequired,
 	setIsOpen: PropTypes.func.isRequired,
+	characterClass: PropTypes.string.isRequired,
+	characterSpec: PropTypes.number.isRequired,
+	setAllKeybindings: PropTypes.func.isRequired,
+	allKeybindings: PropTypes.object.isRequired,
+	keyBindingKey: PropTypes.string.isRequired,
 };
 
 function ManualKeybindModal({
@@ -19,6 +27,9 @@ function ManualKeybindModal({
 	setIsOpen,
 	characterClass,
 	characterSpec,
+	setAllKeybindings,
+	allKeybindings,
+	keyBindingKey,
 }) {
 	const classes = styleGuide();
 	const [keybinding, setKeybinding] = useState({
@@ -27,9 +38,9 @@ function ManualKeybindModal({
 		Mod: null,
 		Key: null,
 	});
+	const [allKeybinds, setAllKeybinds] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [Spells, setSpells] = useState();
-	const [errors, setErrors] = useState();
 	const spec = characterDetails.class[characterClass][
 		characterSpec
 	].toUpperCase();
@@ -45,6 +56,24 @@ function ManualKeybindModal({
 		}
 		getSpells();
 	}, []);
+
+	function handleKeyPress(e) {
+		if (!e.metaKey) {
+			e.preventDefault();
+		}
+		const newKey = e.code.toLowerCase().replace(/digit|key/i, '');
+		if (validatePress(newKey)) {
+			setKeybinding({
+				...keybinding,
+				Key: verifyKey(newKey),
+			});
+		} else if (newKey === 'backspace' || newKey === 'delete') {
+			setKeybinding({
+				...keybinding,
+				Key: '',
+			});
+		}
+	}
 
 	return (
 		<Modal open={isOpen} onClose={() => {}} className={classes.modal}>
@@ -71,6 +100,16 @@ function ManualKeybindModal({
 									color="primary"
 									variant="contained"
 									size="large"
+									onClick={() => {
+										setAllKeybindings(
+											update(allKeybindings, {
+												[keyBindingKey]: {
+													$push: allKeybinds,
+												},
+											})
+										);
+										setIsOpen(false);
+									}}
 								>
 									Finish
 								</Button>
@@ -167,28 +206,11 @@ function ManualKeybindModal({
 									variant="outlined"
 									value={keybinding.Key || ''}
 									label={'Key'}
-									error={!!errors}
-									helperText={errors}
-									onChange={event => {
-										const newKey = event.target.value
-											.toLowerCase()
-											.slice(-1);
-										if (
-											!newKey.match(
-												/^[a-z0-9`\-=\[\]\\;',\.\/ ]?$/
-											)
-										) {
-											setErrors(
-												'only valid characters, no shift ones'
-											);
-										} else {
-											setErrors('');
-										}
-										//issues here since we cant tell if it is being pressed by shift or not for things like ` or ~
-										setKeybinding({
-											...keybinding,
-											Key: newKey,
-										});
+									onFocus={() => {
+										document.body.onkeydown = handleKeyPress;
+									}}
+									onBlur={() => {
+										document.body.onkeydown = null;
 									}}
 								/>
 							</Grid>
@@ -196,17 +218,27 @@ function ManualKeybindModal({
 								<Button
 									className={classes.button}
 									color="primary"
-									disabled={!!errors}
+									disabled={false} //make this so everything has to be non-null
 									variant="contained"
 									size="large"
 									onClick={() => {
-										console.log(keybinding);
+										setAllKeybinds([
+											keybinding,
+											...allKeybinds,
+										]);
+										setKeybinding({
+											Spell: null,
+											Target: null,
+											Mod: null,
+											Key: null,
+										});
 									}}
 								>
 									Enter
 								</Button>
 							</Grid>
 						</Grid>
+						<KeybindTable allKeybinds={allKeybinds} />
 					</React.Fragment>
 				)}
 			</div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Modal, Button, Grid } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import styleGuide from '../../../stylesheets/style';

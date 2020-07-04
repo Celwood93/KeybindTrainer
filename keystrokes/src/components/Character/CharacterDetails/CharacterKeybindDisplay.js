@@ -24,6 +24,8 @@ CharacterKeybindDisplay.propTypes = {
 	setCharacter: PropTypes.func,
 	spec: PropTypes.number,
 	keyBinding: PropTypes.number,
+	allKeybindings: PropTypes.object,
+	setAllKeybindings: PropTypes.func,
 };
 function CharacterKeybindDisplay({
 	keyBinding,
@@ -31,6 +33,8 @@ function CharacterKeybindDisplay({
 	index,
 	character,
 	setCharacter,
+	allKeybindings,
+	setAllKeybindings,
 }) {
 	const classes = styleGuide();
 	const [descriptionToggle, setDescriptionToggle] = useState(false);
@@ -206,6 +210,9 @@ function CharacterKeybindDisplay({
 					character={character}
 					spec={spec}
 					setCharacter={setCharacter}
+					keyBinding={keyBinding}
+					allKeybindings={allKeybindings}
+					setAllKeybindings={setAllKeybindings}
 				/>
 			</Grid>
 		</TabPanel>
