@@ -11,6 +11,7 @@ CharacterSpecNavigation.propTypes = {
 	makeNewKeybindings: PropTypes.func,
 	allKeybindings: PropTypes.object,
 	setAllKeybindings: PropTypes.func,
+	createNewKeybinding: PropTypes.func,
 };
 function CharacterSpecNavigation({
 	character,
@@ -18,6 +19,7 @@ function CharacterSpecNavigation({
 	makeNewKeybindings,
 	allKeybindings,
 	setAllKeybindings,
+	createNewKeybinding,
 }) {
 	const [keyBinding, setKeybinding] = useState(
 		character.specs[character.selectedSpec].selectedKeybindings
@@ -27,7 +29,11 @@ function CharacterSpecNavigation({
 	function handleSpecChange(event, newSpec) {
 		setKeybinding(character.specs[newSpec].selectedKeybindings || 0);
 		setSpec(newSpec);
+		if (!character.specs[newSpec].keybindings) {
+			createNewKeybinding(newSpec, character);
+		}
 	}
+
 	function handleKeybindingsChange(event, newKeybindings) {
 		setKeybinding(newKeybindings);
 	}

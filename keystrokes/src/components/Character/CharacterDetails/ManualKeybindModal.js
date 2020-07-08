@@ -88,6 +88,7 @@ function ManualKeybindModal({
 									color="secondary"
 									variant="contained"
 									onClick={() => {
+										setAllKeybinds([]);
 										setIsOpen(false);
 									}}
 									size="large"
@@ -108,6 +109,7 @@ function ManualKeybindModal({
 												},
 											})
 										);
+										setAllKeybinds([]);
 										setIsOpen(false);
 									}}
 								>

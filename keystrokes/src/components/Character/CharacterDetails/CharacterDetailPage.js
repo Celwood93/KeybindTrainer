@@ -51,9 +51,7 @@ function CharacterDetailPage({ userId, match }) {
 
 	function newKeybindings(spec, char) {
 		const key = ref.child('/Keybindings').push().key;
-		//TODO remove placeholder
 		setAllKeybindings({ ...allKeybindings, [key]: [] });
-		// we then need to pass in AllKeybindings... all the way through.
 		setCharacter(
 			update(char, {
 				specs: { [spec]: { $set: Spec(char.specs[spec], key) } },
@@ -147,6 +145,7 @@ function CharacterDetailPage({ userId, match }) {
 						makeNewKeybindings={newKeybindings}
 						allKeybindings={allKeybindings}
 						setAllKeybindings={setAllKeybindings}
+						createNewKeybinding={newKeybindings}
 					/>
 				</div>
 			</div>

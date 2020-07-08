@@ -16,7 +16,7 @@ export function Character({ name, characterClass, race, spec }) {
 }
 
 export function Spec(
-	{ configured, keybindings, selectedKeybindings = 0 },
+	{ configured, keybindings = [], selectedKeybindings = 0 },
 	key
 ) {
 	return {
