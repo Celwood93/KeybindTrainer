@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
 	Grid,
@@ -44,7 +44,11 @@ function CharacterKeybindDisplay({
 		].description || ''
 	);
 
-	function toggleDescription(saving = false) {
+	useEffect(() => {
+		setDescriptionToggle(false);
+	}, [spec, keyBinding]);
+
+	function toggleDescription(saving) {
 		if (saving) {
 			const updatedCharacter = update(character, {
 				specs: {
@@ -66,6 +70,14 @@ function CharacterKeybindDisplay({
 				},
 			});
 			setCharacter(updatedCharacter);
+		} else {
+			setDescriptionText(
+				character.specs[spec].keybindings[keyBinding][
+					Object.keys(
+						character.specs[spec].keybindings[keyBinding]
+					)[0]
+				].description || ''
+			);
 		}
 		setDescriptionToggle(!descriptionToggle);
 	}
@@ -88,7 +100,7 @@ function CharacterKeybindDisplay({
 								variant="contained"
 								color="primary"
 								className={classes.bottomMarginNegTwo}
-								onClick={toggleDescription}
+								onClick={() => toggleDescription(false)}
 							>
 								Edit
 							</Button>
@@ -98,7 +110,7 @@ function CharacterKeybindDisplay({
 									variant="contained"
 									color="secondary"
 									className={classes.bottomMarginNegTwo}
-									onClick={toggleDescription}
+									onClick={() => toggleDescription(false)}
 								>
 									Cancel
 								</Button>

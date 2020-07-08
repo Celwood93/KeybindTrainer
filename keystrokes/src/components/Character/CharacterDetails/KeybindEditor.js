@@ -157,7 +157,14 @@ function KeybindEditor({
 						</ExpansionPanelSummary>
 						<ExpansionPanelDetails>
 							<Grid item md={12}>
-								{!loading ? (
+								{!loading &&
+								allKeybindings[
+									Object.keys(
+										character.specs[spec].keybindings[
+											keyBinding
+										]
+									)[0]
+								] ? (
 									<KeybindTable
 										allKeybinds={
 											allKeybindings[
