@@ -159,19 +159,20 @@ function KeybindEditor({
 							<Grid item md={12}>
 								{!loading &&
 								allKeybindings[
-									Object.keys(
-										character.specs[spec].keybindings[
-											keyBinding
-										]
-									)[0]
+									characterKeybindings(
+										character,
+										spec,
+										keyBinding
+									)
 								] ? (
 									<KeybindTable
 										allKeybinds={
 											allKeybindings[
-												Object.keys(
-													character.specs[spec]
-														.keybindings[keyBinding]
-												)[0]
+												characterKeybindings(
+													character,
+													spec,
+													keyBinding
+												)
 											]
 										}
 									/>

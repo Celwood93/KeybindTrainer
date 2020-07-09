@@ -56,11 +56,11 @@ function CharacterKeybindDisplay({
 					[spec]: {
 						keybindings: {
 							[keyBinding]: {
-								[Object.keys(
-									character.specs[spec].keybindings[
-										keyBinding
-									]
-								)[0]]: {
+								[characterKeybindings(
+									character,
+									spec,
+									keyBinding
+								)]: {
 									$merge: {
 										description: descriptionText,
 									},
@@ -137,10 +137,11 @@ function CharacterKeybindDisplay({
 										character.specs[spec].keybindings[
 											keyBinding
 										][
-											Object.keys(
-												character.specs[spec]
-													.keybindings[keyBinding]
-											)[0]
+											characterKeybindings(
+												character,
+												spec,
+												keyBinding
+											)
 										].description
 									)}
 								</Typography>
