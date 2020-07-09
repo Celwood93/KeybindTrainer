@@ -66,9 +66,11 @@ function CharacterDetailPage({ userId, match }) {
 		updates[`/Users/${userId}/characters/${characterId}`] = {
 			name: character.name,
 		};
-		Object.keys(allKeybindings).forEach(key => {
-			updates[`/Keybindings/${key}`] = allKeybindings[key];
-		});
+		if (allKeybindings) {
+			Object.keys(allKeybindings).forEach(key => {
+				updates[`/Keybindings/${key}`] = allKeybindings[key];
+			});
+		}
 
 		const error = await ref.update(updates);
 		if (error) {
@@ -140,6 +142,7 @@ function CharacterDetailPage({ userId, match }) {
 				<div className={classes.tabRoot}>
 					<CharacterSpecNavigation
 						character={character}
+						setCharacter={setCharacter}
 						makeNewKeybindings={newKeybindings}
 					/>
 				</div>
