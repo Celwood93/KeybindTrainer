@@ -16,6 +16,7 @@ import update from 'immutability-helper';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import styleGuide from '../../../stylesheets/style';
 import { TabPanel } from '../helpers/TabPanels';
+import { characterKeybindings } from '../../utils/utils';
 import KeybindEditor from './KeybindEditor';
 
 CharacterKeybindDisplay.propTypes = {
@@ -40,7 +41,7 @@ function CharacterKeybindDisplay({
 	const [descriptionToggle, setDescriptionToggle] = useState(false);
 	const [descriptionText, setDescriptionText] = useState(
 		character.specs[spec].keybindings[keyBinding][
-			Object.keys(character.specs[spec].keybindings[keyBinding])[0]
+			characterKeybindings(character, spec, keyBinding)
 		].description || ''
 	);
 
@@ -73,9 +74,7 @@ function CharacterKeybindDisplay({
 		} else {
 			setDescriptionText(
 				character.specs[spec].keybindings[keyBinding][
-					Object.keys(
-						character.specs[spec].keybindings[keyBinding]
-					)[0]
+					characterKeybindings(character, spec, keyBinding)
 				].description || ''
 			);
 		}

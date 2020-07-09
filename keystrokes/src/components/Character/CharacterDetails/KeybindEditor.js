@@ -14,6 +14,7 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import styleGuide from '../../../stylesheets/style';
 import { ref } from '../../../config/constants';
+import { characterKeybindings } from '../../utils/utils';
 import ManualKeybindModal from './ManualKeybindModal';
 import KeybindTable from './KeybindTable';
 import RapidFireKeybindModal from './RapidFireKeybindModal';
@@ -42,24 +43,26 @@ function KeybindEditor({
 
 	useEffect(() => {
 		async function collectKeybindings() {
-			const path = `/Keybindings/${
-				Object.keys(character.specs[spec].keybindings[keyBinding])[0]
-			}`;
+			const path = `/Keybindings/${characterKeybindings(
+				character,
+				spec,
+				keyBinding
+			)}`;
 			const snapShot = await ref.child(path).once('value');
 			if (
 				snapShot.exists() &&
 				!Object.keys(allKeybindings).includes(
-					Object.keys(
-						character.specs[spec].keybindings[keyBinding]
-					)[0]
+					characterKeybindings(character, spec, keyBinding)
 				)
 			) {
 				const keybindingsWeGot = snapShot.val();
 				setAllKeybindings({
 					...allKeybindings,
-					[Object.keys(
-						character.specs[spec].keybindings[keyBinding]
-					)[0]]: keybindingsWeGot,
+					[characterKeybindings(
+						character,
+						spec,
+						keyBinding
+					)]: keybindingsWeGot,
 				});
 			}
 			//Set something to say "character not found"
@@ -67,9 +70,6 @@ function KeybindEditor({
 		}
 		collectKeybindings();
 	});
-
-	//console.log(Object.keys(character.specs[spec].keybindings[keyBinding])[0]);
-	//console.log(allKeybindings);
 
 	const handleClick = event => {
 		setEditOptions(event.currentTarget);
@@ -87,11 +87,11 @@ function KeybindEditor({
 				setIsOpen={setManualModal}
 				setAllKeybindings={setAllKeybindings}
 				allKeybindings={allKeybindings}
-				keyBindingKey={
-					Object.keys(
-						character.specs[spec].keybindings[keyBinding]
-					)[0]
-				}
+				keyBindingKey={characterKeybindings(
+					character,
+					spec,
+					keyBinding
+				)}
 			/>
 			<RapidFireKeybindModal
 				isOpen={rapidFireModal}

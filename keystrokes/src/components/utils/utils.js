@@ -47,3 +47,7 @@ export function validatePress(newKey) {
 		newKey !== 'enter'
 	);
 }
+
+export function characterKeybindings(character, spec, keyBinding) {
+	return Object.keys(character.specs[spec].keybindings[keyBinding])[0];
+}
