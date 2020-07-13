@@ -2,50 +2,44 @@ export function getNextKey(keys) {
 	return keys[Math.floor(Math.random() * keys.length)];
 }
 
+const keyTransformationMapping = {
+	backquote: '`',
+	bracketleft: '{',
+	bracketright: '}',
+	comma: ',',
+	quote: "'",
+	period: '.',
+	slash: '/',
+	backslash: '\\',
+	equal: '=',
+	minus: '-',
+	semicolon: ';',
+};
+
 export function verifyKey(key) {
-	if (key.length > 2) {
-		if (key === 'backquote') {
-			return '`';
-		} else if (key === 'bracketleft') {
-			return '{';
-		} else if (key === 'bracketright') {
-			return '}';
-		} else if (key === 'comma') {
-			return ',';
-		} else if (key === 'quote') {
-			return "'";
-		} else if (key === 'period') {
-			return '.';
-		} else if (key === 'slash') {
-			return '/';
-		} else if (key === 'backslash') {
-			return '\\';
-		} else if (key === 'equal') {
-			return '=';
-		} else if (key === 'minus') {
-			return '-';
-		} else if (key === 'semicolon') {
-			return ';';
-		}
+	if (key in keyTransformationMapping) {
+		return keyTransformationMapping[key];
 	}
 	return key;
 }
 
+const invalidKeys = [
+	'shiftleft',
+	'shiftright',
+	'altleft',
+	'altright',
+	'controlleft',
+	'controlright',
+	'delete',
+	'backspace',
+	'insert',
+	'capslock',
+	'escape',
+	'enter',
+];
+
 export function validatePress(newKey) {
-	return (
-		newKey !== 'shiftleft' &&
-		newKey !== 'shiftright' &&
-		newKey !== 'altleft' &&
-		newKey !== 'altright' &&
-		newKey !== 'controlleft' &&
-		newKey !== 'controlright' &&
-		newKey !== 'delete' &&
-		newKey !== 'backspace' &&
-		newKey !== 'insert' &&
-		newKey !== 'capslock' &&
-		newKey !== 'escape' &&
-		newKey !== 'enter'
-	);
+	return !invalidKeys.includes(newKey);
 }
 
 export function characterKeybindings(character, spec, keyBinding) {

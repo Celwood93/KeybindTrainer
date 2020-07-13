@@ -55,7 +55,7 @@ function ManualKeybindModal({
 			}
 		}
 		getSpells();
-	}, []);
+	}, [characterClass]);
 
 	function handleKeyPress(e) {
 		if (!e.metaKey) {
@@ -129,7 +129,7 @@ function ManualKeybindModal({
 									select
 									variant="outlined"
 									value={keybinding.Spell || ''}
-									label={'Spell'}
+									label="Spell"
 									onChange={event => {
 										setKeybinding({
 											...keybinding,
@@ -138,10 +138,10 @@ function ManualKeybindModal({
 									}}
 								>
 									{Object.entries(Spells)
-										.filter((spell, index) => {
-											return spell[1].spec.includes(spec);
-										})
-										.map((spell, index) => (
+										.filter(spell =>
+											spell[1].spec.includes(spec)
+										)
+										.map(spell => (
 											<MenuItem
 												key={spell[0]}
 												value={spell[0]}
@@ -158,7 +158,7 @@ function ManualKeybindModal({
 									disabled={!keybinding.Spell}
 									variant="outlined"
 									value={keybinding.Target || ''}
-									label={'Target'}
+									label="Target"
 									onChange={event => {
 										setKeybinding({
 											...keybinding,
@@ -186,7 +186,7 @@ function ManualKeybindModal({
 									disabled={!keybinding.Spell}
 									variant="outlined"
 									value={keybinding.Mod || ''}
-									label={'Mod'}
+									label="Mod"
 									onChange={event => {
 										setKeybinding({
 											...keybinding,
@@ -207,7 +207,7 @@ function ManualKeybindModal({
 									disabled={!keybinding.Spell}
 									variant="outlined"
 									value={keybinding.Key || ''}
-									label={'Key'}
+									label="Key"
 									onFocus={() => {
 										document.body.onkeydown = handleKeyPress;
 									}}

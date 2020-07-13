@@ -56,13 +56,10 @@ function KeybindEditor({
 				)
 			) {
 				const keybindingsWeGot = snapShot.val();
+				const key = characterKeybindings(character, spec, keyBinding);
 				setAllKeybindings({
 					...allKeybindings,
-					[characterKeybindings(
-						character,
-						spec,
-						keyBinding
-					)]: keybindingsWeGot,
+					[key]: keybindingsWeGot,
 				});
 			}
 			//Set something to say "character not found"

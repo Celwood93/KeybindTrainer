@@ -51,16 +51,17 @@ function CharacterKeybindDisplay({
 
 	function toggleDescription(saving) {
 		if (saving) {
+			const characterKey = characterKeybindings(
+				character,
+				spec,
+				keyBinding
+			);
 			const updatedCharacter = update(character, {
 				specs: {
 					[spec]: {
 						keybindings: {
 							[keyBinding]: {
-								[characterKeybindings(
-									character,
-									spec,
-									keyBinding
-								)]: {
+								[characterKey]: {
 									$merge: {
 										description: descriptionText,
 									},
