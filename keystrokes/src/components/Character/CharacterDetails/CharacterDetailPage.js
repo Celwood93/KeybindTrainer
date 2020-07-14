@@ -20,7 +20,7 @@ function CharacterDetailPage({ userId, match }) {
 		type: 'placeholder',
 	});
 	const [character, setCharacter] = useState(0);
-	const [allKeybindings, setAllKeybindings] = useState();
+	const [allKeybindings, setAllKeybindings] = useState({});
 	const classes = styleGuide();
 	const characterId = match.params && match.params.id;
 	const fields =
@@ -51,8 +51,7 @@ function CharacterDetailPage({ userId, match }) {
 
 	function newKeybindings(spec, char) {
 		const key = ref.child('/Keybindings').push().key;
-		//TODO remove placeholder
-		setAllKeybindings({ ...allKeybindings, [key]: { hello: 'there' } });
+		setAllKeybindings({ ...allKeybindings, [key]: [] });
 		setCharacter(
 			update(char, {
 				specs: { [spec]: { $set: Spec(char.specs[spec], key) } },
@@ -144,6 +143,9 @@ function CharacterDetailPage({ userId, match }) {
 						character={character}
 						setCharacter={setCharacter}
 						makeNewKeybindings={newKeybindings}
+						allKeybindings={allKeybindings}
+						setAllKeybindings={setAllKeybindings}
+						createNewKeybinding={newKeybindings}
 					/>
 				</div>
 			</div>

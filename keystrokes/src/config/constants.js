@@ -8,6 +8,16 @@ const config = {
 };
 firebase.initializeApp(config);
 
+export const targetting = {
+	ONE_ENEMY: ['Target', 'Focus', 'Arena1', 'Arena2', 'Arena3'],
+	MANY_ENEMY: ['Target', 'Focus', 'Arena1', 'Arena2', 'Arena3'],
+	ONE_FRIENDLY: ['Self', 'Target', 'Focus', 'Party1', 'Party2', 'Party3'],
+	MANY_FRIENDLY: ['Self', 'Target', 'Focus', 'Party1', 'Party2', 'Party3'],
+	SELF: ['Self'],
+};
+
+export const mods = ['Shift', 'Ctrl', 'Alt', 'None'];
+
 export const characterDetails = {
 	race: [
 		'',

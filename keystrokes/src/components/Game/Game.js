@@ -50,6 +50,7 @@ class App extends Component {
 		if (!e.metaKey) {
 			e.preventDefault();
 		}
+		console.log(e.code);
 		const keyPressed = {
 			key: e.code.toLowerCase().replace(/digit|key|left|right/i, ''),
 			altKey: e.altKey,
