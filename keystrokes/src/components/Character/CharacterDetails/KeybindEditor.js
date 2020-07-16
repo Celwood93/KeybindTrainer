@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import update from 'immutability-helper';
 import {
 	Grid,
 	Button,
@@ -75,11 +76,23 @@ function KeybindEditor({
 	const handleClose = () => {
 		setEditOptions();
 	};
+
+	function markAsConfigured() {
+		setCharacter(
+			update(character, {
+				specs: {
+					[character.selectedSpec]: { configured: { $set: true } },
+				},
+			})
+		);
+	}
+
 	return (
 		<React.Fragment>
 			<ManualKeybindModal
 				isOpen={manualModal}
 				characterClass={character.class}
+				markAsConfigured={markAsConfigured}
 				characterSpec={spec}
 				setIsOpen={setManualModal}
 				setAllKeybindings={setAllKeybindings}

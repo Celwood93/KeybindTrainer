@@ -18,6 +18,7 @@ ManualKeybindModal.propTypes = {
 	characterClass: PropTypes.string.isRequired,
 	characterSpec: PropTypes.number.isRequired,
 	setAllKeybindings: PropTypes.func.isRequired,
+	markAsConfigured: PropTypes.func.isRequired,
 	allKeybindings: PropTypes.object.isRequired,
 	keyBindingKey: PropTypes.string.isRequired,
 };
@@ -25,6 +26,7 @@ ManualKeybindModal.propTypes = {
 function ManualKeybindModal({
 	isOpen,
 	setIsOpen,
+	markAsConfigured,
 	characterClass,
 	characterSpec,
 	setAllKeybindings,
@@ -109,6 +111,9 @@ function ManualKeybindModal({
 												},
 											})
 										);
+										if (allKeybinds.length > 0) {
+											markAsConfigured();
+										}
 										setAllKeybinds([]);
 										setIsOpen(false);
 									}}

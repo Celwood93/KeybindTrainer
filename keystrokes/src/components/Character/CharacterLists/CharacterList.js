@@ -11,20 +11,20 @@ CharacterList.propTypes = {
 };
 
 function CharacterList({ userInfo, userPath, ...props }) {
+	console.log(userInfo);
 	const [characters, setCharacters] = useState({});
-	const [currentCharacter, setCurrentCharacter] = useState('');
+	const [selectedCharacter, setSelectedCharacter] = useState('');
 	const [open, setOpen] = useState(false);
 	const classes = styleGuide();
 
 	useEffect(() => {
 		setCharacters(userInfo.characters || {});
-		setCurrentCharacter(userInfo.currentCharacter);
+		setSelectedCharacter(userInfo.selectedCharacter);
 	}, [userInfo]);
 
 	async function handleSubmit(fields) {
 		const name = fields.name;
 		const key = ref.child('/Characters').push().key;
-		setCurrentCharacter(key);
 		setCharacters({ ...characters, [key]: { name } });
 		props.history.push(
 			`${props.location.pathname}/${key}/${JSON.stringify(fields)}`
@@ -52,12 +52,12 @@ function CharacterList({ userInfo, userPath, ...props }) {
 			<div className={classes.characterList}>
 				<List>
 					{Object.keys(characters)
-						.sort((_, b) => (b === currentCharacter ? 1 : -1))
+						.sort((_, b) => (b === selectedCharacter ? 1 : -1))
 						.map(id => (
 							<div
 								key={id}
 								className={
-									id === currentCharacter
+									id === selectedCharacter
 										? classes.characterListItemSelected
 										: classes.characterListItem
 								}

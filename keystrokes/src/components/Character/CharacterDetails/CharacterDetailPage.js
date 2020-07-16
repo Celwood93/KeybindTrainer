@@ -88,8 +88,24 @@ function CharacterDetailPage({ userId, match }) {
 		}
 	}
 
-	function selectCharacter() {
-		console.log('Work In Progress');
+	async function selectCharacter() {
+		let updates = {};
+		updates[`/Users/${userId}/selectedCharacter`] = characterId;
+		const error = await ref.update(updates);
+		if (error) {
+			//could specify the error in here, if i knew what it was....
+			setAlert({
+				open: true,
+				message: 'Failed to save',
+				type: 'error',
+			});
+		} else {
+			setAlert({
+				open: true,
+				message: 'Saved successfully!',
+				type: 'success',
+			});
+		}
 	}
 
 	return !loading ? (
