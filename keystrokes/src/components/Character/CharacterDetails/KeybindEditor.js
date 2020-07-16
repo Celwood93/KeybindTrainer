@@ -51,12 +51,13 @@ function KeybindEditor({
 			)}`;
 			const snapShot = await ref.child(path).once('value');
 			if (
-				snapShot.exists() &&
 				!Object.keys(allKeybindings).includes(
 					characterKeybindings(character, spec, keyBinding)
 				)
 			) {
-				const keybindingsWeGot = snapShot.val();
+				const keybindingsWeGot = snapShot.exists()
+					? snapShot.val()
+					: [];
 				const key = characterKeybindings(character, spec, keyBinding);
 				setAllKeybindings({
 					...allKeybindings,
