@@ -11,7 +11,6 @@ CharacterList.propTypes = {
 };
 
 function CharacterList({ userInfo, userPath, ...props }) {
-	console.log(userInfo);
 	const [characters, setCharacters] = useState({});
 	const [selectedCharacter, setSelectedCharacter] = useState('');
 	const [open, setOpen] = useState(false);
