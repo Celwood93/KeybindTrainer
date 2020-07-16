@@ -72,8 +72,19 @@ function CharacterDetailPage({ userId, match }) {
 		}
 
 		const error = await ref.update(updates);
+		setAlertMessage(error);
+	}
+
+	async function selectCharacter() {
+		let updates = {};
+		updates[`/Users/${userId}/selectedCharacter`] = characterId;
+		const error = await ref.update(updates);
+		setAlertMessage(error);
+	}
+
+	function setAlertMessage(error) {
 		if (error) {
-			//could specify the error in here, if i knew what it was....
+			//TODO specify error
 			setAlert({
 				open: true,
 				message: 'Failed to save',
@@ -86,10 +97,6 @@ function CharacterDetailPage({ userId, match }) {
 				type: 'success',
 			});
 		}
-	}
-
-	function selectCharacter() {
-		console.log('Work In Progress');
 	}
 
 	return !loading ? (
