@@ -6,29 +6,36 @@ import styleGuide from '../../../stylesheets/style';
 import { ref } from '../../../config/constants';
 
 CharacterList.propTypes = {
-	userInfo: PropTypes.object.isRequired,
+	collectUserInfo: PropTypes.func.isRequired,
 	userPath: PropTypes.string.isRequired,
 };
 
-function CharacterList({ userInfo, userPath, ...props }) {
+function CharacterList({ collectUserInfo, userPath, ...props }) {
 	const [characters, setCharacters] = useState({});
 	const [selectedCharacter, setSelectedCharacter] = useState('');
 	const [open, setOpen] = useState(false);
 	const classes = styleGuide();
 
 	useEffect(() => {
-		setCharacters(userInfo.characters || {});
-		setSelectedCharacter(userInfo.selectedCharacter);
-	}, [userInfo]);
+		async function gettingUser() {
+			//TODO consider putting all DB operations into their own module/util file.
+			const user = await collectUserInfo();
+
+			if (user) {
+				setCharacters(user.characters || {});
+				setSelectedCharacter(user.selectedCharacter);
+			}
+		}
+		gettingUser();
+	}, []);
 
 	async function handleSubmit(fields) {
-		const name = fields.name;
 		const key = ref.child('/Characters').push().key;
-		setCharacters({ ...characters, [key]: { name } });
 		props.history.push(
 			`${props.location.pathname}/${key}/${JSON.stringify(fields)}`
 		);
 	}
+	console.log(characters);
 
 	return (
 		<React.Fragment>

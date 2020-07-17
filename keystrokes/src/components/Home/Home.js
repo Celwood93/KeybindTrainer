@@ -7,7 +7,6 @@ import CharacterList from '../Character/CharacterLists/CharacterList';
 import CharacterDetailPage from '../Character/CharacterDetails/CharacterDetailPage';
 
 function Home(props) {
-	console.log(props.user);
 	const userId = props.user.email.replace(/[.$#[\]]/g, '');
 	const userPath = `/Users/${userId}`;
 	const [user, setUser] = useState({
@@ -15,14 +14,20 @@ function Home(props) {
 		currentCharacter: null,
 	});
 
-	useEffect(() => {
-		async function collectUserInfo() {
-			const snapShot = await ref.child(userPath).once('value');
-			if (snapShot.exists()) {
-				setUser(snapShot.val());
-			}
+	async function collectUserInfo() {
+		const snapShot = await ref.child(userPath).once('value');
+		if (snapShot.exists()) {
+			return snapShot.val();
 		}
-		collectUserInfo();
+		return null;
+	}
+
+	useEffect(() => {
+		async function gettingUser() {
+			const user = await collectUserInfo();
+			setUser(user);
+		}
+		gettingUser();
 	}, []);
 
 	return (
@@ -37,7 +42,7 @@ function Home(props) {
 						render={props => (
 							<CharacterList
 								{...props}
-								userInfo={user}
+								collectUserInfo={collectUserInfo}
 								userPath={userPath}
 								userId={userId}
 							/>
