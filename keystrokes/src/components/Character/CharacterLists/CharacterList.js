@@ -35,7 +35,6 @@ function CharacterList({ collectUserInfo, userPath, ...props }) {
 			`${props.location.pathname}/${key}/${JSON.stringify(fields)}`
 		);
 	}
-	console.log(characters);
 
 	return (
 		<React.Fragment>
