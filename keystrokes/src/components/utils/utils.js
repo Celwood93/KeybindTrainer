@@ -2,7 +2,7 @@ export function getNextKey(keys) {
 	return keys[Math.floor(Math.random() * keys.length)];
 }
 
-const keyTransformationMapping = {
+export const keyTransformationMapping = {
 	backquote: '`',
 	bracketleft: '{',
 	bracketright: '}',
@@ -23,7 +23,7 @@ export function verifyKey(key) {
 	return key;
 }
 
-const invalidKeys = [
+export const invalidKeys = [
 	'shiftleft',
 	'shiftright',
 	'altleft',

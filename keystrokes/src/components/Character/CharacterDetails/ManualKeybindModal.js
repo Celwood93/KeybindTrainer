@@ -104,11 +104,6 @@ function ManualKeybindModal({
 									variant="contained"
 									size="large"
 									onClick={() => {
-										console.log(
-											allKeybindings,
-											allKeybinds,
-											keyBindingKey
-										);
 										setAllKeybindings(
 											update(allKeybindings, {
 												[keyBindingKey]: {
