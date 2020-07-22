@@ -57,13 +57,7 @@ function Home(props) {
 					<Route
 						path="/game"
 						exact
-						render={props => (
-							<Game
-								{...props}
-								userInfo={user}
-								userPath={userPath}
-							/>
-						)}
+						render={props => <Game {...props} userInfo={user} />}
 					/>
 				</Switch>
 			</div>

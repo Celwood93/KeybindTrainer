@@ -13,9 +13,8 @@ import { ref } from '../../config/constants';
 
 Game.propTypes = {
 	userInfo: PropTypes.object,
-	userPath: PropTypes.string,
 };
-function Game({ userInfo, userPath }) {
+function Game({ userInfo }) {
 	const [key, setKey] = useState();
 	const [keyBindings, setKeyBindings] = useState();
 	const [failedFirstTry, setFailedFirstTry] = useState(false);
