@@ -75,7 +75,6 @@ function Game({ userInfo }) {
 				keyPressed.key === expectedKey.Key &&
 				keyPressed[expectedKey.Mod]
 			) {
-				console.log('worked?');
 				const newKey = getNextKey(Object.keys(keyBindings));
 				setKey(newKey);
 				setFailedFirstTry(false);
