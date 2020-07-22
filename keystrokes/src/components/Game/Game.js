@@ -22,10 +22,14 @@ function Game({ userInfo }) {
 	useEffect(() => {
 		async function collectCharacterInfo() {
 			const path = `/Characters/${userInfo.selectedCharacter}`;
-			const snapShot = await ref.child(path).once('value');
+			let snapShot;
+			try {
+				snapShot = await ref.child(path).once('value');
+			} catch (e) {
+				console.log(`Failed to get character info for game`);
+			}
 			if (snapShot.exists()) {
 				const charDetails = snapShot.val();
-
 				collectKeybindings(
 					charDetails,
 					charDetails.selectedSpec,
@@ -40,12 +44,16 @@ function Game({ userInfo }) {
 				spec,
 				keyBinding
 			)}`;
-			const snapShot = await ref.child(path).once('value');
-			if (snapShot.exists()) {
-				const k = snapShot.val();
-				setKeyBindings(k);
-				const newKey = getNextKey(Object.keys(k));
-				setKey(newKey);
+			try {
+				const snapShot = await ref.child(path).once('value');
+				if (snapShot.exists()) {
+					const k = snapShot.val();
+					setKeyBindings(k);
+					const newKey = getNextKey(Object.keys(k));
+					setKey(newKey);
+				}
+			} catch (e) {
+				console.log(`failed to get value for path ${path}`);
 			}
 		}
 		collectCharacterInfo();

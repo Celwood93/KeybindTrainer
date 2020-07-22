@@ -15,9 +15,13 @@ function Home(props) {
 	});
 
 	async function collectUserInfo() {
-		const snapShot = await ref.child(userPath).once('value');
-		if (snapShot.exists()) {
-			return snapShot.val();
+		try {
+			const snapShot = await ref.child(userPath).once('value');
+			if (snapShot.exists()) {
+				return snapShot.val();
+			}
+		} catch (e) {
+			console.log(`failed to get value at ${userPath}`);
 		}
 		return null;
 	}

@@ -50,10 +50,14 @@ function ManualKeybindModal({
 	useEffect(() => {
 		async function getSpells() {
 			const path = `/Spells/${characterClass}`;
-			const snapShot = await ref.child(path).once('value');
-			if (snapShot.exists()) {
-				setSpells(snapShot.val());
-				setLoading(false);
+			try {
+				const snapShot = await ref.child(path).once('value');
+				if (snapShot.exists()) {
+					setSpells(snapShot.val());
+					setLoading(false);
+				}
+			} catch (e) {
+				console.log(`failed to get spells for ${characterClass}`);
 			}
 		}
 		getSpells();

@@ -33,13 +33,17 @@ function CharacterDetailPage({ userId, match }) {
 	useEffect(() => {
 		async function collectCharacterInfo() {
 			const path = `/Characters/${characterId}`;
-			const snapShot = await ref.child(path).once('value');
-			if (snapShot.exists()) {
-				const charDetails = snapShot.val();
-				setCharacter(charDetails);
+			try {
+				const snapShot = await ref.child(path).once('value');
+				if (snapShot.exists()) {
+					const charDetails = snapShot.val();
+					setCharacter(charDetails);
+				}
+				//Set something to say "character not found"
+				setLoading(false);
+			} catch (e) {
+				console.log(`failed to collect value from ${path}`);
 			}
-			//Set something to say "character not found"
-			setLoading(false);
 		}
 		if (!fields) {
 			collectCharacterInfo();
@@ -70,16 +74,23 @@ function CharacterDetailPage({ userId, match }) {
 				updates[`/Keybindings/${key}`] = allKeybindings[key];
 			});
 		}
-
-		const error = await ref.update(updates);
-		setAlertMessage(error);
+		try {
+			const error = await ref.update(updates);
+			setAlertMessage(error);
+		} catch (e) {
+			console.log('error saving character updates');
+		}
 	}
 
 	async function selectCharacter() {
 		let updates = {};
 		updates[`/Users/${userId}/selectedCharacter`] = characterId;
-		const error = await ref.update(updates);
-		setAlertMessage(error);
+		try {
+			const error = await ref.update(updates);
+			setAlertMessage(error);
+		} catch (e) {
+			console.log('failed to update character');
+		}
 	}
 
 	function setAlertMessage(error) {
