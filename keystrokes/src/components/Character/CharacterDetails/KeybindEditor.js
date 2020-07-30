@@ -64,12 +64,11 @@ function KeybindEditor({
 						spec,
 						keyBinding
 					);
-					setAllKeybindings({
-						...allKeybindings,
-						[key]: keybindingsWeGot,
-					});
-					// replace above with setAllKeybindings(update(allKeybindings, {[key]: {$set: keybindingsWeGot}}))
-					// TODO need to test ^
+					setAllKeybindings(
+						update(allKeybindings, {
+							[key]: { $set: keybindingsWeGot },
+						})
+					);
 				}
 				//Set something to say "character not found"
 				setLoading(false);
