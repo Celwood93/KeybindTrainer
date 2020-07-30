@@ -49,15 +49,16 @@ function ManualKeybindModal({
 
 	useEffect(() => {
 		async function getSpells() {
-			const path = `/Spells/${characterClass}`;
 			try {
-				const snapShot = await ref.child(path).once('value');
+				const snapShot = await ref
+					.child(`/Spells/${characterClass}`)
+					.once('value');
 				if (snapShot.exists()) {
 					setSpells(snapShot.val());
 					setLoading(false);
 				}
 			} catch (e) {
-				console.log(`failed to get spells for ${characterClass}`);
+				console.error(`failed to get spells for ${characterClass}`);
 			}
 		}
 		getSpells();

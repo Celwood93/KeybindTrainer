@@ -21,7 +21,7 @@ function Home(props) {
 				return snapShot.val();
 			}
 		} catch (e) {
-			console.log(`failed to get value at ${userPath}`);
+			console.error(`failed to get value at ${userPath}`);
 		}
 		return null;
 	}

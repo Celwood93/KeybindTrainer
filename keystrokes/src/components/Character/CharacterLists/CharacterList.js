@@ -26,7 +26,7 @@ function CharacterList({ collectUserInfo, userPath, ...props }) {
 					setSelectedCharacter(user.selectedCharacter);
 				}
 			} catch (e) {
-				console.log('failed to collect user');
+				console.error('failed to collect user');
 			}
 		}
 		gettingUser();

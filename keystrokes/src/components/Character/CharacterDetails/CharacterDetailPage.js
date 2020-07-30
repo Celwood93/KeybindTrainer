@@ -42,7 +42,7 @@ function CharacterDetailPage({ userId, match }) {
 				//Set something to say "character not found"
 				setLoading(false);
 			} catch (e) {
-				console.log(`failed to collect value from ${path}`);
+				console.error(`failed to collect value from ${path}`);
 			}
 		}
 		if (!fields) {
@@ -78,7 +78,7 @@ function CharacterDetailPage({ userId, match }) {
 			const error = await ref.update(updates);
 			setAlertMessage(error);
 		} catch (e) {
-			console.log('error saving character updates');
+			console.error('error saving character updates');
 		}
 	}
 
@@ -89,7 +89,7 @@ function CharacterDetailPage({ userId, match }) {
 			const error = await ref.update(updates);
 			setAlertMessage(error);
 		} catch (e) {
-			console.log('failed to update character');
+			console.error('failed to update character');
 		}
 	}
 

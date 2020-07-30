@@ -68,11 +68,13 @@ function KeybindEditor({
 						...allKeybindings,
 						[key]: keybindingsWeGot,
 					});
+					// replace above with setAllKeybindings(update(allKeybindings, {[key]: {$set: keybindingsWeGot}}))
+					// TODO need to test ^
 				}
 				//Set something to say "character not found"
 				setLoading(false);
 			} catch (e) {
-				console.log(`failed to collect keybindings for path ${path}`);
+				console.error(`failed to collect keybindings for path ${path}`);
 			}
 		}
 		collectKeybindings();
