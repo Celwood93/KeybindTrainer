@@ -49,11 +49,16 @@ function ManualKeybindModal({
 
 	useEffect(() => {
 		async function getSpells() {
-			const path = `/Spells/${characterClass}`;
-			const snapShot = await ref.child(path).once('value');
-			if (snapShot.exists()) {
-				setSpells(snapShot.val());
-				setLoading(false);
+			try {
+				const snapShot = await ref
+					.child(`/Spells/${characterClass}`)
+					.once('value');
+				if (snapShot.exists()) {
+					setSpells(snapShot.val());
+					setLoading(false);
+				}
+			} catch (e) {
+				console.error(`failed to get spells for ${characterClass}`);
 			}
 		}
 		getSpells();
@@ -104,11 +109,6 @@ function ManualKeybindModal({
 									variant="contained"
 									size="large"
 									onClick={() => {
-										console.log(
-											allKeybindings,
-											allKeybinds,
-											keyBindingKey
-										);
 										setAllKeybindings(
 											update(allKeybindings, {
 												[keyBindingKey]: {

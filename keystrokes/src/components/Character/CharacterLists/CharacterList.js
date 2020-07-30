@@ -18,12 +18,15 @@ function CharacterList({ collectUserInfo, userPath, ...props }) {
 
 	useEffect(() => {
 		async function gettingUser() {
-			//TODO consider putting all DB operations into their own module/util file.
-			const user = await collectUserInfo();
+			try {
+				const user = await collectUserInfo();
 
-			if (user) {
-				setCharacters(user.characters || {});
-				setSelectedCharacter(user.selectedCharacter);
+				if (user) {
+					setCharacters(user.characters || {});
+					setSelectedCharacter(user.selectedCharacter);
+				}
+			} catch (e) {
+				console.error('failed to collect user');
 			}
 		}
 		gettingUser();

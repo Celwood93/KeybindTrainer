@@ -15,9 +15,13 @@ function Home(props) {
 	});
 
 	async function collectUserInfo() {
-		const snapShot = await ref.child(userPath).once('value');
-		if (snapShot.exists()) {
-			return snapShot.val();
+		try {
+			const snapShot = await ref.child(userPath).once('value');
+			if (snapShot.exists()) {
+				return snapShot.val();
+			}
+		} catch (e) {
+			console.error(`failed to get value at ${userPath}`);
 		}
 		return null;
 	}
@@ -57,13 +61,7 @@ function Home(props) {
 					<Route
 						path="/game"
 						exact
-						render={props => (
-							<Game
-								{...props}
-								userInfo={user}
-								userPath={userPath}
-							/>
-						)}
+						render={props => <Game {...props} userInfo={user} />}
 					/>
 				</Switch>
 			</div>

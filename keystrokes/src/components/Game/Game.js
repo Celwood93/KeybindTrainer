@@ -1,98 +1,119 @@
-import React, { Component, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import '../../stylesheets/App.css';
 
-import { getNextKey } from '../utils/utils.js';
+import {
+	getNextKey,
+	characterKeybindings,
+	validatePress,
+	verifyKey,
+} from '../utils/utils';
 
 import { ref } from '../../config/constants';
 
-class App extends Component {
-	constructor() {
-		super();
-		this.getNextKey = getNextKey.bind();
-		this.body = null;
+Game.propTypes = {
+	userInfo: PropTypes.object,
+};
+function Game({ userInfo }) {
+	const [key, setKey] = useState();
+	const [keyBindings, setKeyBindings] = useState();
+	const [failedFirstTry, setFailedFirstTry] = useState(false);
 
-		// Initial values, I think these should be set from a webpage that occurs
-		// before here. None of these db calls should be done in this class tbh
-		// they should be passed from something above (no idea how to do that yet)
-		this.state = {
-			keybindings: { gettingStarted: { spell: 'getting started!' } },
-			keys: ['gettingStarted'],
-			key: 'gettingStarted',
-		};
-	}
-
-	async componentDidMount() {
-		this.body = document.querySelector('body');
-		this.body.onkeydown = this.handleKeyPress;
-
-		try {
-			const snapshot = await ref.child('/Keybindings/1').once('value');
-			const keybindings = snapshot.val();
-			//console.log('keybindings from the server', keybindings);
-
-			this.setState(
-				{
-					keybindings,
-					keys: Object.keys(keybindings),
-					key: '1',
-				},
-				() => {
-					const newKey = this.getNextKey(this.state.keys);
-					this.setState({ key: newKey });
+	useEffect(() => {
+		async function collectCharacterInfo() {
+			const path = `/Characters/${userInfo.selectedCharacter}`;
+			try {
+				const snapShot = await ref.child(path).once('value');
+				if (snapShot.exists()) {
+					const charDetails = snapShot.val();
+					collectKeybindings(
+						charDetails,
+						charDetails.selectedSpec,
+						charDetails.specs[charDetails.selectedSpec]
+							.selectedKeybindings
+					);
 				}
-			);
-		} catch (error) {
-			console.warn(error);
+			} catch (e) {
+				console.log(`Failed to get character info for game`);
+			}
 		}
-	}
+		async function collectKeybindings(character, spec, keyBinding) {
+			const path = `/Keybindings/${characterKeybindings(
+				character,
+				spec,
+				keyBinding
+			)}`;
+			try {
+				const snapShot = await ref.child(path).once('value');
+				if (snapShot.exists()) {
+					const k = snapShot.val();
+					setKeyBindings(k);
+					const newKey = getNextKey(Object.keys(k));
+					setKey(newKey);
+				}
+			} catch (e) {
+				console.log(`failed to get value for path ${path}`);
+			}
+		}
+		collectCharacterInfo();
+	}, [userInfo]);
 
-	handleKeyPress = e => {
+	useEffect(() => {
+		document.body.onkeydown = handleKeyPress;
+		return () => {
+			document.body.onkeydown = null;
+		};
+	}, [keyBindings, key]);
+
+	function handleKeyPress(e) {
 		if (!e.metaKey) {
 			e.preventDefault();
 		}
-		console.log(e.code);
 		const keyPressed = {
-			key: e.code.toLowerCase().replace(/digit|key|left|right/i, ''),
-			altKey: e.altKey,
-			ctrlKey: e.ctrlKey,
-			shiftKey: e.shiftKey,
+			key: verifyKey(e.code.toLowerCase().replace(/digit|key/i, '')),
+			Alt: e.altKey,
+			Ctrl: e.ctrlKey,
+			Shift: e.shiftKey,
+			None: !(e.altKey || e.ctrlKey || e.shiftKey),
 		};
-		if (
-			keyPressed.key !== 'shift' &&
-			keyPressed.key !== 'alt' &&
-			keyPressed.key !== 'control'
-		) {
-			const expectedKey = this.state.keybindings[this.state.key];
-			//there is an issue here if the key is not a letter or a number, such as ` or ,
-			//also issue with tab related commands (ctrl w)
+		if (validatePress(keyPressed.key)) {
+			const expectedKey = keyBindings[key];
 			if (
-				keyPressed.key === expectedKey.key &&
-				((expectedKey.modifier === 'CONTROL' && keyPressed.ctrlKey) ||
-					(expectedKey.modifier === 'SHIFT' && keyPressed.shiftKey) ||
-					(expectedKey.modifier === 'ALT' && keyPressed.altKey) ||
-					(expectedKey.modifier === 'NONE' &&
-						!keyPressed.ctrlKey &&
-						!keyPressed.altKey &&
-						!keyPressed.shiftKey))
+				keyPressed.key === expectedKey.Key &&
+				keyPressed[expectedKey.Mod]
 			) {
-				const newKey = this.getNextKey(this);
-				this.setState({ key: newKey });
+				const newKey = getNextKey(Object.keys(keyBindings));
+				setKey(newKey);
+				setFailedFirstTry(false);
+			} else {
+				setFailedFirstTry(true);
 			}
 		}
-	};
-
-	render() {
-		return (
-			<Fragment>
-				<div className="App-header">
-					{this.state.keybindings[this.state.key].spell}
-				</div>
-				<div className="App-header">
-					On {this.state.keybindings[this.state.key].target}
-				</div>
-			</Fragment>
-		);
 	}
+
+	return (
+		<React.Fragment>
+			<div className="App-header">
+				{keyBindings &&
+					key &&
+					keyBindings[key] &&
+					keyBindings[key].Spell}
+			</div>
+			<div className="App-header">
+				{keyBindings && key && keyBindings[key] && (
+					<div>on {keyBindings[key].Target}</div>
+				)}
+			</div>
+			<div>
+				{failedFirstTry && (
+					<div>
+						correct keybinding: {keyBindings[key].Mod}{' '}
+						{keyBindings[key].Key}
+					</div>
+				)}
+			</div>
+		</React.Fragment>
+	);
 }
 
-export default App;
+export default Game;

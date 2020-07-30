@@ -49,23 +49,32 @@ function KeybindEditor({
 				spec,
 				keyBinding
 			)}`;
-			const snapShot = await ref.child(path).once('value');
-			if (
-				!Object.keys(allKeybindings).includes(
-					characterKeybindings(character, spec, keyBinding)
-				)
-			) {
-				const keybindingsWeGot = snapShot.exists()
-					? snapShot.val()
-					: [];
-				const key = characterKeybindings(character, spec, keyBinding);
-				setAllKeybindings({
-					...allKeybindings,
-					[key]: keybindingsWeGot,
-				});
+			try {
+				const snapShot = await ref.child(path).once('value');
+				if (
+					!Object.keys(allKeybindings).includes(
+						characterKeybindings(character, spec, keyBinding)
+					)
+				) {
+					const keybindingsWeGot = snapShot.exists()
+						? snapShot.val()
+						: [];
+					const key = characterKeybindings(
+						character,
+						spec,
+						keyBinding
+					);
+					setAllKeybindings(
+						update(allKeybindings, {
+							[key]: { $set: keybindingsWeGot },
+						})
+					);
+				}
+				//Set something to say "character not found"
+				setLoading(false);
+			} catch (e) {
+				console.error(`failed to collect keybindings for path ${path}`);
 			}
-			//Set something to say "character not found"
-			setLoading(false);
 		}
 		collectKeybindings();
 	});
