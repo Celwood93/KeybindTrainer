@@ -21,8 +21,8 @@ function Game({ userInfo }) {
 
 	useEffect(() => {
 		async function collectCharacterInfo() {
-			const path = `/Characters/${userInfo.selectedCharacter}`;
 			try {
+				const path = `/Characters/${userInfo.selectedCharacter}`;
 				const snapShot = await ref.child(path).once('value');
 				if (snapShot.exists()) {
 					const charDetails = snapShot.val();
@@ -78,9 +78,10 @@ function Game({ userInfo }) {
 		};
 		if (validatePress(keyPressed.key)) {
 			const expectedKey = keyBindings[key];
+			console.log(expectedKey.Mod, keyPressed);
 			if (
 				keyPressed.key === expectedKey.Key &&
-				keyPressed[expectedKey.Mod]
+				(keyPressed[expectedKey.Mod] || expectedKey.Mod === undefined) //TODO this is a hotfix, expectedKey.Mod should never be undefined
 			) {
 				const newKey = getNextKey(Object.keys(keyBindings));
 				setKey(newKey);

@@ -6,6 +6,10 @@ const config = {
 	authDomain: 'keystrokes-eb786.firebaseapp.com',
 	projectId: 'keystrokes-eb786',
 };
+
+if (window.location.hostname === 'localhost') {
+	config.databaseURL = 'http://localhost:9000?ns=keystrokes-eb786';
+}
 firebase.initializeApp(config);
 
 export const targetting = {
@@ -13,10 +17,21 @@ export const targetting = {
 	MANY_ENEMY: ['Target', 'Focus', 'Arena1', 'Arena2', 'Arena3'],
 	ONE_FRIENDLY: ['Self', 'Target', 'Focus', 'Party1', 'Party2', 'Party3'],
 	MANY_FRIENDLY: ['Self', 'Target', 'Focus', 'Party1', 'Party2', 'Party3'],
+	ONE_ANY: [
+		'Self',
+		'Target',
+		'Focus',
+		'Party1',
+		'Party2',
+		'Party3',
+		'Arena1',
+		'Arena2',
+		'Arena3',
+	],
 	SELF: ['Self'],
 };
 
-export const mods = ['Shift', 'Ctrl', 'Alt', 'None'];
+export const mods = ['None', 'Shift', 'Ctrl', 'Alt'];
 
 export const characterDetails = {
 	race: [
