@@ -78,7 +78,6 @@ function Game({ userInfo }) {
 		};
 		if (validatePress(keyPressed.key)) {
 			const expectedKey = keyBindings[key];
-			console.log(expectedKey.Mod, keyPressed);
 			if (
 				keyPressed.key === expectedKey.Key &&
 				(keyPressed[expectedKey.Mod] || expectedKey.Mod === undefined) //TODO this is a hotfix, expectedKey.Mod should never be undefined

@@ -48,7 +48,6 @@ function Home(props) {
 								{...props}
 								collectUserInfo={collectUserInfo}
 								userPath={userPath}
-								userId={userId}
 							/>
 						)}
 					/>

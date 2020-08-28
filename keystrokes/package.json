@@ -5,6 +5,7 @@
 	"devDependencies": {
 		"@testing-library/react": "^10.4.9",
 		"babel-jest": "^23.6.0",
+		"cypress": "^5.0.0",
 		"enzyme": "^3.7.0",
 		"enzyme-adapter-react-16": "^1.7.0",
 		"enzyme-to-json": "^3.3.4",
@@ -21,6 +22,7 @@
 		"@material-ui/icons": "^4.5.1",
 		"@material-ui/lab": "^4.0.0-alpha.40",
 		"firebase": "^5.2.0",
+		"firebase-tools": "^8.9.2",
 		"firebaseui": "^3.4.1",
 		"immutability-helper": "^3.0.1",
 		"lodash": "^4.17.19",
@@ -37,9 +39,10 @@
 	"scripts": {
 		"start": "react-scripts start",
 		"build": "react-scripts build",
-		"test2": "react-scripts test --env=jsdom && firebase emulator:exec --import=./test-db-seed",
+		"test2": "react-scripts test --env=jsdom && firebase emulators:exec --import=./test-db-seed",
 		"test": "react-scripts test --env=jsdom",
-		"eject": "react-scripts eject"
+		"eject": "react-scripts eject",
+		"cypress": "cypress open"
 	},
 	"prettier": {
 		"useTabs": true,
