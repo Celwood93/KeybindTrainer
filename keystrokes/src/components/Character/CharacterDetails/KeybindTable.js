@@ -40,7 +40,10 @@ function KeybindTable({ allKeybinds }) {
 					</TableHead>
 					<TableBody>
 						{allKeybinds.map(row => (
-							<TableRow key={row.Spell + row.Target}>
+							<TableRow
+								key={row.Spell + row.Target}
+								id="keybind-row-container"
+							>
 								<TableCell component="th" scope="row">
 									{row.Spell}
 								</TableCell>

@@ -99,6 +99,7 @@ function CharacterKeybindDisplay({
 							<Button
 								variant="contained"
 								color="primary"
+								id="description-edit-button"
 								className={classes.bottomMarginNegTwo}
 								onClick={() => toggleDescription(false)}
 							>
@@ -108,6 +109,7 @@ function CharacterKeybindDisplay({
 							<div>
 								<Button
 									variant="contained"
+									id="description-cancel-button"
 									color="secondary"
 									className={classes.bottomMarginNegTwo}
 									onClick={() => toggleDescription(false)}
@@ -117,6 +119,7 @@ function CharacterKeybindDisplay({
 								<Button
 									variant="contained"
 									color="primary"
+									id="description-save-button"
 									className={classes.bottomMarginNegTwo}
 									onClick={() => toggleDescription(true)}
 								>
@@ -133,7 +136,11 @@ function CharacterKeybindDisplay({
 								elevation={3}
 								className={classes.paddingTwoRem}
 							>
-								<Typography align="left" component="span">
+								<Typography
+									align="left"
+									component="span"
+									id="description-text"
+								>
 									{ReactHtmlParser(
 										character.specs[spec].keybindings[
 											keyBinding
@@ -155,6 +162,7 @@ function CharacterKeybindDisplay({
 								<ReactQuill
 									value={descriptionText}
 									style={{ fontSize: '1rem' }}
+									id="description-edit-area"
 									theme="snow"
 									onChange={value =>
 										setDescriptionText(value)
@@ -193,6 +201,7 @@ function CharacterKeybindDisplay({
 					<Grid item>
 						<Button
 							variant="contained"
+							id="talent-edit-button"
 							color="primary"
 							className={classes.bottomMarginNegTwo}
 						>

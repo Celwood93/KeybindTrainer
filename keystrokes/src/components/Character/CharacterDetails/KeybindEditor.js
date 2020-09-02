@@ -129,6 +129,7 @@ function KeybindEditor({
 				<Grid item>
 					<Button
 						variant="contained"
+						id="keybind-edit-button"
 						aria-controls="simple-menu"
 						aria-haspopup="true"
 						color="primary"
@@ -169,7 +170,7 @@ function KeybindEditor({
 						<ExpansionPanelSummary
 							expandIcon={<ExpandMoreIcon />}
 							aria-controls="panel1a-content"
-							id="panel1a-header"
+							id="panel1a-header-keybinds"
 						>
 							<Typography variant="h5" align="left">
 								Preview

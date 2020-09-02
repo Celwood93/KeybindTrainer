@@ -101,12 +101,14 @@ function Game({ userInfo }) {
 			</div>
 			<div className="App-header">
 				{keyBindings && key && keyBindings[key] && (
-					<div>on {keyBindings[key].Target}</div>
+					<div id="keybind-prompt" tabIndex="1">
+						on {keyBindings[key].Target}
+					</div>
 				)}
 			</div>
 			<div>
 				{failedFirstTry && (
-					<div>
+					<div id="failed-prompt" tabIndex="1">
 						correct keybinding: {keyBindings[key].Mod}{' '}
 						{keyBindings[key].Key}
 					</div>
