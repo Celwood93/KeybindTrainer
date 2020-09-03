@@ -21,8 +21,8 @@ function Game({ userInfo }) {
 
 	useEffect(() => {
 		async function collectCharacterInfo() {
-			const path = `/Characters/${userInfo.selectedCharacter}`;
 			try {
+				const path = `/Characters/${userInfo.selectedCharacter}`;
 				const snapShot = await ref.child(path).once('value');
 				if (snapShot.exists()) {
 					const charDetails = snapShot.val();
@@ -80,7 +80,7 @@ function Game({ userInfo }) {
 			const expectedKey = keyBindings[key];
 			if (
 				keyPressed.key === expectedKey.Key &&
-				keyPressed[expectedKey.Mod]
+				(keyPressed[expectedKey.Mod] || expectedKey.Mod === undefined) //TODO this is a hotfix, expectedKey.Mod should never be undefined
 			) {
 				const newKey = getNextKey(Object.keys(keyBindings));
 				setKey(newKey);
@@ -101,12 +101,14 @@ function Game({ userInfo }) {
 			</div>
 			<div className="App-header">
 				{keyBindings && key && keyBindings[key] && (
-					<div>on {keyBindings[key].Target}</div>
+					<div id="keybind-prompt" tabIndex="1">
+						on {keyBindings[key].Target}
+					</div>
 				)}
 			</div>
 			<div>
 				{failedFirstTry && (
-					<div>
+					<div id="failed-prompt" tabIndex="1">
 						correct keybinding: {keyBindings[key].Mod}{' '}
 						{keyBindings[key].Key}
 					</div>

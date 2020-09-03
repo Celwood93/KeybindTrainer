@@ -95,6 +95,12 @@ function ManualKeybindModal({
 									color="secondary"
 									variant="contained"
 									onClick={() => {
+										setKeybinding({
+											Spell: null,
+											Target: null,
+											Mod: null,
+											Key: null,
+										});
 										setAllKeybinds([]);
 										setIsOpen(false);
 									}}
@@ -137,6 +143,7 @@ function ManualKeybindModal({
 								<TextField
 									className={classes.button}
 									select
+									id={'spell-selector'}
 									variant="outlined"
 									value={keybinding.Spell || ''}
 									label="Spell"
@@ -154,6 +161,10 @@ function ManualKeybindModal({
 										.map(spell => (
 											<MenuItem
 												key={spell[0]}
+												id={`${spell[0].replace(
+													/ /g,
+													''
+												)}-option`}
 												value={spell[0]}
 											>
 												{spell[0]}
@@ -166,6 +177,7 @@ function ManualKeybindModal({
 									className={classes.button}
 									select={!!keybinding.Spell}
 									disabled={!keybinding.Spell}
+									id={'target-selector'}
 									variant="outlined"
 									value={keybinding.Target || ''}
 									label="Target"
@@ -182,6 +194,10 @@ function ManualKeybindModal({
 										].map(option => (
 											<MenuItem
 												key={option}
+												id={`${option.replace(
+													/ /g,
+													''
+												)}-option`}
 												value={option}
 											>
 												{option}
@@ -193,6 +209,7 @@ function ManualKeybindModal({
 								<TextField
 									className={classes.button}
 									select
+									id={'modifier-selector'}
 									disabled={!keybinding.Spell}
 									variant="outlined"
 									value={keybinding.Mod || ''}
@@ -205,7 +222,14 @@ function ManualKeybindModal({
 									}}
 								>
 									{mods.map(option => (
-										<MenuItem key={option} value={option}>
+										<MenuItem
+											key={option}
+											value={option}
+											id={`${option.replace(
+												/ /g,
+												''
+											)}-option`}
+										>
 											{option}
 										</MenuItem>
 									))}
@@ -216,6 +240,7 @@ function ManualKeybindModal({
 									className={classes.button}
 									disabled={!keybinding.Spell}
 									variant="outlined"
+									id={'keystroke-selector'}
 									value={keybinding.Key || ''}
 									label="Key"
 									onFocus={() => {

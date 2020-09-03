@@ -46,6 +46,7 @@ function CharacterCreationModal({ handleSubmit, isOpen, setIsOpen }) {
 					<Grid item>
 						<TextField
 							label="Character Name"
+							id="CharacterNameInput"
 							value={characterName}
 							onChange={event =>
 								setCharacterName(event.target.value)
@@ -58,13 +59,18 @@ function CharacterCreationModal({ handleSubmit, isOpen, setIsOpen }) {
 						<FormControl className={classes.button}>
 							<InputLabel>Race</InputLabel>
 							<Select
+								id="CharacterRaceInput"
 								value={characterRace}
 								onChange={event =>
 									setCharacterRace(event.target.value)
 								}
 							>
 								{characterDetails.race.map(race => (
-									<MenuItem key={race} value={race}>
+									<MenuItem
+										key={race}
+										value={race}
+										id={`${race.replace(/ /g, '')}-option`}
+									>
 										{race}
 									</MenuItem>
 								))}
@@ -75,6 +81,7 @@ function CharacterCreationModal({ handleSubmit, isOpen, setIsOpen }) {
 						<FormControl className={classes.button}>
 							<InputLabel>Class</InputLabel>
 							<Select
+								id="CharacterClassInput"
 								value={characterClass}
 								onChange={event =>
 									setCharacterClass(event.target.value)
@@ -84,6 +91,10 @@ function CharacterCreationModal({ handleSubmit, isOpen, setIsOpen }) {
 									heroClass => (
 										<MenuItem
 											key={heroClass}
+											id={`${heroClass.replace(
+												/ /g,
+												''
+											)}-option`}
 											value={heroClass}
 										>
 											{heroClass}
@@ -100,6 +111,7 @@ function CharacterCreationModal({ handleSubmit, isOpen, setIsOpen }) {
 						>
 							<InputLabel>Spec</InputLabel>
 							<Select
+								id="CharacterSpecInput"
 								value={characterSpec}
 								onChange={event =>
 									setCharacterSpec(event.target.value)
@@ -109,6 +121,10 @@ function CharacterCreationModal({ handleSubmit, isOpen, setIsOpen }) {
 									spec => (
 										<MenuItem
 											key={spec}
+											id={`${spec.replace(
+												/ /g,
+												''
+											)}-option`}
 											value={characterDetails.class[
 												characterClass
 											].findIndex(ele => ele === spec)}
@@ -122,12 +138,21 @@ function CharacterCreationModal({ handleSubmit, isOpen, setIsOpen }) {
 					</Grid>
 				</Grid>
 				<Grid container justify="flex-end">
-					<Grid item style={{ paddingTop: '5rem' }}>
-						<Button size="large" onClick={() => setIsOpen(false)}>
+					<Grid item className={classes.paddingTop}>
+						<Button
+							size="large"
+							onClick={() => {
+								setIsOpen(false);
+								setCharacterClass('');
+								setCharacterName('');
+								setCharacterSpec('');
+								setCharacterRace('');
+							}}
+						>
 							Cancel
 						</Button>
 					</Grid>
-					<Grid item style={{ paddingTop: '5rem' }}>
+					<Grid item className={classes.paddingTop}>
 						<Button
 							disabled={canSave()}
 							size="large"
