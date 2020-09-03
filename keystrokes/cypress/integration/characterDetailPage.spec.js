@@ -38,9 +38,12 @@ describe('Tests for Character Detail Page', () => {
 				cy.contains('Character Management').click();
 				cy.contains('PriestTest').click();
 				cy.get('#description-edit-button').click();
-				cy.get('#description-edit-area')
-					.click()
-					.type('Keybindings 1 for discipline spec on priest test');
+				cy.get('#description-edit-area').click();
+				cy.get('.ql-editor').then($span => {
+					$span.text(
+						'Keybindings 1 for discipline spec on priest test'
+					);
+				});
 
 				cy.get('#description-save-button').click();
 				cy.get('#description-text').should(
@@ -72,9 +75,10 @@ describe('Tests for Character Detail Page', () => {
 								characterDetails.class['Priest'][specIndex]
 							} spec on priest test`;
 							cy.get('#description-edit-button').click();
-							cy.get('#description-edit-area')
-								.click()
-								.type(descriptionText);
+							cy.get('#description-edit-area').click();
+							cy.get('.ql-editor').then($span => {
+								$span.text(descriptionText);
+							});
 
 							cy.get('#description-save-button').click();
 							cy.get('#description-text').should(
