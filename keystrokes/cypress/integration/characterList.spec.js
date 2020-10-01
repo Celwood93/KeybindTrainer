@@ -39,8 +39,9 @@ describe('Tests for CharacterList', () => {
 
 		it('Should have 4 options in the right order', () => {
 			cy.get('.MuiList-root')
+				.children()
 				.its('length')
-				.should('be', 4);
+				.should('eq', 4 + 1); //the +1 is for the hr div at the bottom
 			cy.get('.MuiList-root')
 				.children()
 				.first()
