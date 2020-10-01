@@ -1,4 +1,4 @@
 codeship_example:
     build:
-        image: codeship/kt
+        image: codeship/keytrainer
         dockerfile: Dockerfile
