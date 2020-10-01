@@ -30,4 +30,4 @@ RUN node_modules/cypress/bin/cypress install
 # CMD [ "firebase", "emulators:start --import=./test-db-seed &" ]
 # CMD [ "yarn", "start &" ]
 # CMD [ "node_modules/cypress/bin/cypress", "install" ]
-CMD [ "./dockerEntryPoint.sh"]
+#CMD [ "./dockerEntryPoint.sh"]

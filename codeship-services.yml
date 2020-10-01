@@ -1,4 +1,5 @@
 cypress-codeship-test:
   build:
     image: cypress/cypress_codeship_test
-    dockerfile: keystrokes/Dockerfile
+    context: ./keystrokes/
+    dockerfile: Dockerfile
