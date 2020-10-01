@@ -1,5 +1,4 @@
-services:
-    app:
-        build:
-            image: codeship/keytrainer
-            dockerfile: keystrokes/Dockerfile
+cypress-codeship-test:
+  build:
+    image: cypress/cypress_codeship_test
+    dockerfile: keystrokes/Dockerfile
