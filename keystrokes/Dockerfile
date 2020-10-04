@@ -11,7 +11,6 @@ COPY cypress.json ./
 COPY package.json ./
 COPY firebase.json ./
 # maybe include service account, or make it its own thing im not sure
-COPY serviceAccount.json ./ 
 COPY .firebaserc ./
 COPY test-db-seed ./test-db-seed
 COPY .firebase ./
@@ -19,6 +18,7 @@ COPY functions ./functions
 COPY public ./public
 COPY database.rules.json ./
 COPY dockerEntryPoint.sh ./
+COPY .env.encrypted ./
 
 
 COPY cypress ./cypress
