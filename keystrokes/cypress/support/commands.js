@@ -38,6 +38,8 @@ const fbConfig = {
 	databaseURL: 'http://localhost:9000?ns=keystrokes-eb786',
 };
 
+console.log(fbConfig, fbConfig.credential);
+
 firebase.initializeApp(fbConfig);
 
 Cypress.Commands.add('resetDB', () => {
