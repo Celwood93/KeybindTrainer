@@ -29,14 +29,9 @@ import 'firebase/auth';
 import 'firebase/database';
 import 'firebase/firestore';
 import { attachCustomCommands } from 'cypress-firebase';
-const serviceAccount = require('../../serviceAccount.json');
-const admin = require('firebase-admin');
 
 const fbConfig = {
 	apiKey: 'AIzaSyDIKqaQX9sWRkCY2WIvIDrVGEzYWtPeLEQ',
-	credential: admin.credential.cert(
-		serviceAccount || process.env.GOOGLE_AUTH_JSON
-	),
 	databaseURL: 'http://localhost:9000?ns=keystrokes-eb786',
 };
 
