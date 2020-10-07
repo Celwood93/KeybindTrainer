@@ -10,24 +10,16 @@ COPY src ./src
 COPY cypress.json ./
 COPY package.json ./
 COPY firebase.json ./
-# maybe include service account, or make it its own thing im not sure
 COPY .firebaserc ./
 COPY test-db-seed ./test-db-seed
 COPY .firebase ./
 COPY functions ./functions
 COPY public ./public
 COPY database.rules.json ./
-COPY dockerEntryPoint.sh ./
+COPY codeshipEntryPoint.sh ./
 COPY .env.encrypted ./
-
-
 COPY cypress ./cypress
+
 RUN yarn
 RUN npm install -g firebase-tools
 RUN node_modules/cypress/bin/cypress install
-# RUN firebase emulators:exec --import=./test-db-seed yarn start 
-
-# CMD [ "firebase", "emulators:start --import=./test-db-seed &" ]
-# CMD [ "yarn", "start &" ]
-# CMD [ "node_modules/cypress/bin/cypress", "install" ]
-#CMD [ "./dockerEntryPoint.sh"]
