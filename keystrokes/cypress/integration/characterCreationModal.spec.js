@@ -32,7 +32,7 @@ describe('Tests for CharacterCreationModal', () => {
 				.parent()
 				.children()
 				.its('length')
-				.should('be.eq', characterDetails.race.length);
+				.should('eq', characterDetails.race.length);
 			cy.get('#Human-option').click();
 			cy.get('#CharacterRaceInput').should('have.text', 'Human');
 			cy.get('#CharacterSpecInput').should('have.class', 'Mui-disabled');
@@ -45,7 +45,7 @@ describe('Tests for CharacterCreationModal', () => {
 				.parent()
 				.children()
 				.its('length')
-				.should('be.eq', Object.keys(characterDetails.class).length);
+				.should('eq', Object.keys(characterDetails.class).length);
 			cy.get('#Druid-option').click();
 			cy.get('#CharacterClassInput').should('have.text', 'Druid');
 			cy.get('#CharacterSpecInput').should(
@@ -64,7 +64,7 @@ describe('Tests for CharacterCreationModal', () => {
 				.parent()
 				.children()
 				.its('length')
-				.should('be', characterDetails.class['Druid'].length);
+				.should('eq', characterDetails.class['Druid'].length);
 			cy.get(`#${characterDetails.class['Druid'][1]}-option`).click();
 
 			cy.get('#CharacterSpecInput').should(

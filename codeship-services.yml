@@ -1,0 +1,7 @@
+cypress-codeship-test:
+  build:
+    image: cypress/cypress_codeship_test
+    context: ./keystrokes/
+    dockerfile: Dockerfile
+  encrypted_env_file:
+    - ./keystrokes/.env.encrypted

@@ -28,8 +28,9 @@ describe('Tests for Character Detail Page', () => {
 		it('Should be saved to the character list', () => {
 			cy.contains('Character Management').click();
 			cy.get('.MuiList-root')
+				.children()
 				.its('length')
-				.should('be', 5);
+				.should('eq', 5 + 1); //the +1 is for the hr div at the bottom
 			cy.contains('PriestTest').click();
 			cy.contains('DISCIPLINE');
 		});
