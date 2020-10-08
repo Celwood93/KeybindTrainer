@@ -255,7 +255,12 @@ function ManualKeybindModal({
 								<Button
 									className={classes.button}
 									color="primary"
-									disabled={false} //make this so everything has to be non-null
+									disabled={
+										!keybinding.Key ||
+										!keybinding.Mod ||
+										!keybinding.Spell ||
+										!keybinding.Target
+									}
 									variant="contained"
 									size="large"
 									onClick={() => {

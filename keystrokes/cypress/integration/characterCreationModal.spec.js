@@ -1,6 +1,7 @@
 import { characterDetails } from '../../src/config/constants';
 describe('Tests for CharacterCreationModal', () => {
 	it('authenticates', () => {
+		cy.logout();
 		cy.visit('/');
 		cy.login('ILHEEvO7wmWa0r7xtHqMmmQ3vxe2'); //might want to put this somewhere else
 		cy.contains('LandingPage');

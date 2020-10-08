@@ -1,6 +1,7 @@
 import { characterDetails } from '../../src/config/constants';
 describe('Tests for Manual Keybind Editor', () => {
 	it('authenticates', () => {
+		cy.logout();
 		cy.visit('/');
 		cy.login('ILHEEvO7wmWa0r7xtHqMmmQ3vxe2'); //might want to put this somewhere else
 		cy.contains('LandingPage');
@@ -50,6 +51,38 @@ describe('Tests for Manual Keybind Editor', () => {
 				.children()
 				.its('length')
 				.should('be.eq', 5);
+		});
+		it('should not be able to enter if there are missing values', () => {
+			cy.contains('Character Management').click();
+			cy.contains('TestCharacter1').click();
+
+			cy.get('#keybind-edit-button').click();
+			cy.contains('Manual').click();
+
+			cy.contains('Enter').should('be.disabled');
+
+			cy.get('#spell-selector').click();
+			cy.get('#Judgement-option').click();
+
+			cy.contains('Enter').should('be.disabled');
+
+			cy.get('#target-selector').click();
+			cy.get('#Target-option').click();
+
+			cy.contains('Enter').should('be.disabled');
+
+			cy.get('#modifier-selector').click();
+			cy.get('#None-option').click();
+
+			cy.contains('Enter').should('be.disabled');
+
+			cy.get('#keystroke-selector')
+				.click()
+				.type('k')
+				.blur();
+
+			cy.contains('Enter').should('be.enabled');
+			cy.contains('Cancel').click();
 		});
 		describe('it should have keybindings be consistent between keybind profiles and specs', () => {
 			it('should be able to add keybinds at the same time accross multiple keybind profiles and specs', () => {
