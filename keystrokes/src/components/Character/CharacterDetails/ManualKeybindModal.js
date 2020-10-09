@@ -82,6 +82,10 @@ function ManualKeybindModal({
 		}
 	}
 
+	function editKeybind(row) {
+		setKeybinding(row);
+	}
+
 	return (
 		<Modal open={isOpen} onClose={() => {}} className={classes.modal}>
 			<div className={classes.manualModalBackground}>
@@ -280,7 +284,16 @@ function ManualKeybindModal({
 								</Button>
 							</Grid>
 						</Grid>
-						<KeybindTable allKeybinds={allKeybinds} />
+						{keyBindingKey && allKeybindings[keyBindingKey] && (
+							<KeybindTable
+								allKeybinds={[
+									...allKeybinds,
+									...allKeybindings[keyBindingKey],
+								]}
+								editing={true}
+								editKeybind={editKeybind}
+							/>
+						)}
 					</React.Fragment>
 				)}
 			</div>

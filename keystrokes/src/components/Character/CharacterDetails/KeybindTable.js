@@ -17,9 +17,11 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 KeybindTable.propTypes = {
 	allKeybinds: PropTypes.array.isRequired,
+	editing: PropTypes.bool.isRequired,
+	editKeybind: PropTypes.func,
 };
 
-function KeybindTable({ allKeybinds }) {
+function KeybindTable({ allKeybinds, editing, editKeybind }) {
 	const classes = styleGuide();
 	return (
 		<Grid item>
@@ -53,14 +55,16 @@ function KeybindTable({ allKeybinds }) {
 								<TableCell align="right">{row.Mod}</TableCell>
 								<TableCell align="right">{row.Key}</TableCell>
 								<TableCell align="right">
-									<IconButton
-										onClick={() => {
-											console.log('is it working?');
-										}}
-										hoverstyle={{ cursor: 'pointer' }}
-									>
-										<EditIcon />
-									</IconButton>
+									{editing && (
+										<IconButton
+											onClick={() => {
+												editKeybind(row);
+											}}
+											hoverstyle={{ cursor: 'pointer' }}
+										>
+											<EditIcon />
+										</IconButton>
+									)}
 									<IconButton
 										onClick={() => {
 											console.log('is it working?');
