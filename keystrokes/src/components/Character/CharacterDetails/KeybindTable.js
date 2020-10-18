@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	Grid,
 	TableContainer,
@@ -13,15 +13,18 @@ import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import styleGuide from '../../../stylesheets/style';
 import EditIcon from '@material-ui/icons/Edit';
+import CancelOutlined from '@material-ui/icons/CancelOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 KeybindTable.propTypes = {
 	allKeybinds: PropTypes.array.isRequired,
 	editing: PropTypes.bool.isRequired,
 	editKeybind: PropTypes.func,
+	editThisRow: PropTypes.func,
+	editingKey: PropTypes.any,
 };
 
-function KeybindTable({ allKeybinds, editing, editKeybind }) {
+function KeybindTable({ allKeybinds, editing, editThisRow, editingKey }) {
 	const classes = styleGuide();
 	return (
 		<Grid item>
@@ -57,12 +60,22 @@ function KeybindTable({ allKeybinds, editing, editKeybind }) {
 								<TableCell align="right">
 									{editing && (
 										<IconButton
+											disabled={
+												editingKey &&
+												editingKey !==
+													row.Spell + row.Target
+											}
 											onClick={() => {
-												editKeybind(row);
+												editThisRow(row);
 											}}
 											hoverstyle={{ cursor: 'pointer' }}
 										>
-											<EditIcon />
+											{editingKey !==
+											row.Spell + row.Target ? (
+												<EditIcon />
+											) : (
+												<CancelOutlined />
+											)}
 										</IconButton>
 									)}
 									<IconButton

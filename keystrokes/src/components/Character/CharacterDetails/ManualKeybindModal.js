@@ -43,6 +43,7 @@ function ManualKeybindModal({
 	const [allKeybinds, setAllKeybinds] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [Spells, setSpells] = useState();
+	const [editingKey, setEditingKey] = useState();
 	const spec = characterDetails.class[characterClass][
 		characterSpec
 	].toUpperCase();
@@ -84,6 +85,23 @@ function ManualKeybindModal({
 
 	function editKeybind(row) {
 		setKeybinding(row);
+	}
+
+	function editThisRow(row) {
+		if (editingKey === row.Spell + row.Target) {
+			editKeybind({
+				Spell: null,
+				Target: null,
+				Mod: null,
+				Key: null,
+			});
+			setEditingKey();
+		} else {
+			setEditingKey(row.Spell + row.Target);
+			row['oldBindSpell'] = row.Spell;
+			row['oldBindTarget'] = row.Target;
+			editKeybind(row);
+		}
 	}
 
 	return (
@@ -292,6 +310,8 @@ function ManualKeybindModal({
 								]}
 								editing={true}
 								editKeybind={editKeybind}
+								editingKey={editingKey}
+								editThisRow={editThisRow}
 							/>
 						)}
 					</React.Fragment>

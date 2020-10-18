@@ -41,7 +41,7 @@
 	"scripts": {
 		"start": "react-scripts start",
 		"build": "react-scripts build",
-		"test2": "react-scripts test --env=jsdom && firebase emulators:exec --import=./test-db-seed",
+		"test2": "react-scripts test --env=jsdom && firebase emulators:start --import=./test-db-seed",
 		"test": "react-scripts test --env=jsdom",
 		"eject": "react-scripts eject",
 		"cy": "cypress open",
