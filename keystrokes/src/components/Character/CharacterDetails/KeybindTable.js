@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
 	Grid,
 	TableContainer,
@@ -18,13 +18,19 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 KeybindTable.propTypes = {
 	allKeybinds: PropTypes.array.isRequired,
-	editing: PropTypes.bool.isRequired,
-	editKeybind: PropTypes.func,
+	deleteThisRow: PropTypes.func,
+	editing: PropTypes.bool,
 	editThisRow: PropTypes.func,
 	editingKey: PropTypes.any,
 };
 
-function KeybindTable({ allKeybinds, editing, editThisRow, editingKey }) {
+function KeybindTable({
+	allKeybinds,
+	editing = false,
+	editThisRow,
+	deleteThisRow,
+	editingKey,
+}) {
 	const classes = styleGuide();
 	return (
 		<Grid item>
@@ -44,51 +50,63 @@ function KeybindTable({ allKeybinds, editing, editThisRow, editingKey }) {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{allKeybinds.map(row => (
-							<TableRow
-								key={row.Spell + row.Target}
-								id="keybind-row-container"
-							>
-								<TableCell component="th" scope="row">
-									{row.Spell}
-								</TableCell>
-								<TableCell align="right">
-									{row.Target}
-								</TableCell>
-								<TableCell align="right">{row.Mod}</TableCell>
-								<TableCell align="right">{row.Key}</TableCell>
-								<TableCell align="right">
-									{editing && (
-										<IconButton
-											disabled={
-												editingKey &&
-												editingKey !==
-													row.Spell + row.Target
-											}
-											onClick={() => {
-												editThisRow(row);
-											}}
-											hoverstyle={{ cursor: 'pointer' }}
-										>
-											{editingKey !==
-											row.Spell + row.Target ? (
-												<EditIcon />
-											) : (
-												<CancelOutlined />
-											)}
-										</IconButton>
-									)}
-									<IconButton
-										onClick={() => {
-											console.log('is it working?');
-										}}
-										hoverstyle={{ cursor: 'pointer' }}
-									>
-										<DeleteIcon />
-									</IconButton>
-								</TableCell>
-							</TableRow>
-						))}
+						{allKeybinds &&
+							allKeybinds.map(row => (
+								<TableRow
+									key={row.Spell + row.Target}
+									id="keybind-row-container"
+								>
+									<TableCell component="th" scope="row">
+										{row.Spell}
+									</TableCell>
+									<TableCell align="right">
+										{row.Target}
+									</TableCell>
+									<TableCell align="right">
+										{row.Mod}
+									</TableCell>
+									<TableCell align="right">
+										{row.Key}
+									</TableCell>
+									<TableCell align="right">
+										{editing && (
+											<div>
+												<IconButton
+													disabled={
+														editingKey &&
+														editingKey !==
+															row.Spell +
+																row.Target
+													}
+													onClick={() => {
+														editThisRow(row);
+													}}
+													hoverstyle={{
+														cursor: 'pointer',
+													}}
+												>
+													{editingKey !==
+													row.Spell + row.Target ? (
+														<EditIcon />
+													) : (
+														<CancelOutlined />
+													)}
+												</IconButton>
+												<IconButton
+													onClick={() => {
+														deleteThisRow(row);
+													}}
+													hoverstyle={{
+														cursor: 'pointer',
+													}}
+												>
+													<DeleteIcon />
+												</IconButton>
+											</div>
+										)}
+									</TableCell>
+								</TableRow>
+							))}
 					</TableBody>
 				</Table>
 			</TableContainer>

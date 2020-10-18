@@ -49,6 +49,12 @@ function ManualKeybindModal({
 	].toUpperCase();
 
 	useEffect(() => {
+		if (allKeybindings[keyBindingKey]) {
+			setAllKeybinds(allKeybindings[keyBindingKey]);
+		}
+	}, [allKeybindings]);
+
+	useEffect(() => {
 		async function getSpells() {
 			try {
 				const snapShot = await ref
@@ -83,24 +89,33 @@ function ManualKeybindModal({
 		}
 	}
 
-	function editKeybind(row) {
-		setKeybinding(row);
+	function deleteThisRow(row) {
+		setAllKeybinds(
+			allKeybinds.filter(bind => {
+				return JSON.stringify(bind) !== JSON.stringify(row);
+			})
+		);
 	}
 
 	function editThisRow(row) {
 		if (editingKey === row.Spell + row.Target) {
-			editKeybind({
+			setKeybinding({
 				Spell: null,
 				Target: null,
 				Mod: null,
 				Key: null,
 			});
+			delete row.delete;
 			setEditingKey();
 		} else {
 			setEditingKey(row.Spell + row.Target);
-			row['oldBindSpell'] = row.Spell;
-			row['oldBindTarget'] = row.Target;
-			editKeybind(row);
+			row['delete'] = false;
+			setKeybinding({
+				Key: row.Key,
+				Mod: row.Mod,
+				Spell: row.Spell,
+				Target: row.Target,
+			});
 		}
 	}
 
@@ -123,7 +138,9 @@ function ManualKeybindModal({
 											Mod: null,
 											Key: null,
 										});
-										setAllKeybinds([]);
+										setAllKeybinds(
+											allKeybindings[keyBindingKey]
+										);
 										setIsOpen(false);
 									}}
 									size="large"
@@ -140,14 +157,16 @@ function ManualKeybindModal({
 										setAllKeybindings(
 											update(allKeybindings, {
 												[keyBindingKey]: {
-													$push: allKeybinds,
+													$set: allKeybinds,
 												},
 											})
 										);
 										if (allKeybinds.length > 0) {
 											markAsConfigured();
 										}
-										setAllKeybinds([]);
+										setAllKeybinds(
+											allKeybindings[keyBindingKey]
+										);
 										setIsOpen(false);
 									}}
 								>
@@ -288,8 +307,11 @@ function ManualKeybindModal({
 									onClick={() => {
 										setAllKeybinds([
 											keybinding,
-											...allKeybinds,
+											...allKeybinds.filter(bind => {
+												return !('delete' in bind);
+											}),
 										]);
+										setEditingKey();
 										setKeybinding({
 											Spell: null,
 											Target: null,
@@ -304,14 +326,11 @@ function ManualKeybindModal({
 						</Grid>
 						{keyBindingKey && allKeybindings[keyBindingKey] && (
 							<KeybindTable
-								allKeybinds={[
-									...allKeybinds,
-									...allKeybindings[keyBindingKey],
-								]}
+								allKeybinds={allKeybinds}
 								editing={true}
-								editKeybind={editKeybind}
 								editingKey={editingKey}
 								editThisRow={editThisRow}
+								deleteThisRow={deleteThisRow}
 							/>
 						)}
 					</React.Fragment>

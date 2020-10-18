@@ -196,7 +196,6 @@ function KeybindEditor({
 												)
 											]
 										}
-										editing={false}
 									/>
 								) : (
 									<CircularProgress />
