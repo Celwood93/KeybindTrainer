@@ -87,9 +87,21 @@ function KeybindTable({
 												>
 													{editingKey !==
 													row.Spell + row.Target ? (
-														<EditIcon />
+														<EditIcon
+															id={`${row.Spell.replace(
+																/ /g,
+																''
+															) +
+																row.Target}-edit`}
+														/>
 													) : (
-														<CancelOutlined />
+														<CancelOutlined
+															id={`${row.Spell.replace(
+																/ /g,
+																''
+															) +
+																row.Target}-cancel`}
+														/>
 													)}
 												</IconButton>
 												<IconButton
@@ -100,7 +112,12 @@ function KeybindTable({
 														cursor: 'pointer',
 													}}
 												>
-													<DeleteIcon />
+													<DeleteIcon
+														id={`${row.Spell.replace(
+															/ /g,
+															''
+														) + row.Target}-delete`}
+													/>
 												</IconButton>
 											</div>
 										)}

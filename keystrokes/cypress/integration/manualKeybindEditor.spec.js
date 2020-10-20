@@ -84,6 +84,190 @@ describe('Tests for Manual Keybind Editor', () => {
 			cy.contains('Enter').should('be.enabled');
 			cy.contains('Cancel').click();
 		});
+
+		describe('it should be able to change/remove keybindings correctly', () => {
+			it('should be able to update an item and successfully save it', () => {
+				cy.contains('Character Management').click();
+				cy.contains('TestCharacter1').click();
+				cy.get('#keybind-edit-button').click();
+				cy.contains('Manual').click();
+				cy.get('#HolyShockTarget-edit').click();
+
+				cy.get('#HolyShockTarget-cancel').should('be.visible');
+
+				cy.get('#HammerofJusticeArena3-edit')
+					.parent()
+					.parent()
+					.should('have.class', 'Mui-disabled');
+
+				cy.get('#modifier-selector').click();
+				cy.get('#Shift-option').click();
+
+				cy.get('#keystroke-selector')
+					.click()
+					.type('k')
+					.blur();
+				cy.contains('Enter').click();
+				cy.get('#HolyShockTarget-edit')
+					.parent()
+					.parent()
+					.parent()
+					.parent()
+					.parent()
+					.children()
+					.within(ele => {
+						cy.wrap(ele)
+							.eq(0)
+							.should('have.text', 'Holy Shock');
+						cy.wrap(ele)
+							.eq(1)
+							.should('have.text', 'Target');
+
+						cy.wrap(ele)
+							.eq(2)
+							.should('have.text', 'Shift');
+
+						cy.wrap(ele)
+							.eq(3)
+							.should('have.text', 'k');
+					});
+				cy.contains('Finish').click();
+				cy.contains('Holy Shock')
+					.parent()
+					.children()
+					.within(ele => {
+						cy.wrap(ele)
+							.eq(0)
+							.should('have.text', 'Holy Shock');
+						cy.wrap(ele)
+							.eq(1)
+							.should('have.text', 'Target');
+
+						cy.wrap(ele)
+							.eq(2)
+							.should('have.text', 'Shift');
+
+						cy.wrap(ele)
+							.eq(3)
+							.should('have.text', 'k');
+					});
+				cy.contains('SAVE').click();
+				cy.reload();
+
+				cy.contains('Holy Shock')
+					.parent()
+					.children()
+					.within(ele => {
+						cy.wrap(ele)
+							.eq(0)
+							.should('have.text', 'Holy Shock');
+						cy.wrap(ele)
+							.eq(1)
+							.should('have.text', 'Target');
+
+						cy.wrap(ele)
+							.eq(2)
+							.should('have.text', 'Shift');
+
+						cy.wrap(ele)
+							.eq(3)
+							.should('have.text', 'k');
+					});
+
+				cy.resetDB();
+			});
+			it('should be able to delete an item and successfully save it', () => {
+				const names = [
+					'Hammer of JusticeArena3Ctrlr',
+					'Hammer of JusticeArena2Shiftr',
+					'Hammer of JusticeArena1Noner',
+				];
+				cy.contains('Character Management').click();
+				cy.contains('TestCharacter1').click();
+				cy.get('#keybind-edit-button').click();
+				cy.contains('Manual').click();
+				cy.get('#HolyShockTarget-delete').click();
+				cy.get('#HammerofJusticeArena3-edit')
+					.parent()
+					.parent()
+					.parent()
+					.parent()
+					.parent()
+					.parent()
+					.children()
+					.its('length')
+					.should('eq', 3);
+				cy.get('#HammerofJusticeArena3-edit')
+					.parent()
+					.parent()
+					.parent()
+					.parent()
+					.parent()
+					.parent()
+					.children()
+					.within(ele => {
+						for (let i = 0; i < names.length; i++) {
+							cy.wrap(ele)
+								.eq(i)
+								.within(ele2 => {
+									cy.wrap(ele2)
+										.eq(0)
+										.should('have.text', names[i]);
+								});
+						}
+					});
+				cy.contains('Finish').click();
+				cy.contains('Hammer of Justice')
+					.parent()
+					.parent()
+					.children()
+					.its('length')
+					.should('eq', 3);
+				cy.contains('Hammer of Justice')
+					.parent()
+					.parent()
+					.children()
+					.within(ele => {
+						for (let i = 0; i < names.length; i++) {
+							cy.wrap(ele)
+								.eq(i)
+								.within(ele2 => {
+									cy.wrap(ele2)
+										.eq(0)
+										.should('have.text', names[i]);
+								});
+						}
+					});
+
+				cy.contains('SAVE').click();
+				cy.reload();
+
+				cy.contains('Hammer of Justice')
+					.parent()
+					.parent()
+					.children()
+					.its('length')
+					.should('eq', 3);
+				cy.contains('Hammer of Justice')
+					.parent()
+					.parent()
+					.children()
+					.within(ele => {
+						for (let i = 0; i < names.length; i++) {
+							cy.wrap(ele)
+								.eq(i)
+								.within(ele2 => {
+									cy.wrap(ele2)
+										.eq(0)
+										.should('have.text', names[i]);
+								});
+						}
+					});
+
+				cy.resetDB();
+			});
+		});
+
 		describe('it should have keybindings be consistent between keybind profiles and specs', () => {
 			it('should be able to add keybinds at the same time accross multiple keybind profiles and specs', () => {
 				cy.contains('Character Management').click();
