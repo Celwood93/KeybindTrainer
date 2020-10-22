@@ -43,7 +43,7 @@ describe('Tests for Manual Keybind Editor', () => {
 				.its('length')
 				.should('be.eq', 5);
 
-			cy.contains('Finish').click();
+			cy.contains('Apply').click();
 			cy.get('#panel1a-header-keybinds').click();
 			cy.contains('Judgement')
 				.parent()
@@ -131,7 +131,7 @@ describe('Tests for Manual Keybind Editor', () => {
 							.eq(3)
 							.should('have.text', 'k');
 					});
-				cy.contains('Finish').click();
+				cy.contains('Apply').click();
 				cy.contains('Holy Shock')
 					.parent()
 					.children()
@@ -216,7 +216,7 @@ describe('Tests for Manual Keybind Editor', () => {
 								});
 						}
 					});
-				cy.contains('Finish').click();
+				cy.contains('Apply').click();
 				cy.contains('Hammer of Justice')
 					.parent()
 					.parent()
@@ -353,7 +353,7 @@ describe('Tests for Manual Keybind Editor', () => {
 						);
 
 						cy.contains('Enter').click();
-						cy.contains('Finish').click();
+						cy.contains('Apply').click();
 
 						if (keybindIndex < 1) {
 							cy.contains('Create New Keybindings').click();

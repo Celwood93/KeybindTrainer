@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Button, Grid, TextField, MenuItem } from '@material-ui/core';
+import { red } from '@material-ui/core/colors';
+import {
+	Modal,
+	Tooltip,
+	Button,
+	Grid,
+	TextField,
+	Typography,
+	MenuItem,
+	Avatar,
+} from '@material-ui/core';
+import WarningIcon from '@material-ui/icons/Warning';
 import update from 'immutability-helper';
 import PropTypes from 'prop-types';
 import KeybindTable from './KeybindTable';
@@ -44,6 +55,7 @@ function ManualKeybindModal({
 	const [loading, setLoading] = useState(true);
 	const [Spells, setSpells] = useState();
 	const [editingKey, setEditingKey] = useState();
+	const [invalidBind, setInvalidBind] = useState([]);
 	const spec = characterDetails.class[characterClass][
 		characterSpec
 	].toUpperCase();
@@ -87,6 +99,23 @@ function ManualKeybindModal({
 				Key: '',
 			});
 		}
+		checkIfInvalidAndAdd({
+			...keybinding,
+			Key: verifyKey(newKey),
+		});
+	}
+
+	function checkIfInvalidAndAdd(currKeybinding) {
+		setInvalidBind(
+			allKeybinds.filter(bind => {
+				return (
+					(bind.Key === currKeybinding.Key &&
+						bind.Mod === currKeybinding.Mod) ||
+					(bind.Spell === currKeybinding.Spell &&
+						bind.Target === currKeybinding.Target)
+				);
+			})
+		);
 	}
 
 	function deleteThisRow(row) {
@@ -117,6 +146,22 @@ function ManualKeybindModal({
 				Target: row.Target,
 			});
 		}
+	}
+
+	function onSubmit() {
+		setAllKeybinds([
+			keybinding,
+			...allKeybinds.filter(bind => {
+				return !('delete' in bind);
+			}),
+		]);
+		setEditingKey();
+		setKeybinding({
+			Spell: null,
+			Target: null,
+			Mod: null,
+			Key: null,
+		});
 	}
 
 	return (
@@ -170,7 +215,7 @@ function ManualKeybindModal({
 										setIsOpen(false);
 									}}
 								>
-									Finish
+									Apply
 								</Button>
 							</Grid>
 						</Grid>
@@ -190,27 +235,99 @@ function ManualKeybindModal({
 									label="Spell"
 									onChange={event => {
 										setKeybinding({
-											...keybinding,
 											Spell: event.target.value,
+											Target: null,
+											Mod: null,
+											Key: null,
 										});
+										setInvalidBind([]);
 									}}
 								>
 									{Object.entries(Spells)
 										.filter(spell =>
 											spell[1].spec.includes(spec)
 										)
-										.map(spell => (
-											<MenuItem
-												key={spell[0]}
-												id={`${spell[0].replace(
-													/ /g,
-													''
-												)}-option`}
-												value={spell[0]}
-											>
-												{spell[0]}
-											</MenuItem>
-										))}
+										.map(spell => {
+											const existingSpellBinds = allKeybinds.filter(
+												bind => bind.Spell === spell[0]
+											);
+											return (
+												<MenuItem
+													key={spell[0]}
+													id={`${spell[0].replace(
+														/ /g,
+														''
+													)}-option`}
+													value={spell[0]}
+												>
+													{keybinding.Spell !==
+													spell[0] ? (
+														<Grid
+															container
+															direction="row"
+															justify="space-between"
+														>
+															<Grid item>
+																{spell[0]}
+															</Grid>
+															<Grid item>
+																<Tooltip
+																	placement="right-end"
+																	title={
+																		existingSpellBinds &&
+																		existingSpellBinds.length ? (
+																			<React.Fragment>
+																				<Typography>
+																					Current
+																					keybinds
+																					for{' '}
+																					{
+																						spell[0]
+																					}
+																				</Typography>
+																				<ul>
+																					{existingSpellBinds.map(
+																						bind => (
+																							<li
+																								key={
+																									bind.Target
+																								}
+																							>
+																								<Typography>{`${bind.Target} ${bind.Mod} ${bind.Key}`}</Typography>
+																							</li>
+																						)
+																					)}
+																				</ul>
+																			</React.Fragment>
+																		) : (
+																			<React.Fragment>
+																				<Typography>{`No keybinds yet for ${spell[0]}!`}</Typography>
+																			</React.Fragment>
+																		)
+																	}
+																>
+																	<Avatar
+																		className={
+																			existingSpellBinds &&
+																			existingSpellBinds.length
+																				? classes.keybindsComplete
+																				: classes.keybindsIncomplete
+																		}
+																	>
+																		<Typography variant="subtitle2">
+																			{existingSpellBinds &&
+																				existingSpellBinds.length}
+																		</Typography>
+																	</Avatar>
+																</Tooltip>
+															</Grid>
+														</Grid>
+													) : (
+														spell[0]
+													)}
+												</MenuItem>
+											);
+										})}
 								</TextField>
 							</Grid>
 							<Grid item className={classes.keybindingOptions}>
@@ -227,23 +344,93 @@ function ManualKeybindModal({
 											...keybinding,
 											Target: event.target.value,
 										});
+										checkIfInvalidAndAdd({
+											...keybinding,
+											Target: event.target.value,
+										});
 									}}
 								>
 									{keybinding.Spell &&
 										targetting[
 											Spells[keybinding.Spell].targetType
-										].map(option => (
-											<MenuItem
-												key={option}
-												id={`${option.replace(
-													/ /g,
-													''
-												)}-option`}
-												value={option}
-											>
-												{option}
-											</MenuItem>
-										))}
+										].map(option => {
+											const existingSpellBinds = allKeybinds.filter(
+												bind => {
+													console.log(
+														bind,
+														keybinding,
+														option
+													);
+													return (
+														bind.Spell ===
+															keybinding.Spell &&
+														bind.Target === option
+													);
+												}
+											);
+											console.log(existingSpellBinds);
+											return (
+												<MenuItem
+													key={option}
+													id={`${option.replace(
+														/ /g,
+														''
+													)}-option`}
+													value={option}
+												>
+													{keybinding.Target !==
+													option ? (
+														<Grid
+															container
+															direction="row"
+															justify="space-between"
+														>
+															<Grid item>
+																{option}
+															</Grid>
+															<Grid item>
+																<Tooltip
+																	title={
+																		existingSpellBinds &&
+																		existingSpellBinds.length ? (
+																			<React.Fragment>
+																				<Typography>
+																					{`Already set for keybinding: ${existingSpellBinds &&
+																						existingSpellBinds[0]
+																							.Mod} ${existingSpellBinds &&
+																						existingSpellBinds[0]
+																							.Key}`}
+																				</Typography>
+																			</React.Fragment>
+																		) : (
+																			<React.Fragment>
+																				<Typography>{`Not set for ${keybinding.Spell}!`}</Typography>
+																			</React.Fragment>
+																		)
+																	}
+																	placement="right-end"
+																>
+																	<Avatar
+																		className={
+																			existingSpellBinds &&
+																			existingSpellBinds.length
+																				? classes.keybindsTargetComplete
+																				: classes.keybindsTargetIncomplete
+																		}
+																	>
+																		<Typography variant="subtitle2">
+																			{' '}
+																		</Typography>
+																	</Avatar>
+																</Tooltip>
+															</Grid>
+														</Grid>
+													) : (
+														option
+													)}
+												</MenuItem>
+											);
+										})}
 								</TextField>
 							</Grid>
 							<Grid item className={classes.keybindingOptions}>
@@ -257,6 +444,10 @@ function ManualKeybindModal({
 									label="Mod"
 									onChange={event => {
 										setKeybinding({
+											...keybinding,
+											Mod: event.target.value,
+										});
+										checkIfInvalidAndAdd({
 											...keybinding,
 											Mod: event.target.value,
 										});
@@ -304,25 +495,39 @@ function ManualKeybindModal({
 									}
 									variant="contained"
 									size="large"
-									onClick={() => {
-										setAllKeybinds([
-											keybinding,
-											...allKeybinds.filter(bind => {
-												return !('delete' in bind);
-											}),
-										]);
-										setEditingKey();
-										setKeybinding({
-											Spell: null,
-											Target: null,
-											Mod: null,
-											Key: null,
-										});
-									}}
+									onClick={onSubmit}
 								>
 									Enter
 								</Button>
 							</Grid>
+							{invalidBind.length ? (
+								<Tooltip
+									placement="right-end"
+									title={
+										<React.Fragment>
+											<Typography>
+												Conflicting Keybindings:
+											</Typography>
+											<ul>
+												{invalidBind.map(bind => (
+													<li
+														key={
+															bind.Target +
+															bind.Spell
+														}
+													>
+														<Typography>{`${bind.Spell} ${bind.Target} ${bind.Mod} ${bind.Key}`}</Typography>
+													</li>
+												))}
+											</ul>
+										</React.Fragment>
+									}
+								>
+									<WarningIcon style={{ color: red[500] }} />
+								</Tooltip>
+							) : (
+								<div />
+							)}
 						</Grid>
 						{keyBindingKey && allKeybindings[keyBindingKey] && (
 							<KeybindTable

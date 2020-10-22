@@ -123,7 +123,7 @@ function CharacterKeybindDisplay({
 									className={classes.bottomMarginNegTwo}
 									onClick={() => toggleDescription(true)}
 								>
-									Save
+									Apply
 								</Button>
 							</div>
 						)}
