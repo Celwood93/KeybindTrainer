@@ -56,6 +56,7 @@ function ManualKeybindModal({
 	const [Spells, setSpells] = useState();
 	const [editingKey, setEditingKey] = useState();
 	const [invalidBind, setInvalidBind] = useState([]);
+	const [isKBConflictOpen, setIsKBConflictOpen] = useState(false);
 	const spec = characterDetails.class[characterClass][
 		characterSpec
 	].toUpperCase();
@@ -109,10 +110,11 @@ function ManualKeybindModal({
 		setInvalidBind(
 			allKeybinds.filter(bind => {
 				return (
-					(bind.Key === currKeybinding.Key &&
+					!('delete' in bind) &&
+					((bind.Key === currKeybinding.Key &&
 						bind.Mod === currKeybinding.Mod) ||
-					(bind.Spell === currKeybinding.Spell &&
-						bind.Target === currKeybinding.Target)
+						(bind.Spell === currKeybinding.Spell &&
+							bind.Target === currKeybinding.Target))
 				);
 			})
 		);
@@ -149,19 +151,23 @@ function ManualKeybindModal({
 	}
 
 	function onSubmit() {
-		setAllKeybinds([
-			keybinding,
-			...allKeybinds.filter(bind => {
-				return !('delete' in bind);
-			}),
-		]);
-		setEditingKey();
-		setKeybinding({
-			Spell: null,
-			Target: null,
-			Mod: null,
-			Key: null,
-		});
+		if (invalidBind.length > 0) {
+			setIsKBConflictOpen(true);
+		} else {
+			setAllKeybinds([
+				keybinding,
+				...allKeybinds.filter(bind => {
+					return !('delete' in bind);
+				}),
+			]);
+			setEditingKey();
+			setKeybinding({
+				Spell: null,
+				Target: null,
+				Mod: null,
+				Key: null,
+			});
+		}
 	}
 
 	return (
@@ -171,6 +177,98 @@ function ManualKeybindModal({
 					<div>Loading</div>
 				) : (
 					<React.Fragment>
+						<Modal
+							open={isKBConflictOpen}
+							onClose={() => {}}
+							className={classes.modal}
+						>
+							<div className={classes.keybindingConflictModal}>
+								<Typography>
+									The following keybinds will be deleted:{' '}
+								</Typography>
+								<ul>
+									{invalidBind.map(bind => (
+										<li key={bind.Target}>
+											<Typography>{`${bind.Spell} ${bind.Target} ${bind.Mod} ${bind.Key}`}</Typography>
+										</li>
+									))}
+								</ul>
+
+								<Grid container justify="space-between">
+									<Grid item>
+										<Button
+											color="secondary"
+											variant="contained"
+											onClick={() => {
+												setIsKBConflictOpen(false);
+											}}
+											size="large"
+										>
+											Cancel
+										</Button>
+									</Grid>
+									<Grid item>
+										<Button
+											color="primary"
+											variant="contained"
+											size="large"
+											onClick={() => {
+												setAllKeybinds([
+													keybinding,
+													...allKeybinds.filter(
+														bind => {
+															let dontFilterBind = true;
+															for (
+																let i = 0;
+																i <
+																invalidBind.length;
+																i++
+															) {
+																dontFilterBind =
+																	dontFilterBind &&
+																	!(
+																		bind.Spell ===
+																			invalidBind[
+																				i
+																			]
+																				.Spell &&
+																		bind.Target ===
+																			invalidBind[
+																				i
+																			]
+																				.Target
+																	);
+															}
+
+															dontFilterBind =
+																dontFilterBind &&
+																!(
+																	'delete' in
+																	bind
+																);
+
+															return dontFilterBind;
+														}
+													),
+												]);
+												setInvalidBind([]);
+												setEditingKey();
+												setKeybinding({
+													Spell: null,
+													Target: null,
+													Mod: null,
+													Key: null,
+												});
+												//close modal
+												setIsKBConflictOpen(false);
+											}}
+										>
+											Confirm
+										</Button>
+									</Grid>
+								</Grid>
+							</div>
+						</Modal>
 						<Grid container justify="space-between">
 							<Grid item>
 								<Button
@@ -356,11 +454,6 @@ function ManualKeybindModal({
 										].map(option => {
 											const existingSpellBinds = allKeybinds.filter(
 												bind => {
-													console.log(
-														bind,
-														keybinding,
-														option
-													);
 													return (
 														bind.Spell ===
 															keybinding.Spell &&
@@ -368,7 +461,6 @@ function ManualKeybindModal({
 													);
 												}
 											);
-											console.log(existingSpellBinds);
 											return (
 												<MenuItem
 													key={option}

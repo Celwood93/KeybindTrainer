@@ -50,6 +50,14 @@ const styleGuide = makeStyles(theme => ({
 		boxShadow: theme.shadows[5],
 		padding: theme.spacing(2, 4, 3),
 	},
+	keybindingConflictModal: {
+		width: '30%',
+		height: '15%',
+		backgroundColor: theme.palette.background.paper,
+		border: '2px solid #000',
+		boxShadow: theme.shadows[5],
+		padding: theme.spacing(2, 4, 3),
+	},
 	paddingTop: {
 		paddingTop: '3rem',
 	},
