@@ -24,10 +24,8 @@ describe('Tests for CharacterList', () => {
 				.parent()
 				.parent()
 				.parent()
-				.should(
-					'have.class',
-					'makeStyles-characterListItemSelected-15'
-				);
+				.should('have.css', 'background-color')
+				.and('eq', 'rgb(255, 255, 0)');
 		});
 
 		it('Should have create new character', () => {
@@ -35,7 +33,8 @@ describe('Tests for CharacterList', () => {
 				.parent()
 				.parent()
 				.parent()
-				.should('have.class', 'makeStyles-newCharacterListItem-17');
+				.should('have.css', 'background-color')
+				.and('eq', 'rgb(144, 238, 144)');
 		});
 
 		it('Should have 4 options in the right order', () => {
@@ -75,15 +74,14 @@ describe('Tests for CharacterList', () => {
 				.parent()
 				.parent()
 				.parent()
-				.should(
-					'have.class',
-					'makeStyles-characterListItemSelected-15'
-				);
+				.should('have.css', 'background-color')
+				.and('eq', 'rgb(255, 255, 0)');
 			cy.contains('TestCharacter1')
 				.parent()
 				.parent()
 				.parent()
-				.should('have.class', 'makeStyles-characterListItem-14');
+				.should('have.css', 'background-color')
+				.and('eq', 'rgb(173, 216, 230)');
 		});
 	});
 });
