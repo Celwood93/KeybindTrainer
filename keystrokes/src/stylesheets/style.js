@@ -42,6 +42,9 @@ const styleGuide = makeStyles(theme => ({
 		marginTop: '3rem',
 		minWidth: '60%',
 	},
+	tableContainer: {
+		maxHeight: '38rem',
+	},
 	manualModalBackground: {
 		width: '70%',
 		height: '80%',

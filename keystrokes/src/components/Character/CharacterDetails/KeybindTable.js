@@ -34,11 +34,15 @@ function KeybindTable({
 	const classes = styleGuide();
 	return (
 		<Grid item>
-			<TableContainer component={Paper}>
+			<TableContainer
+				className={classes.tableContainer}
+				component={Paper}
+			>
 				<Table
+					stickyHeader
 					className={classes.table}
 					size="small"
-					aria-label="a dense table"
+					aria-label="sticky table"
 				>
 					<TableHead>
 						<TableRow>
