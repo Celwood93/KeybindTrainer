@@ -70,23 +70,22 @@ function ManualKeybindModal({
 
 	function checkIfInvalidAndAdd(currKeybinding) {
 		setInvalidBind(
-			allKeybinds.filter(bind => {
-				return (
+			allKeybinds.filter(
+				bind =>
 					!('delete' in bind) &&
 					((bind.Key === currKeybinding.Key &&
 						bind.Mod === currKeybinding.Mod) ||
 						(bind.Spell === currKeybinding.Spell &&
 							bind.Target === currKeybinding.Target))
-				);
-			})
+			)
 		);
 	}
 
 	function deleteThisRow(row) {
 		setAllKeybinds(
-			allKeybinds.filter(bind => {
-				return JSON.stringify(bind) !== JSON.stringify(row);
-			})
+			allKeybinds.filter(
+				bind => JSON.stringify(bind) !== JSON.stringify(row)
+			)
 		);
 	}
 
@@ -118,9 +117,7 @@ function ManualKeybindModal({
 		} else {
 			setAllKeybinds([
 				keybinding,
-				...allKeybinds.filter(bind => {
-					return !('delete' in bind);
-				}),
+				...allKeybinds.filter(bind => !('delete' in bind)),
 			]);
 			setEditingKey();
 			setKeybinding({
@@ -221,7 +218,6 @@ function ManualKeybindModal({
 													Mod: null,
 													Key: null,
 												});
-												//close modal
 												setIsKBConflictOpen(false);
 											}}
 										>
