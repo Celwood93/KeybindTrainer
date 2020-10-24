@@ -51,8 +51,7 @@ const styleGuide = makeStyles(theme => ({
 		padding: theme.spacing(2, 4, 3),
 	},
 	keybindingConflictModal: {
-		width: '30%',
-		height: '15%',
+		width: '35%',
 		backgroundColor: theme.palette.background.paper,
 		border: '2px solid #000',
 		boxShadow: theme.shadows[5],

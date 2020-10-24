@@ -148,7 +148,7 @@ function ManualKeybindModal({
 								<Typography>
 									The following keybinds will be deleted:{' '}
 								</Typography>
-								<ul>
+								<ul id={'warning-modal-items'}>
 									{invalidBind.map(bind => (
 										<li key={bind.Target}>
 											<Typography>{`${bind.Spell} ${bind.Target} ${bind.Mod} ${bind.Key}`}</Typography>
@@ -246,6 +246,8 @@ function ManualKeybindModal({
 										setAllKeybinds(
 											allKeybindings[keyBindingKey]
 										);
+										setInvalidBind([]);
+										setEditingKey();
 										setIsOpen(false);
 									}}
 									size="large"

@@ -109,6 +109,10 @@ function ManualKeybindInputs({
 											<Grid item>
 												<Tooltip
 													placement="right-end"
+													id={`${spell[0].replace(
+														/ /g,
+														''
+													)}-popup`}
 													title={
 														existingSpellBinds &&
 														existingSpellBinds.length ? (
@@ -146,6 +150,10 @@ function ManualKeybindInputs({
 																? classes.keybindsComplete
 																: classes.keybindsIncomplete
 														}
+														id={`${spell[0].replace(
+															/ /g,
+															''
+														)}-status`}
 													>
 														<Typography variant="subtitle2">
 															{existingSpellBinds &&
@@ -212,6 +220,10 @@ function ManualKeybindInputs({
 												<Grid item>{option}</Grid>
 												<Grid item>
 													<Tooltip
+														id={`${option.replace(
+															/ /g,
+															''
+														)}-popup`}
 														title={
 															existingSpellBinds &&
 															existingSpellBinds.length ? (
@@ -239,6 +251,10 @@ function ManualKeybindInputs({
 																	? classes.keybindsTargetComplete
 																	: classes.keybindsTargetIncomplete
 															}
+															id={`${option.replace(
+																/ /g,
+																''
+															)}-status`}
 														>
 															<Typography variant="subtitle2">
 																{' '}
@@ -323,6 +339,7 @@ function ManualKeybindInputs({
 			{invalidBind.length ? (
 				<Tooltip
 					placement="right-end"
+					id={'Invalid-bind-warning-popup'}
 					title={
 						<React.Fragment>
 							<Typography>Conflicting Keybindings:</Typography>
@@ -336,7 +353,10 @@ function ManualKeybindInputs({
 						</React.Fragment>
 					}
 				>
-					<WarningIcon style={{ color: red[500] }} />
+					<WarningIcon
+						id={'Invalid-bind-warning'}
+						style={{ color: red[500] }}
+					/>
 				</Tooltip>
 			) : (
 				<div />
