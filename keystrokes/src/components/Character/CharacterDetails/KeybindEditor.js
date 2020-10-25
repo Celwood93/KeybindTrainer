@@ -22,7 +22,6 @@ import RapidFireKeybindModal from './RapidFireKeybindModal';
 
 KeybindEditor.propTypes = {
 	character: PropTypes.object,
-	setCharacter: PropTypes.func,
 	spec: PropTypes.number,
 	allKeybindings: PropTypes.object,
 	setAllKeybindings: PropTypes.func,
@@ -30,7 +29,6 @@ KeybindEditor.propTypes = {
 };
 function KeybindEditor({
 	character,
-	setCharacter,
 	spec,
 	allKeybindings,
 	setAllKeybindings,
@@ -87,22 +85,11 @@ function KeybindEditor({
 		setEditOptions();
 	};
 
-	function markAsConfigured() {
-		setCharacter(
-			update(character, {
-				specs: {
-					[character.selectedSpec]: { configured: { $set: true } },
-				},
-			})
-		);
-	}
-
 	return (
 		<React.Fragment>
 			<ManualKeybindModal
 				isOpen={manualModal}
 				characterClass={character.class}
-				markAsConfigured={markAsConfigured}
 				characterSpec={spec}
 				setIsOpen={setManualModal}
 				setAllKeybindings={setAllKeybindings}

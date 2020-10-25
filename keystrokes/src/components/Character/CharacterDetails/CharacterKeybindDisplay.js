@@ -231,7 +231,6 @@ function CharacterKeybindDisplay({
 				<KeybindEditor
 					character={character}
 					spec={spec}
-					setCharacter={setCharacter}
 					keyBinding={keyBinding}
 					allKeybindings={allKeybindings}
 					setAllKeybindings={setAllKeybindings}

@@ -8,19 +8,14 @@ export function Character({ name, characterClass, race, spec }) {
 		name,
 		specs: {
 			...Array(characterDetails.class[characterClass].length).fill({
-				configured: false,
 				keybindings: [],
 			}),
 		},
 	};
 }
 
-export function Spec(
-	{ configured, keybindings = [], selectedKeybindings = 0 },
-	key
-) {
+export function Spec({ keybindings = [], selectedKeybindings = 0 }, key) {
 	return {
-		configured,
 		keybindings: [
 			...keybindings,
 			{

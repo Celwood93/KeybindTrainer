@@ -27,6 +27,15 @@ function Home(props) {
 	}
 
 	useEffect(() => {
+		try {
+			ref.child(userPath).on('value', change => {
+				if (change.exists()) {
+					setUser(change.val());
+				}
+			});
+		} catch (e) {
+			console.error(`failed to update value at ${userPath}`);
+		}
 		async function gettingUser() {
 			const user = await collectUserInfo();
 			setUser(user);

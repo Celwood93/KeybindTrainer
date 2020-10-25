@@ -12,6 +12,10 @@ CharacterSpecNavigation.propTypes = {
 	allKeybindings: PropTypes.object,
 	setAllKeybindings: PropTypes.func,
 	createNewKeybinding: PropTypes.func,
+	keyBinding: PropTypes.number,
+	setKeybinding: PropTypes.func,
+	spec: PropTypes.number,
+	setSpec: PropTypes.func,
 };
 function CharacterSpecNavigation({
 	character,
@@ -20,12 +24,11 @@ function CharacterSpecNavigation({
 	allKeybindings,
 	setAllKeybindings,
 	createNewKeybinding,
+	keyBinding,
+	setKeybinding,
+	spec,
+	setSpec,
 }) {
-	const [keyBinding, setKeybinding] = useState(
-		character.specs[character.selectedSpec].selectedKeybindings
-	);
-	const [spec, setSpec] = useState(character.selectedSpec);
-
 	function handleSpecChange(event, newSpec) {
 		setKeybinding(character.specs[newSpec].selectedKeybindings || 0);
 		setSpec(newSpec);
@@ -63,15 +66,15 @@ function CharacterSpecNavigation({
 					aria-label="nav tabs example"
 				>
 					{character.specs[spec].keybindings &&
-						Object.keys(character.specs[spec].keybindings).map(
-							(val, index) => (
-								<Tab
-									label={`Keybindings-${index + 1}`}
-									key={val}
-									{...a11yProps(val)}
-								/>
-							)
-						)}
+						Object.keys(
+							character.specs[spec].keybindings
+						).map((val, index) => (
+							<Tab
+								label={`Keybindings-${index + 1}`}
+								key={val}
+								{...a11yProps(val)}
+							/>
+						))}
 					<Tab
 						onClick={() => makeNewKeybindings(spec, character)}
 						label="Create New Keybindings"
