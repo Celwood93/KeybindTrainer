@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Tab, Tabs, AppBar } from '@material-ui/core';
 import { a11yProps } from '../helpers/TabPanels';

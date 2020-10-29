@@ -29,6 +29,7 @@ export const targetting = {
 		'Arena3',
 	],
 	SELF: ['Self'],
+	PLACED: ['Cursor', 'Self'],
 };
 
 export const mods = ['None', 'Shift', 'Ctrl', 'Alt'];
