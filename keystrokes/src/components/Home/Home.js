@@ -31,7 +31,6 @@ function Home(props) {
 		try {
 			listener = ref.child(userPath).on('value', change => {
 				if (change.exists()) {
-					console.log('updated');
 					setUser(change.val());
 				}
 			});
