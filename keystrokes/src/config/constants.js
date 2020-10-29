@@ -37,15 +37,16 @@ export const characterDetails = {
 	race: [
 		'',
 		'Night Elf',
+		'Draenei',
 		'Human',
 		'Worgen',
+		'Dwarf',
+		'Gnome',
 		'Toren',
 		'Blood Elf',
 		'Orc',
 		'Troll',
 		'Undead',
-		'Dwarf',
-		'Gnome',
 		'Goblin',
 	],
 	class: {
@@ -59,6 +60,9 @@ export const characterDetails = {
 		Warrior: ['ARMS', 'FURY', 'PROTECTION'],
 		'Death Knight': ['BLOOD', 'UNHOLY', 'FROST'],
 		'Demon Hunter': ['HAVOC', 'VENGEANCE'],
+		Warlock: ['DESTRUCTION', 'AFFLICTION', 'DEMONOLOGY'],
+		Rogue: ['ASSASINATION', 'SUBTLETY', 'OUTLAW'],
+		Hunter: ['BEAST MASTERY', 'MARKSMANSHIP', 'SURVIVAL'],
 	},
 };
 

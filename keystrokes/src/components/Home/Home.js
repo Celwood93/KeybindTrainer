@@ -27,9 +27,11 @@ function Home(props) {
 	}
 
 	useEffect(() => {
+		let listener;
 		try {
-			ref.child(userPath).on('value', change => {
+			listener = ref.child(userPath).on('value', change => {
 				if (change.exists()) {
+					console.log('updated');
 					setUser(change.val());
 				}
 			});
@@ -41,6 +43,7 @@ function Home(props) {
 			setUser(user);
 		}
 		gettingUser();
+		return listener;
 	}, []);
 
 	return (
