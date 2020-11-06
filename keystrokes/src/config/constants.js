@@ -15,21 +15,21 @@ firebase.initializeApp(config);
 export const targetting = {
 	ONE_ENEMY: ['Target', 'Focus', 'Arena1', 'Arena2', 'Arena3'],
 	MANY_ENEMY: ['Target', 'Focus', 'Arena1', 'Arena2', 'Arena3'],
-	ONE_FRIENDLY: ['Self', 'Target', 'Focus', 'Party1', 'Party2', 'Party3'],
-	MANY_FRIENDLY: ['Self', 'Target', 'Focus', 'Party1', 'Party2', 'Party3'],
+	ONE_FRIENDLY: ['Self', 'Target', 'Focus', 'Party1', 'Party2'],
+	MANY_FRIENDLY: ['Self', 'Target', 'Focus', 'Party1', 'Party2'],
 	ONE_ANY: [
 		'Self',
 		'Target',
 		'Focus',
 		'Party1',
 		'Party2',
-		'Party3',
 		'Arena1',
 		'Arena2',
 		'Arena3',
 	],
 	SELF: ['Self'],
 	PLACED: ['Cursor', 'Self'],
+	FRIENDLY_NOT_SELF: ['Target', 'Focus', 'Party1', 'Party2'],
 };
 
 export const mods = ['None', 'Shift', 'Ctrl', 'Alt'];
