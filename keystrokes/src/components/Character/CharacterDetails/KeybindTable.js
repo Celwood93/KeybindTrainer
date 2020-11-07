@@ -13,21 +13,36 @@ import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import styleGuide from '../../../stylesheets/style';
 import EditIcon from '@material-ui/icons/Edit';
+import CancelOutlined from '@material-ui/icons/CancelOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 KeybindTable.propTypes = {
 	allKeybinds: PropTypes.array.isRequired,
+	deleteThisRow: PropTypes.func,
+	editing: PropTypes.bool,
+	editThisRow: PropTypes.func,
+	editingKey: PropTypes.any,
 };
 
-function KeybindTable({ allKeybinds }) {
+function KeybindTable({
+	allKeybinds,
+	editing = false,
+	editThisRow,
+	deleteThisRow,
+	editingKey,
+}) {
 	const classes = styleGuide();
 	return (
 		<Grid item>
-			<TableContainer component={Paper}>
+			<TableContainer
+				className={classes.tableContainer}
+				component={Paper}
+			>
 				<Table
+					stickyHeader
 					className={classes.table}
 					size="small"
-					aria-label="a dense table"
+					aria-label="sticky table"
 				>
 					<TableHead>
 						<TableRow>
@@ -39,39 +54,80 @@ function KeybindTable({ allKeybinds }) {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{allKeybinds.map(row => (
-							<TableRow
-								key={row.Spell + row.Target}
-								id="keybind-row-container"
-							>
-								<TableCell component="th" scope="row">
-									{row.Spell}
-								</TableCell>
-								<TableCell align="right">
-									{row.Target}
-								</TableCell>
-								<TableCell align="right">{row.Mod}</TableCell>
-								<TableCell align="right">{row.Key}</TableCell>
-								<TableCell align="right">
-									<IconButton
-										onClick={() => {
-											console.log('is it working?');
-										}}
-										hoverstyle={{ cursor: 'pointer' }}
-									>
-										<EditIcon />
-									</IconButton>
-									<IconButton
-										onClick={() => {
-											console.log('is it working?');
-										}}
-										hoverstyle={{ cursor: 'pointer' }}
-									>
-										<DeleteIcon />
-									</IconButton>
-								</TableCell>
-							</TableRow>
-						))}
+						{allKeybinds &&
+							allKeybinds.map(row => (
+								<TableRow
+									key={row.Spell + row.Target}
+									id="keybind-row-container"
+								>
+									<TableCell component="th" scope="row">
+										{row.Spell}
+									</TableCell>
+									<TableCell align="right">
+										{row.Target}
+									</TableCell>
+									<TableCell align="right">
+										{row.Mod}
+									</TableCell>
+									<TableCell align="right">
+										{row.Key}
+									</TableCell>
+									<TableCell align="right">
+										{editing && (
+											<div>
+												<IconButton
+													disabled={
+														editingKey &&
+														editingKey !==
+															row.Spell +
+																row.Target
+													}
+													onClick={() => {
+														editThisRow(row);
+													}}
+													hoverstyle={{
+														cursor: 'pointer',
+													}}
+												>
+													{editingKey !==
+													row.Spell + row.Target ? (
+														<EditIcon
+															id={`${row.Spell.replace(
+																/ /g,
+																''
+															) +
+																row.Target}-edit`}
+														/>
+													) : (
+														<CancelOutlined
+															id={`${row.Spell.replace(
+																/ /g,
+																''
+															) +
+																row.Target}-cancel`}
+														/>
+													)}
+												</IconButton>
+												<IconButton
+													onClick={() => {
+														deleteThisRow(row);
+													}}
+													hoverstyle={{
+														cursor: 'pointer',
+													}}
+												>
+													<DeleteIcon
+														id={`${row.Spell.replace(
+															/ /g,
+															''
+														) + row.Target}-delete`}
+													/>
+												</IconButton>
+											</div>
+										)}
+									</TableCell>
+								</TableRow>
+							))}
 					</TableBody>
 				</Table>
 			</TableContainer>

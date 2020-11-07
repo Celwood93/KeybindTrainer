@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { CircularProgress, Grid, Button, Snackbar } from '@material-ui/core';
-import MuiAlert from '@material-ui/lab/Alert';
+import { Alert, alerter } from '../../utils/Alert';
 import update from 'immutability-helper';
 import styleGuide from '../../../stylesheets/style';
 import { ref } from '../../../config/constants';
@@ -14,21 +14,13 @@ CharacterDetailPage.propTypes = {
 };
 function CharacterDetailPage({ userId, match }) {
 	const [loading, setLoading] = useState(true);
-	const [alert, setAlert] = useState({
-		open: false,
-		message: 'placeholder',
-		type: 'placeholder',
-	});
+	const [alert, setAlert] = alerter();
 	const [character, setCharacter] = useState(0);
 	const [allKeybindings, setAllKeybindings] = useState({});
 	const classes = styleGuide();
 	const characterId = match.params && match.params.id;
 	const fields =
 		match.params && match.params.fields && JSON.parse(match.params.fields);
-
-	function Alert(props) {
-		return <MuiAlert elevation={6} variant="filled" {...props} />;
-	}
 
 	useEffect(() => {
 		async function collectCharacterInfo() {

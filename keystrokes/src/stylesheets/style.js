@@ -1,10 +1,35 @@
 import { makeStyles } from '@material-ui/core/styles';
+import { green, pink } from '@material-ui/core/colors';
 
 const styleGuide = makeStyles(theme => ({
 	modal: {
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
+	},
+	keybindsComplete: {
+		color: theme.palette.getContrastText(green[500]),
+		backgroundColor: green[500],
+		width: theme.spacing(3),
+		height: theme.spacing(3),
+	},
+	keybindsIncomplete: {
+		color: theme.palette.getContrastText(pink[500]),
+		backgroundColor: pink[500],
+		width: theme.spacing(3),
+		height: theme.spacing(3),
+	},
+	keybindsTargetComplete: {
+		color: theme.palette.getContrastText(green[500]),
+		backgroundColor: green[500],
+		width: theme.spacing(2),
+		height: theme.spacing(2),
+	},
+	keybindsTargetIncomplete: {
+		color: theme.palette.getContrastText(pink[500]),
+		backgroundColor: pink[500],
+		width: theme.spacing(2),
+		height: theme.spacing(2),
 	},
 	paper: {
 		paddingTop: '5rem',
@@ -17,9 +42,19 @@ const styleGuide = makeStyles(theme => ({
 		marginTop: '3rem',
 		minWidth: '60%',
 	},
+	tableContainer: {
+		maxHeight: '38rem',
+	},
 	manualModalBackground: {
 		width: '70%',
 		height: '80%',
+		backgroundColor: theme.palette.background.paper,
+		border: '2px solid #000',
+		boxShadow: theme.shadows[5],
+		padding: theme.spacing(2, 4, 3),
+	},
+	keybindingConflictModal: {
+		width: '35%',
 		backgroundColor: theme.palette.background.paper,
 		border: '2px solid #000',
 		boxShadow: theme.shadows[5],

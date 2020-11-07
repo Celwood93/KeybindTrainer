@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Button, Grid, TextField, MenuItem } from '@material-ui/core';
+import { Modal, Button, Grid, Typography } from '@material-ui/core';
 import update from 'immutability-helper';
 import PropTypes from 'prop-types';
 import KeybindTable from './KeybindTable';
+import ManualKeybindInputs from './ManualKeybindInputs';
 import styleGuide from '../../../stylesheets/style';
-import { verifyKey, validatePress } from '../../utils/utils';
-import {
-	ref,
-	targetting,
-	mods,
-	characterDetails,
-} from '../../../config/constants';
+import { ref, characterDetails } from '../../../config/constants';
 
 ManualKeybindModal.propTypes = {
 	isOpen: PropTypes.bool.isRequired,
@@ -43,9 +38,18 @@ function ManualKeybindModal({
 	const [allKeybinds, setAllKeybinds] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [Spells, setSpells] = useState();
+	const [editingKey, setEditingKey] = useState();
+	const [invalidBinds, setInvalidBinds] = useState([]);
+	const [isKBConflictOpen, setIsKBConflictOpen] = useState(false);
 	const spec = characterDetails.class[characterClass][
 		characterSpec
 	].toUpperCase();
+
+	useEffect(() => {
+		if (allKeybindings[keyBindingKey]) {
+			setAllKeybinds(allKeybindings[keyBindingKey]);
+		}
+	}, [allKeybindings]);
 
 	useEffect(() => {
 		async function getSpells() {
@@ -64,20 +68,63 @@ function ManualKeybindModal({
 		getSpells();
 	}, [characterClass]);
 
-	function handleKeyPress(e) {
-		if (!e.metaKey) {
-			e.preventDefault();
-		}
-		const newKey = e.code.toLowerCase().replace(/digit|key/i, '');
-		if (validatePress(newKey)) {
+	function checkIfInvalidAndAdd(currKeybinding) {
+		setInvalidBinds(
+			allKeybinds.filter(
+				bind =>
+					!('delete' in bind) &&
+					((bind.Key === currKeybinding.Key &&
+						bind.Mod === currKeybinding.Mod) ||
+						(bind.Spell === currKeybinding.Spell &&
+							bind.Target === currKeybinding.Target))
+			)
+		);
+	}
+
+	function deleteThisRow(row) {
+		setAllKeybinds(
+			allKeybinds.filter(
+				bind => JSON.stringify(bind) !== JSON.stringify(row)
+			)
+		);
+	}
+
+	function editThisRow(row) {
+		if (editingKey === row.Spell + row.Target) {
 			setKeybinding({
-				...keybinding,
-				Key: verifyKey(newKey),
+				Spell: null,
+				Target: null,
+				Mod: null,
+				Key: null,
 			});
-		} else if (newKey === 'backspace' || newKey === 'delete') {
+			delete row.delete;
+			setEditingKey();
+		} else {
+			setEditingKey(row.Spell + row.Target);
+			row['delete'] = false;
 			setKeybinding({
-				...keybinding,
-				Key: '',
+				Key: row.Key,
+				Mod: row.Mod,
+				Spell: row.Spell,
+				Target: row.Target,
+			});
+		}
+	}
+
+	function onSubmit() {
+		if (invalidBinds.length > 0) {
+			setIsKBConflictOpen(true);
+		} else {
+			setAllKeybinds([
+				keybinding,
+				...allKeybinds.filter(bind => !('delete' in bind)),
+			]);
+			setEditingKey();
+			setKeybinding({
+				Spell: null,
+				Target: null,
+				Mod: null,
+				Key: null,
 			});
 		}
 	}
@@ -89,6 +136,97 @@ function ManualKeybindModal({
 					<div>Loading</div>
 				) : (
 					<React.Fragment>
+						<Modal
+							open={isKBConflictOpen}
+							onClose={() => {}}
+							className={classes.modal}
+						>
+							<div className={classes.keybindingConflictModal}>
+								<Typography>
+									The following keybinds will be deleted:{' '}
+								</Typography>
+								<ul id="warning-modal-items">
+									{invalidBinds.map(bind => (
+										<li key={bind.Target}>
+											<Typography>{`${bind.Spell} ${bind.Target} ${bind.Mod} ${bind.Key}`}</Typography>
+										</li>
+									))}
+								</ul>
+
+								<Grid container justify="space-between">
+									<Grid item>
+										<Button
+											color="secondary"
+											variant="contained"
+											onClick={() => {
+												setIsKBConflictOpen(false);
+											}}
+											size="large"
+										>
+											Cancel
+										</Button>
+									</Grid>
+									<Grid item>
+										<Button
+											color="primary"
+											variant="contained"
+											size="large"
+											onClick={() => {
+												setAllKeybinds([
+													keybinding,
+													...allKeybinds.filter(
+														bind => {
+															let dontFilterBind = true;
+															for (
+																let i = 0;
+																i <
+																invalidBinds.length;
+																i++
+															) {
+																dontFilterBind =
+																	dontFilterBind &&
+																	!(
+																		bind.Spell ===
+																			invalidBinds[
+																				i
+																			]
+																				.Spell &&
+																		bind.Target ===
+																			invalidBinds[
+																				i
+																			]
+																				.Target
+																	);
+															}
+
+															dontFilterBind =
+																dontFilterBind &&
+																!(
+																	'delete' in
+																	bind
+																);
+
+															return dontFilterBind;
+														}
+													),
+												]);
+												setInvalidBinds([]);
+												setEditingKey();
+												setKeybinding({
+													Spell: null,
+													Target: null,
+													Mod: null,
+													Key: null,
+												});
+												setIsKBConflictOpen(false);
+											}}
+										>
+											Confirm
+										</Button>
+									</Grid>
+								</Grid>
+							</div>
+						</Modal>
 						<Grid container justify="space-between">
 							<Grid item>
 								<Button
@@ -101,7 +239,11 @@ function ManualKeybindModal({
 											Mod: null,
 											Key: null,
 										});
-										setAllKeybinds([]);
+										setAllKeybinds(
+											allKeybindings[keyBindingKey]
+										);
+										setInvalidBinds([]);
+										setEditingKey();
 										setIsOpen(false);
 									}}
 									size="large"
@@ -118,164 +260,41 @@ function ManualKeybindModal({
 										setAllKeybindings(
 											update(allKeybindings, {
 												[keyBindingKey]: {
-													$push: allKeybinds,
+													$set: allKeybinds,
 												},
 											})
 										);
 										if (allKeybinds.length > 0) {
 											markAsConfigured();
 										}
-										setAllKeybinds([]);
+										setAllKeybinds(
+											allKeybindings[keyBindingKey]
+										);
 										setIsOpen(false);
 									}}
 								>
-									Finish
+									Apply
 								</Button>
 							</Grid>
 						</Grid>
-						<Grid
-							container
-							className={classes.paddingTop}
-							justify="center"
-							alignItems="center"
-						>
-							<Grid item className={classes.keybindingOptions}>
-								<TextField
-									className={classes.button}
-									select
-									id={'spell-selector'}
-									variant="outlined"
-									value={keybinding.Spell || ''}
-									label="Spell"
-									onChange={event => {
-										setKeybinding({
-											...keybinding,
-											Spell: event.target.value,
-										});
-									}}
-								>
-									{Object.entries(Spells)
-										.filter(spell =>
-											spell[1].spec.includes(spec)
-										)
-										.map(spell => (
-											<MenuItem
-												key={spell[0]}
-												id={`${spell[0].replace(
-													/ /g,
-													''
-												)}-option`}
-												value={spell[0]}
-											>
-												{spell[0]}
-											</MenuItem>
-										))}
-								</TextField>
-							</Grid>
-							<Grid item className={classes.keybindingOptions}>
-								<TextField
-									className={classes.button}
-									select={!!keybinding.Spell}
-									disabled={!keybinding.Spell}
-									id={'target-selector'}
-									variant="outlined"
-									value={keybinding.Target || ''}
-									label="Target"
-									onChange={event => {
-										setKeybinding({
-											...keybinding,
-											Target: event.target.value,
-										});
-									}}
-								>
-									{keybinding.Spell &&
-										targetting[
-											Spells[keybinding.Spell].targetType
-										].map(option => (
-											<MenuItem
-												key={option}
-												id={`${option.replace(
-													/ /g,
-													''
-												)}-option`}
-												value={option}
-											>
-												{option}
-											</MenuItem>
-										))}
-								</TextField>
-							</Grid>
-							<Grid item className={classes.keybindingOptions}>
-								<TextField
-									className={classes.button}
-									select
-									id={'modifier-selector'}
-									disabled={!keybinding.Spell}
-									variant="outlined"
-									value={keybinding.Mod || ''}
-									label="Mod"
-									onChange={event => {
-										setKeybinding({
-											...keybinding,
-											Mod: event.target.value,
-										});
-									}}
-								>
-									{mods.map(option => (
-										<MenuItem
-											key={option}
-											value={option}
-											id={`${option.replace(
-												/ /g,
-												''
-											)}-option`}
-										>
-											{option}
-										</MenuItem>
-									))}
-								</TextField>
-							</Grid>
-							<Grid item className={classes.keybindingOptions}>
-								<TextField
-									className={classes.button}
-									disabled={!keybinding.Spell}
-									variant="outlined"
-									id={'keystroke-selector'}
-									value={keybinding.Key || ''}
-									label="Key"
-									onFocus={() => {
-										document.body.onkeydown = handleKeyPress;
-									}}
-									onBlur={() => {
-										document.body.onkeydown = null;
-									}}
-								/>
-							</Grid>
-							<Grid item className={classes.keybindingOptions}>
-								<Button
-									className={classes.button}
-									color="primary"
-									disabled={false} //make this so everything has to be non-null
-									variant="contained"
-									size="large"
-									onClick={() => {
-										setAllKeybinds([
-											keybinding,
-											...allKeybinds,
-										]);
-										setKeybinding({
-											Spell: null,
-											Target: null,
-											Mod: null,
-											Key: null,
-										});
-									}}
-								>
-									Enter
-								</Button>
-							</Grid>
-						</Grid>
-						<KeybindTable allKeybinds={allKeybinds} />
+						<ManualKeybindInputs
+							spec={spec}
+							invalidBinds={invalidBinds}
+							setInvalidBinds={setInvalidBinds}
+							onSubmit={onSubmit}
+							allKeybinds={allKeybinds}
+							keybinding={keybinding}
+							setKeybinding={setKeybinding}
+							checkIfInvalidAndAdd={checkIfInvalidAndAdd}
+							Spells={Spells}
+						/>
+						<KeybindTable
+							allKeybinds={allKeybinds}
+							editing={true}
+							editingKey={editingKey}
+							editThisRow={editThisRow}
+							deleteThisRow={deleteThisRow}
+						/>
 					</React.Fragment>
 				)}
 			</div>

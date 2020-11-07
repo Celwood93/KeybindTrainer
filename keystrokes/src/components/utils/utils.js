@@ -14,6 +14,8 @@ const keyTransformationMapping = {
 	equal: '=',
 	minus: '-',
 	semicolon: ';',
+	backspace: '',
+	delete: '',
 };
 
 export function verifyKey(key) {
@@ -30,8 +32,6 @@ const invalidKeys = [
 	'altright',
 	'controlleft',
 	'controlright',
-	'delete',
-	'backspace',
 	'insert',
 	'capslock',
 	'escape',

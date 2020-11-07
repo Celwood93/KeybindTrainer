@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import '../../stylesheets/App.css';
+import { Snackbar } from '@material-ui/core';
 
 import {
 	getNextKey,
@@ -8,6 +10,7 @@ import {
 	validatePress,
 	verifyKey,
 } from '../utils/utils';
+import { Alert, alerter } from '../utils/Alert';
 
 import { ref } from '../../config/constants';
 
@@ -18,6 +21,7 @@ function Game({ userInfo }) {
 	const [key, setKey] = useState();
 	const [keyBindings, setKeyBindings] = useState();
 	const [failedFirstTry, setFailedFirstTry] = useState(false);
+	const [alert, setAlert] = alerter();
 
 	useEffect(() => {
 		async function collectCharacterInfo() {
@@ -69,6 +73,22 @@ function Game({ userInfo }) {
 		if (!e.metaKey) {
 			e.preventDefault();
 		}
+		if (!keyBindings) {
+			setAlert({
+				open: true,
+				message: (
+					<div>
+						<span>Please go to </span>
+						<Link id="alert-link" to="/CharacterList">
+							<span>character management</span>
+						</Link>
+						<span> and select a character to start playing.</span>
+					</div>
+				),
+				type: 'warning',
+			});
+			return;
+		}
 		const keyPressed = {
 			key: verifyKey(e.code.toLowerCase().replace(/digit|key/i, '')),
 			Alt: e.altKey,
@@ -80,7 +100,7 @@ function Game({ userInfo }) {
 			const expectedKey = keyBindings[key];
 			if (
 				keyPressed.key === expectedKey.Key &&
-				(keyPressed[expectedKey.Mod] || expectedKey.Mod === undefined) //TODO this is a hotfix, expectedKey.Mod should never be undefined
+				keyPressed[expectedKey.Mod]
 			) {
 				const newKey = getNextKey(Object.keys(keyBindings));
 				setKey(newKey);
@@ -93,26 +113,38 @@ function Game({ userInfo }) {
 
 	return (
 		<React.Fragment>
-			<div className="App-header">
-				{keyBindings &&
-					key &&
-					keyBindings[key] &&
-					keyBindings[key].Spell}
-			</div>
-			<div className="App-header">
-				{keyBindings && key && keyBindings[key] && (
-					<div id="keybind-prompt" tabIndex="1">
-						on {keyBindings[key].Target}
-					</div>
-				)}
-			</div>
+			<Snackbar
+				open={alert.open}
+				onClose={() => setAlert({ ...alert, open: false })}
+				autoHideDuration={5000}
+			>
+				<Alert
+					onClose={() => setAlert({ ...alert, open: false })}
+					severity={alert.type}
+				>
+					{alert.message}
+				</Alert>
+			</Snackbar>
 			<div>
-				{failedFirstTry && (
-					<div id="failed-prompt" tabIndex="1">
-						correct keybinding: {keyBindings[key].Mod}{' '}
-						{keyBindings[key].Key}
-					</div>
-				)}
+				<div className="App-header">
+					{keyBindings &&
+						key &&
+						keyBindings[key] &&
+						keyBindings[key].Spell}
+				</div>
+				<div className="App-header" id="keybind-prompt" tabIndex="1">
+					{keyBindings && key && keyBindings[key] && (
+						<div tabIndex="1">on {keyBindings[key].Target}</div>
+					)}
+				</div>
+				<div>
+					{failedFirstTry && (
+						<div id="failed-prompt" tabIndex="1">
+							correct keybinding: {keyBindings[key].Mod}{' '}
+							{keyBindings[key].Key}
+						</div>
+					)}
+				</div>
 			</div>
 		</React.Fragment>
 	);
