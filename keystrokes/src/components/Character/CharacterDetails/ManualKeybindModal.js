@@ -37,7 +37,7 @@ function ManualKeybindModal({
 	const [loading, setLoading] = useState(true);
 	const [Spells, setSpells] = useState();
 	const [editingKey, setEditingKey] = useState();
-	const [invalidBind, setInvalidBind] = useState([]);
+	const [invalidBinds, setInvalidBinds] = useState([]);
 	const [isKBConflictOpen, setIsKBConflictOpen] = useState(false);
 	const spec = characterDetails.class[characterClass][
 		characterSpec
@@ -67,7 +67,7 @@ function ManualKeybindModal({
 	}, [characterClass]);
 
 	function checkIfInvalidAndAdd(currKeybinding) {
-		setInvalidBind(
+		setInvalidBinds(
 			allKeybinds.filter(
 				bind =>
 					!('delete' in bind) &&
@@ -110,7 +110,7 @@ function ManualKeybindModal({
 	}
 
 	function onSubmit() {
-		if (invalidBind.length > 0) {
+		if (invalidBinds.length > 0) {
 			setIsKBConflictOpen(true);
 		} else {
 			setAllKeybinds([
@@ -143,8 +143,8 @@ function ManualKeybindModal({
 								<Typography>
 									The following keybinds will be deleted:{' '}
 								</Typography>
-								<ul id={'warning-modal-items'}>
-									{invalidBind.map(bind => (
+								<ul id="warning-modal-items">
+									{invalidBinds.map(bind => (
 										<li key={bind.Target}>
 											<Typography>{`${bind.Spell} ${bind.Target} ${bind.Mod} ${bind.Key}`}</Typography>
 										</li>
@@ -178,19 +178,19 @@ function ManualKeybindModal({
 															for (
 																let i = 0;
 																i <
-																invalidBind.length;
+																invalidBinds.length;
 																i++
 															) {
 																dontFilterBind =
 																	dontFilterBind &&
 																	!(
 																		bind.Spell ===
-																			invalidBind[
+																			invalidBinds[
 																				i
 																			]
 																				.Spell &&
 																		bind.Target ===
-																			invalidBind[
+																			invalidBinds[
 																				i
 																			]
 																				.Target
@@ -208,7 +208,7 @@ function ManualKeybindModal({
 														}
 													),
 												]);
-												setInvalidBind([]);
+												setInvalidBinds([]);
 												setEditingKey();
 												setKeybinding({
 													Spell: null,
@@ -240,7 +240,7 @@ function ManualKeybindModal({
 										setAllKeybinds(
 											allKeybindings[keyBindingKey]
 										);
-										setInvalidBind([]);
+										setInvalidBinds([]);
 										setEditingKey();
 										setIsOpen(false);
 									}}
@@ -274,8 +274,8 @@ function ManualKeybindModal({
 						</Grid>
 						<ManualKeybindInputs
 							spec={spec}
-							invalidBind={invalidBind}
-							setInvalidBind={setInvalidBind}
+							invalidBinds={invalidBinds}
+							setInvalidBinds={setInvalidBinds}
 							onSubmit={onSubmit}
 							allKeybinds={allKeybinds}
 							keybinding={keybinding}

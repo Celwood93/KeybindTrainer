@@ -17,8 +17,8 @@ import { targetting, mods } from '../../../config/constants';
 
 ManualKeybindInputs.propTypes = {
 	spec: PropTypes.string.isRequired,
-	invalidBind: PropTypes.array.isRequired,
-	setInvalidBind: PropTypes.func.isRequired,
+	invalidBinds: PropTypes.array.isRequired,
+	setInvalidBinds: PropTypes.func.isRequired,
 	onSubmit: PropTypes.func.isRequired,
 	allKeybinds: PropTypes.array.isRequired,
 	keybinding: PropTypes.object.isRequired,
@@ -29,8 +29,8 @@ ManualKeybindInputs.propTypes = {
 
 function ManualKeybindInputs({
 	spec,
-	invalidBind,
-	setInvalidBind,
+	invalidBinds,
+	setInvalidBinds,
 	onSubmit,
 	allKeybinds,
 	keybinding,
@@ -46,20 +46,13 @@ function ManualKeybindInputs({
 		}
 		const newKey = e.code.toLowerCase().replace(/digit|key/i, '');
 		if (validatePress(newKey)) {
-			setKeybinding({
+			const newKeybinding = {
 				...keybinding,
 				Key: verifyKey(newKey),
-			});
-		} else if (newKey === 'backspace' || newKey === 'delete') {
-			setKeybinding({
-				...keybinding,
-				Key: '',
-			});
+			};
+			setKeybinding(newKeybinding);
+			checkIfInvalidAndAdd(newKeybinding);
 		}
-		checkIfInvalidAndAdd({
-			...keybinding,
-			Key: verifyKey(newKey),
-		});
 	}
 
 	return (
@@ -73,7 +66,7 @@ function ManualKeybindInputs({
 				<TextField
 					className={classes.button}
 					select
-					id={'spell-selector'}
+					id="spell-selector"
 					variant="outlined"
 					value={keybinding.Spell || ''}
 					label="Spell"
@@ -84,7 +77,7 @@ function ManualKeybindInputs({
 							Mod: null,
 							Key: null,
 						});
-						setInvalidBind([]);
+						setInvalidBinds([]);
 					}}
 				>
 					{Object.entries(Spells)
@@ -137,9 +130,7 @@ function ManualKeybindInputs({
 																</ul>
 															</React.Fragment>
 														) : (
-															<React.Fragment>
-																<Typography>{`No keybinds yet for ${spell[0]}!`}</Typography>
-															</React.Fragment>
+															<Typography>{`No keybinds yet for ${spell[0]}!`}</Typography>
 														)
 													}
 												>
@@ -176,31 +167,26 @@ function ManualKeybindInputs({
 					className={classes.button}
 					select={!!keybinding.Spell}
 					disabled={!keybinding.Spell}
-					id={'target-selector'}
+					id="target-selector"
 					variant="outlined"
 					value={keybinding.Target || ''}
 					label="Target"
 					onChange={event => {
-						setKeybinding({
+						const keybindingUpdates = {
 							...keybinding,
 							Target: event.target.value,
-						});
-						checkIfInvalidAndAdd({
-							...keybinding,
-							Target: event.target.value,
-						});
+						};
+						setKeybinding(keybindingUpdates);
+						checkIfInvalidAndAdd(keybindingUpdates);
 					}}
 				>
 					{keybinding.Spell &&
 						targetting[Spells[keybinding.Spell].targetType].map(
 							option => {
 								const existingSpellBinds = allKeybinds.filter(
-									bind => {
-										return (
-											bind.Spell === keybinding.Spell &&
-											bind.Target === option
-										);
-									}
+									bind =>
+										bind.Spell === keybinding.Spell &&
+										bind.Target === option
 								);
 								return (
 									<MenuItem
@@ -227,19 +213,15 @@ function ManualKeybindInputs({
 														title={
 															existingSpellBinds &&
 															existingSpellBinds.length ? (
-																<React.Fragment>
-																	<Typography>
-																		{`Already set for keybinding: ${existingSpellBinds &&
-																			existingSpellBinds[0]
-																				.Mod} ${existingSpellBinds &&
-																			existingSpellBinds[0]
-																				.Key}`}
-																	</Typography>
-																</React.Fragment>
+																<Typography>
+																	{`Already set for keybinding: ${existingSpellBinds &&
+																		existingSpellBinds[0]
+																			.Mod} ${existingSpellBinds &&
+																		existingSpellBinds[0]
+																			.Key}`}
+																</Typography>
 															) : (
-																<React.Fragment>
-																	<Typography>{`Not set for ${keybinding.Spell}!`}</Typography>
-																</React.Fragment>
+																<Typography>{`Not set for ${keybinding.Spell}!`}</Typography>
 															)
 														}
 														placement="right-end"
@@ -276,7 +258,7 @@ function ManualKeybindInputs({
 				<TextField
 					className={classes.button}
 					select
-					id={'modifier-selector'}
+					id="modifier-selector"
 					disabled={!keybinding.Spell}
 					variant="outlined"
 					value={keybinding.Mod || ''}
@@ -308,7 +290,7 @@ function ManualKeybindInputs({
 					className={classes.button}
 					disabled={!keybinding.Spell}
 					variant="outlined"
-					id={'keystroke-selector'}
+					id="keystroke-selector"
 					value={keybinding.Key || ''}
 					label="Key"
 					onFocus={() => {
@@ -336,15 +318,15 @@ function ManualKeybindInputs({
 					Enter
 				</Button>
 			</Grid>
-			{invalidBind.length ? (
+			{invalidBinds.length ? (
 				<Tooltip
 					placement="right-end"
-					id={'Invalid-bind-warning-popup'}
+					id="Invalid-bind-warning-popup"
 					title={
 						<React.Fragment>
 							<Typography>Conflicting Keybindings:</Typography>
 							<ul>
-								{invalidBind.map(bind => (
+								{invalidBinds.map(bind => (
 									<li key={bind.Target + bind.Spell}>
 										<Typography>{`${bind.Spell} ${bind.Target} ${bind.Mod} ${bind.Key}`}</Typography>
 									</li>
@@ -354,7 +336,7 @@ function ManualKeybindInputs({
 					}
 				>
 					<WarningIcon
-						id={'Invalid-bind-warning'}
+						id="Invalid-bind-warning"
 						style={{ color: red[500] }}
 					/>
 				</Tooltip>
