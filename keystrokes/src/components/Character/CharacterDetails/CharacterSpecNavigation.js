@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Tab, Tabs, AppBar } from '@material-ui/core';
 import { a11yProps } from '../helpers/TabPanels';
@@ -12,6 +12,10 @@ CharacterSpecNavigation.propTypes = {
 	allKeybindings: PropTypes.object,
 	setAllKeybindings: PropTypes.func,
 	createNewKeybinding: PropTypes.func,
+	keyBinding: PropTypes.number,
+	setKeybinding: PropTypes.func,
+	spec: PropTypes.number,
+	setSpec: PropTypes.func,
 };
 function CharacterSpecNavigation({
 	character,
@@ -20,16 +24,20 @@ function CharacterSpecNavigation({
 	allKeybindings,
 	setAllKeybindings,
 	createNewKeybinding,
+	keyBinding,
+	setKeybinding,
+	spec,
+	setSpec,
 }) {
-	const [keyBinding, setKeybinding] = useState(
-		character.specs[character.selectedSpec].selectedKeybindings
-	);
-	const [spec, setSpec] = useState(character.selectedSpec);
-
 	function handleSpecChange(event, newSpec) {
-		setKeybinding(character.specs[newSpec].selectedKeybindings || 0);
-		setSpec(newSpec);
-		if (!character.specs[newSpec].keybindings) {
+		if (
+			character.specs[newSpec] &&
+			character.specs[newSpec].keybindings &&
+			character.specs[newSpec].keybindings.length > 0
+		) {
+			setKeybinding(character.specs[newSpec].selectedKeybindings || 0);
+			setSpec(newSpec);
+		} else {
 			createNewKeybinding(newSpec, character);
 		}
 	}
@@ -62,16 +70,17 @@ function CharacterSpecNavigation({
 					scrollButtons="auto"
 					aria-label="nav tabs example"
 				>
-					{character.specs[spec].keybindings &&
-						Object.keys(character.specs[spec].keybindings).map(
-							(val, index) => (
-								<Tab
-									label={`Keybindings-${index + 1}`}
-									key={val}
-									{...a11yProps(val)}
-								/>
-							)
-						)}
+					{character.specs[spec] &&
+						character.specs[spec].keybindings &&
+						Object.keys(
+							character.specs[spec].keybindings
+						).map((val, index) => (
+							<Tab
+								label={`Keybindings-${index + 1}`}
+								key={val}
+								{...a11yProps(val)}
+							/>
+						))}
 					<Tab
 						onClick={() => makeNewKeybindings(spec, character)}
 						label="Create New Keybindings"
@@ -80,6 +89,7 @@ function CharacterSpecNavigation({
 			</AppBar>
 			{//So, you create a new character, then you go to your character page. you then hit create new keybindings
 			//if no keybindings exist yet then there is a thing HERE that says "click create new keybiindings to get started!"
+			character.specs[spec] &&
 			character.specs[spec].keybindings.length > 0 ? (
 				Object.keys(character.specs[spec].keybindings).map(
 					(val, index) => {
