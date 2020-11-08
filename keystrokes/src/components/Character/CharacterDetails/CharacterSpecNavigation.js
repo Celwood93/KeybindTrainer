@@ -31,13 +31,14 @@ function CharacterSpecNavigation({
 }) {
 	function handleSpecChange(event, newSpec) {
 		if (
-			!character.specs[newSpec].keybindings ||
-			character.specs[newSpec].keybindings.length < 1
+			character.specs[newSpec] &&
+			character.specs[newSpec].keybindings &&
+			character.specs[newSpec].keybindings.length > 0
 		) {
-			createNewKeybinding(newSpec, character);
-		} else {
 			setKeybinding(character.specs[newSpec].selectedKeybindings || 0);
 			setSpec(newSpec);
+		} else {
+			createNewKeybinding(newSpec, character);
 		}
 	}
 
@@ -69,7 +70,8 @@ function CharacterSpecNavigation({
 					scrollButtons="auto"
 					aria-label="nav tabs example"
 				>
-					{character.specs[spec].keybindings &&
+					{character.specs[spec] &&
+						character.specs[spec].keybindings &&
 						Object.keys(
 							character.specs[spec].keybindings
 						).map((val, index) => (
@@ -87,6 +89,7 @@ function CharacterSpecNavigation({
 			</AppBar>
 			{//So, you create a new character, then you go to your character page. you then hit create new keybindings
 			//if no keybindings exist yet then there is a thing HERE that says "click create new keybiindings to get started!"
+			character.specs[spec] &&
 			character.specs[spec].keybindings.length > 0 ? (
 				Object.keys(character.specs[spec].keybindings).map(
 					(val, index) => {
