@@ -30,10 +30,14 @@ function CharacterSpecNavigation({
 	setSpec,
 }) {
 	function handleSpecChange(event, newSpec) {
-		setKeybinding(character.specs[newSpec].selectedKeybindings || 0);
-		setSpec(newSpec);
-		if (!character.specs[newSpec].keybindings) {
+		if (
+			!character.specs[newSpec].keybindings ||
+			character.specs[newSpec].keybindings.length < 1
+		) {
 			createNewKeybinding(newSpec, character);
+		} else {
+			setKeybinding(character.specs[newSpec].selectedKeybindings || 0);
+			setSpec(newSpec);
 		}
 	}
 

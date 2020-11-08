@@ -42,12 +42,11 @@ function ManualKeybindModal({
 	const spec = characterDetails.class[characterClass][
 		characterSpec
 	].toUpperCase();
-
 	useEffect(() => {
 		if (allKeybindings[keyBindingKey]) {
 			setAllKeybinds(allKeybindings[keyBindingKey]);
 		}
-	}, [allKeybindings]);
+	}, [allKeybindings, keyBindingKey]);
 
 	useEffect(() => {
 		async function getSpells() {

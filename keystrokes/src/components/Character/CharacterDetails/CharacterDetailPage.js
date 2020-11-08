@@ -62,7 +62,14 @@ function CharacterDetailPage({ userId, match }) {
 
 	function newKeybindings(spec, char) {
 		const key = ref.child('/Keybindings').push().key;
+		console.log(char);
 		setAllKeybindings({ ...allKeybindings, [key]: [] });
+		setSpec(spec);
+		setKeybinding(
+			(char.specs[spec].keybindings &&
+				char.specs[spec].keybindings.length) ||
+				0
+		);
 		setCharacter(
 			update(char, {
 				specs: { [spec]: { $set: Spec(char.specs[spec], key) } },
@@ -156,6 +163,7 @@ function CharacterDetailPage({ userId, match }) {
 									variant="contained"
 									disabled={
 										!(
+											character.specs[spec] &&
 											allKeybindings[
 												characterKeybindings(
 													character,
