@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
 	Grid,
 	TableContainer,
@@ -15,6 +15,7 @@ import styleGuide from '../../../stylesheets/style';
 import EditIcon from '@material-ui/icons/Edit';
 import CancelOutlined from '@material-ui/icons/CancelOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { AllSpellsContext } from '../../../contexts/AllSpellsContext';
 
 KeybindTable.propTypes = {
 	allKeybinds: PropTypes.array.isRequired,
@@ -31,6 +32,7 @@ function KeybindTable({
 	deleteThisRow,
 	editingKey,
 }) {
+	const allSpells = useContext(AllSpellsContext);
 	const classes = styleGuide();
 	return (
 		<Grid item>
@@ -55,79 +57,83 @@ function KeybindTable({
 					</TableHead>
 					<TableBody>
 						{allKeybinds &&
-							allKeybinds.map(row => (
-								<TableRow
-									key={row.Spell + row.Target}
-									id="keybind-row-container"
-								>
-									<TableCell component="th" scope="row">
-										{row.Spell}
-									</TableCell>
-									<TableCell align="right">
-										{row.Target}
-									</TableCell>
-									<TableCell align="right">
-										{row.Mod}
-									</TableCell>
-									<TableCell align="right">
-										{row.Key}
-									</TableCell>
-									<TableCell align="right">
-										{editing && (
-											<div>
-												<IconButton
-													disabled={
-														editingKey &&
-														editingKey !==
-															row.Spell +
-																row.Target
-													}
-													onClick={() => {
-														editThisRow(row);
-													}}
-													hoverstyle={{
-														cursor: 'pointer',
-													}}
-												>
-													{editingKey !==
-													row.Spell + row.Target ? (
-														<EditIcon
-															id={`${row.Spell.replace(
+							allKeybinds
+								.map(e => ({ ...allSpells[e.SpellId], ...e }))
+								.map(row => (
+									<TableRow
+										key={row.spellName + row.Target}
+										id="keybind-row-container"
+									>
+										<TableCell component="th" scope="row">
+											{row.spellName}
+										</TableCell>
+										<TableCell align="right">
+											{row.Target}
+										</TableCell>
+										<TableCell align="right">
+											{row.Mod}
+										</TableCell>
+										<TableCell align="right">
+											{row.Key}
+										</TableCell>
+										<TableCell align="right">
+											{editing && (
+												<div>
+													<IconButton
+														disabled={
+															editingKey &&
+															editingKey !==
+																row.spellName +
+																	row.Target
+														}
+														onClick={() => {
+															editThisRow(row);
+														}}
+														hoverstyle={{
+															cursor: 'pointer',
+														}}
+													>
+														{editingKey !==
+														row.spellName +
+															row.Target ? (
+															<EditIcon
+																id={`${row.spellName.replace(
+																	/ /g,
+																	''
+																) +
+																	row.Target}-edit`}
+															/>
+														) : (
+															<CancelOutlined
+																id={`${row.spellName.replace(
+																	/ /g,
+																	''
+																) +
+																	row.Target}-cancel`}
+															/>
+														)}
+													</IconButton>
+													<IconButton
+														onClick={() => {
+															deleteThisRow(row);
+														}}
+														hoverstyle={{
+															cursor: 'pointer',
+														}}
+													>
+														<DeleteIcon
+															id={`${row.spellName.replace(
 																/ /g,
 																''
 															) +
-																row.Target}-edit`}
+																row.Target}-delete`}
 														/>
-													) : (
-														<CancelOutlined
-															id={`${row.Spell.replace(
-																/ /g,
-																''
-															) +
-																row.Target}-cancel`}
-														/>
-													)}
-												</IconButton>
-												<IconButton
-													onClick={() => {
-														deleteThisRow(row);
-													}}
-													hoverstyle={{
-														cursor: 'pointer',
-													}}
-												>
-													<DeleteIcon
-														id={`${row.Spell.replace(
-															/ /g,
-															''
-														) + row.Target}-delete`}
-													/>
-												</IconButton>
-											</div>
-										)}
-									</TableCell>
-								</TableRow>
-							))}
+													</IconButton>
+												</div>
+											)}
+										</TableCell>
+									</TableRow>
+								))}
 					</TableBody>
 				</Table>
 			</TableContainer>
