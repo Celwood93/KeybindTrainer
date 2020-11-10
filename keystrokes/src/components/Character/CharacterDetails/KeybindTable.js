@@ -57,83 +57,85 @@ function KeybindTable({
 					</TableHead>
 					<TableBody>
 						{allKeybinds &&
-							allKeybinds
-								.map(e => ({ ...allSpells[e.SpellId], ...e }))
-								.map(row => (
-									<TableRow
-										key={row.spellName + row.Target}
-										id="keybind-row-container"
-									>
-										<TableCell component="th" scope="row">
-											{row.spellName}
-										</TableCell>
-										<TableCell align="right">
-											{row.Target}
-										</TableCell>
-										<TableCell align="right">
-											{row.Mod}
-										</TableCell>
-										<TableCell align="right">
-											{row.Key}
-										</TableCell>
-										<TableCell align="right">
-											{editing && (
-												<div>
-													<IconButton
-														disabled={
-															editingKey &&
-															editingKey !==
-																row.spellName +
-																	row.Target
-														}
-														onClick={() => {
-															editThisRow(row);
-														}}
-														hoverstyle={{
-															cursor: 'pointer',
-														}}
-													>
-														{editingKey !==
-														row.spellName +
-															row.Target ? (
-															<EditIcon
-																id={`${row.spellName.replace(
-																	/ /g,
-																	''
-																) +
-																	row.Target}-edit`}
-															/>
-														) : (
-															<CancelOutlined
-																id={`${row.spellName.replace(
-																	/ /g,
-																	''
-																) +
-																	row.Target}-cancel`}
-															/>
-														)}
-													</IconButton>
-													<IconButton
-														onClick={() => {
-															deleteThisRow(row);
-														}}
-														hoverstyle={{
-															cursor: 'pointer',
-														}}
-													>
-														<DeleteIcon
-															id={`${row.spellName.replace(
+							allKeybinds.map(row => (
+								<TableRow
+									key={row.SpellId + row.Target}
+									id="keybind-row-container"
+								>
+									<TableCell component="th" scope="row">
+										{allSpells[row.SpellId].spellName}
+									</TableCell>
+									<TableCell align="right">
+										{row.Target}
+									</TableCell>
+									<TableCell align="right">
+										{row.Mod}
+									</TableCell>
+									<TableCell align="right">
+										{row.Key}
+									</TableCell>
+									<TableCell align="right">
+										{editing && (
+											<div>
+												<IconButton
+													disabled={
+														editingKey &&
+														editingKey !==
+															row.SpellId +
+																row.Target
+													}
+													onClick={() => {
+														editThisRow(row);
+													}}
+													hoverstyle={{
+														cursor: 'pointer',
+													}}
+												>
+													{editingKey !==
+													row.SpellId + row.Target ? (
+														<EditIcon
+															id={`${allSpells[
+																row.SpellId
+															].spellName.replace(
 																/ /g,
 																''
 															) +
-																row.Target}-delete`}
+																row.Target}-edit`}
 														/>
-													</IconButton>
-												</div>
-											)}
-										</TableCell>
-									</TableRow>
-								))}
+													) : (
+														<CancelOutlined
+															id={`${allSpells[
+																row.SpellId
+															].spellName.replace(
+																/ /g,
+																''
+															) +
+																row.Target}-cancel`}
+														/>
+													)}
+												</IconButton>
+												<IconButton
+													onClick={() => {
+														deleteThisRow(row);
+													}}
+													hoverstyle={{
+														cursor: 'pointer',
+													}}
+												>
+													<DeleteIcon
+														id={`${allSpells[
+															row.SpellId
+														].spellName.replace(
+															/ /g,
+															''
+														) + row.Target}-delete`}
+													/>
+												</IconButton>
+											</div>
+										)}
+									</TableCell>
+								</TableRow>
+							))}
 					</TableBody>
 				</Table>
 			</TableContainer>

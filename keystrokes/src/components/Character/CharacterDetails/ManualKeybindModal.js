@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Modal, Button, Grid, Typography } from '@material-ui/core';
 import update from 'immutability-helper';
 import PropTypes from 'prop-types';
@@ -6,6 +6,7 @@ import KeybindTable from './KeybindTable';
 import ManualKeybindInputs from './ManualKeybindInputs';
 import styleGuide from '../../../stylesheets/style';
 import { ref, characterDetails } from '../../../config/constants';
+import { AllSpellsContext } from '../../../contexts/AllSpellsContext';
 
 ManualKeybindModal.propTypes = {
 	isOpen: PropTypes.bool.isRequired,
@@ -27,8 +28,9 @@ function ManualKeybindModal({
 	keyBindingKey,
 }) {
 	const classes = styleGuide();
+	const allSpells = useContext(AllSpellsContext);
 	const [keybinding, setKeybinding] = useState({
-		Spell: null,
+		SpellId: null,
 		Target: null,
 		Mod: null,
 		Key: null,
@@ -72,7 +74,7 @@ function ManualKeybindModal({
 					!('delete' in bind) &&
 					((bind.Key === currKeybinding.Key &&
 						bind.Mod === currKeybinding.Mod) ||
-						(bind.Spell === currKeybinding.Spell &&
+						(bind.SpellId === currKeybinding.SpellId &&
 							bind.Target === currKeybinding.Target))
 			)
 		);
@@ -87,9 +89,9 @@ function ManualKeybindModal({
 	}
 
 	function editThisRow(row) {
-		if (editingKey === row.Spell + row.Target) {
+		if (editingKey === row.SpellId + row.Target) {
 			setKeybinding({
-				Spell: null,
+				SpellId: null,
 				Target: null,
 				Mod: null,
 				Key: null,
@@ -97,12 +99,12 @@ function ManualKeybindModal({
 			delete row.delete;
 			setEditingKey();
 		} else {
-			setEditingKey(row.Spell + row.Target);
+			setEditingKey(row.SpellId + row.Target);
 			row['delete'] = false;
 			setKeybinding({
 				Key: row.Key,
 				Mod: row.Mod,
-				Spell: row.Spell,
+				SpellId: row.SpellId,
 				Target: row.Target,
 			});
 		}
@@ -118,7 +120,7 @@ function ManualKeybindModal({
 			]);
 			setEditingKey();
 			setKeybinding({
-				Spell: null,
+				SpellId: null,
 				Target: null,
 				Mod: null,
 				Key: null,
@@ -143,11 +145,16 @@ function ManualKeybindModal({
 									The following keybinds will be deleted:{' '}
 								</Typography>
 								<ul id="warning-modal-items">
-									{invalidBinds.map(bind => (
-										<li key={bind.Target}>
-											<Typography>{`${bind.Spell} ${bind.Target} ${bind.Mod} ${bind.Key}`}</Typography>
-										</li>
-									))}
+									{invalidBinds
+										.map(e => ({
+											...allSpells[e.SpellId],
+											...e,
+										}))
+										.map(bind => (
+											<li key={bind.Target}>
+												<Typography>{`${bind.spellName} ${bind.Target} ${bind.Mod} ${bind.Key}`}</Typography>
+											</li>
+										))}
 								</ul>
 
 								<Grid container justify="space-between">
@@ -183,11 +190,11 @@ function ManualKeybindModal({
 																dontFilterBind =
 																	dontFilterBind &&
 																	!(
-																		bind.Spell ===
+																		bind.SpellId ===
 																			invalidBinds[
 																				i
 																			]
-																				.Spell &&
+																				.SpellId &&
 																		bind.Target ===
 																			invalidBinds[
 																				i
@@ -210,7 +217,7 @@ function ManualKeybindModal({
 												setInvalidBinds([]);
 												setEditingKey();
 												setKeybinding({
-													Spell: null,
+													SpellId: null,
 													Target: null,
 													Mod: null,
 													Key: null,
@@ -231,7 +238,7 @@ function ManualKeybindModal({
 									variant="contained"
 									onClick={() => {
 										setKeybinding({
-											Spell: null,
+											SpellId: null,
 											Target: null,
 											Mod: null,
 											Key: null,

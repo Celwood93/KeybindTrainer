@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { red } from '@material-ui/core/colors';
 import {
 	Tooltip,
@@ -14,6 +14,7 @@ import PropTypes from 'prop-types';
 import styleGuide from '../../../stylesheets/style';
 import { verifyKey, validatePress } from '../../utils/utils';
 import { targetting, mods } from '../../../config/constants';
+import { AllSpellsContext } from '../../../contexts/AllSpellsContext';
 
 ManualKeybindInputs.propTypes = {
 	spec: PropTypes.string.isRequired,
@@ -24,7 +25,7 @@ ManualKeybindInputs.propTypes = {
 	keybinding: PropTypes.object.isRequired,
 	setKeybinding: PropTypes.func.isRequired,
 	checkIfInvalidAndAdd: PropTypes.func.isRequired,
-	Spells: PropTypes.object.isRequired,
+	Spells: PropTypes.array.isRequired,
 };
 
 function ManualKeybindInputs({
@@ -39,6 +40,7 @@ function ManualKeybindInputs({
 	Spells,
 }) {
 	const classes = styleGuide();
+	const allSpells = useContext(AllSpellsContext);
 
 	function handleKeyPress(e) {
 		if (!e.metaKey) {
@@ -68,11 +70,12 @@ function ManualKeybindInputs({
 					select
 					id="spell-selector"
 					variant="outlined"
-					value={keybinding.Spell || ''}
+					value={keybinding.SpellId || ''}
 					label="Spell"
 					onChange={event => {
+						console.log(event);
 						setKeybinding({
-							Spell: event.target.value,
+							SpellId: event.target.value,
 							Target: null,
 							Mod: null,
 							Key: null,
@@ -80,29 +83,33 @@ function ManualKeybindInputs({
 						setInvalidBinds([]);
 					}}
 				>
-					{Object.entries(Spells)
-						.filter(spell => spell[1].spec.includes(spec))
+					{/*Going to have to change this to account for talents/covenants/racials*/
+					Spells.map(e => allSpells[e])
+						.filter(spell => spell.spec.includes(spec))
 						.map(spell => {
 							const existingSpellBinds = allKeybinds.filter(
-								bind => bind.Spell === spell[0]
+								bind => bind.SpellId === spell.spellId
 							);
 							return (
 								<MenuItem
-									key={spell[0]}
-									id={`${spell[0].replace(/ /g, '')}-option`}
-									value={spell[0]}
+									key={spell.spellId}
+									id={`${spell.spellName.replace(
+										/ /g,
+										''
+									)}-option`}
+									value={spell.spellId}
 								>
-									{keybinding.Spell !== spell[0] ? (
+									{keybinding.SpellId !== spell.spellId ? (
 										<Grid
 											container
 											direction="row"
 											justify="space-between"
 										>
-											<Grid item>{spell[0]}</Grid>
+											<Grid item>{spell.spellName}</Grid>
 											<Grid item>
 												<Tooltip
 													placement="right-end"
-													id={`${spell[0].replace(
+													id={`${spell.spellName.replace(
 														/ /g,
 														''
 													)}-popup`}
@@ -113,7 +120,9 @@ function ManualKeybindInputs({
 																<Typography>
 																	Current
 																	keybinds for{' '}
-																	{spell[0]}
+																	{
+																		spell.spellName
+																	}
 																</Typography>
 																<ul>
 																	{existingSpellBinds.map(
@@ -130,7 +139,7 @@ function ManualKeybindInputs({
 																</ul>
 															</React.Fragment>
 														) : (
-															<Typography>{`No keybinds yet for ${spell[0]}!`}</Typography>
+															<Typography>{`No keybinds yet for ${spell.spellName}!`}</Typography>
 														)
 													}
 												>
@@ -141,7 +150,7 @@ function ManualKeybindInputs({
 																? classes.keybindsComplete
 																: classes.keybindsIncomplete
 														}
-														id={`${spell[0].replace(
+														id={`${spell.spellName.replace(
 															/ /g,
 															''
 														)}-status`}
@@ -155,7 +164,7 @@ function ManualKeybindInputs({
 											</Grid>
 										</Grid>
 									) : (
-										spell[0]
+										spell.spellName
 									)}
 								</MenuItem>
 							);
@@ -165,8 +174,8 @@ function ManualKeybindInputs({
 			<Grid item className={classes.keybindingOptions}>
 				<TextField
 					className={classes.button}
-					select={!!keybinding.Spell}
-					disabled={!keybinding.Spell}
+					select={!!keybinding.SpellId}
+					disabled={!keybinding.SpellId}
 					id="target-selector"
 					variant="outlined"
 					value={keybinding.Target || ''}
@@ -180,78 +189,80 @@ function ManualKeybindInputs({
 						checkIfInvalidAndAdd(keybindingUpdates);
 					}}
 				>
-					{keybinding.Spell &&
-						targetting[Spells[keybinding.Spell].targetType].map(
-							option => {
-								const existingSpellBinds = allKeybinds.filter(
-									bind =>
-										bind.Spell === keybinding.Spell &&
-										bind.Target === option
-								);
-								return (
-									<MenuItem
-										key={option}
-										id={`${option.replace(
-											/ /g,
-											''
-										)}-option`}
-										value={option}
-									>
-										{keybinding.Target !== option ? (
-											<Grid
-												container
-												direction="row"
-												justify="space-between"
-											>
-												<Grid item>{option}</Grid>
-												<Grid item>
-													<Tooltip
+					{keybinding.SpellId &&
+						targetting[
+							allSpells[keybinding.SpellId].targetType
+						].map(option => {
+							const existingSpellBinds = allKeybinds.filter(
+								bind =>
+									bind.SpellId === keybinding.SpellId &&
+									bind.Target === option
+							);
+							return (
+								<MenuItem
+									key={option}
+									id={`${option.replace(/ /g, '')}-option`}
+									value={option}
+								>
+									{keybinding.Target !== option ? (
+										<Grid
+											container
+											direction="row"
+											justify="space-between"
+										>
+											<Grid item>{option}</Grid>
+											<Grid item>
+												<Tooltip
+													id={`${option.replace(
+														/ /g,
+														''
+													)}-popup`}
+													title={
+														existingSpellBinds &&
+														existingSpellBinds.length ? (
+															<Typography>
+																{`Already set for keybinding: ${existingSpellBinds &&
+																	existingSpellBinds[0]
+																		.Mod} ${existingSpellBinds &&
+																	existingSpellBinds[0]
+																		.Key}`}
+															</Typography>
+														) : (
+															<Typography>{`Not set for ${
+																allSpells[
+																	keybinding
+																		.SpellId
+																].spellName
+															}!`}</Typography>
+														)
+													}
+													placement="right-end"
+												>
+													<Avatar
+														className={
+															existingSpellBinds &&
+															existingSpellBinds.length
+																? classes.keybindsTargetComplete
+																: classes.keybindsTargetIncomplete
+														}
 														id={`${option.replace(
 															/ /g,
 															''
-														)}-popup`}
-														title={
-															existingSpellBinds &&
-															existingSpellBinds.length ? (
-																<Typography>
-																	{`Already set for keybinding: ${existingSpellBinds &&
-																		existingSpellBinds[0]
-																			.Mod} ${existingSpellBinds &&
-																		existingSpellBinds[0]
-																			.Key}`}
-																</Typography>
-															) : (
-																<Typography>{`Not set for ${keybinding.Spell}!`}</Typography>
-															)
-														}
-														placement="right-end"
+														)}-status`}
 													>
-														<Avatar
-															className={
-																existingSpellBinds &&
-																existingSpellBinds.length
-																	? classes.keybindsTargetComplete
-																	: classes.keybindsTargetIncomplete
-															}
-															id={`${option.replace(
-																/ /g,
-																''
-															)}-status`}
-														>
-															<Typography variant="subtitle2">
-																{' '}
-															</Typography>
-														</Avatar>
-													</Tooltip>
-												</Grid>
+														<Typography variant="subtitle2">
+															{' '}
+														</Typography>
+													</Avatar>
+												</Tooltip>
 											</Grid>
-										) : (
-											option
-										)}
-									</MenuItem>
-								);
-							}
-						)}
+										</Grid>
+									) : (
+										option
+									)}
+								</MenuItem>
+							);
+						})}
 				</TextField>
 			</Grid>
 			<Grid item className={classes.keybindingOptions}>
@@ -259,7 +270,7 @@ function ManualKeybindInputs({
 					className={classes.button}
 					select
 					id="modifier-selector"
-					disabled={!keybinding.Spell}
+					disabled={!keybinding.SpellId}
 					variant="outlined"
 					value={keybinding.Mod || ''}
 					label="Mod"
@@ -288,7 +299,7 @@ function ManualKeybindInputs({
 			<Grid item className={classes.keybindingOptions}>
 				<TextField
 					className={classes.button}
-					disabled={!keybinding.Spell}
+					disabled={!keybinding.SpellId}
 					variant="outlined"
 					id="keystroke-selector"
 					value={keybinding.Key || ''}
@@ -308,7 +319,7 @@ function ManualKeybindInputs({
 					disabled={
 						!keybinding.Key ||
 						!keybinding.Mod ||
-						!keybinding.Spell ||
+						!keybinding.SpellId ||
 						!keybinding.Target
 					}
 					variant="contained"
@@ -327,8 +338,12 @@ function ManualKeybindInputs({
 							<Typography>Conflicting Keybindings:</Typography>
 							<ul>
 								{invalidBinds.map(bind => (
-									<li key={bind.Target + bind.Spell}>
-										<Typography>{`${bind.Spell} ${bind.Target} ${bind.Mod} ${bind.Key}`}</Typography>
+									<li key={bind.Target + bind.SpellId}>
+										<Typography>{`${
+											allSpells[bind.SpellId].spellName
+										} ${bind.Target} ${bind.Mod} ${
+											bind.Key
+										}`}</Typography>
 									</li>
 								))}
 							</ul>

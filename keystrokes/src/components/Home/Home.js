@@ -62,43 +62,49 @@ function Home(props) {
 	}, []);
 
 	return (
-		<AllSpellsContext.Provider value={allSpells}>
-			<BrowserRouter>
-				<div className="App">
-					<Route path="/" component={Nav} />
-					<Switch>
-						<Route path="/" exact component={LandingPage} />
-						<Route
-							path="/characterList"
-							exact
-							render={props => (
-								<CharacterList
-									{...props}
-									collectUserInfo={collectUserInfo}
-									userPath={userPath}
+		<div>
+			{allSpells ? (
+				<AllSpellsContext.Provider value={allSpells}>
+					<BrowserRouter>
+						<div className="App">
+							<Route path="/" component={Nav} />
+							<Switch>
+								<Route path="/" exact component={LandingPage} />
+								<Route
+									path="/characterList"
+									exact
+									render={props => (
+										<CharacterList
+											{...props}
+											collectUserInfo={collectUserInfo}
+											userPath={userPath}
+										/>
+									)}
 								/>
-							)}
-						/>
-						<Route
-							path="/characterList/:id/:fields?"
-							render={props => (
-								<CharacterDetailPage
-									{...props}
-									userId={userId}
-								/> //this will probably need more stuff to make it so you cant just jump on someones account. maybe this is where i need privilages?
-							)}
-						/>
-						<Route
-							path="/game"
-							exact
-							render={props => (
-								<Game {...props} userInfo={user} />
-							)}
-						/>
-					</Switch>
-				</div>
-			</BrowserRouter>
-		</AllSpellsContext.Provider>
+								<Route
+									path="/characterList/:id/:fields?"
+									render={props => (
+										<CharacterDetailPage
+											{...props}
+											userId={userId}
+										/> //this will probably need more stuff to make it so you cant just jump on someones account. maybe this is where i need privilages?
+									)}
+								/>
+								<Route
+									path="/game"
+									exact
+									render={props => (
+										<Game {...props} userInfo={user} />
+									)}
+								/>
+							</Switch>
+						</div>
+					</BrowserRouter>
+				</AllSpellsContext.Provider>
+			) : (
+				<div>Loading</div>
+			)}
+		</div>
 	);
 }
 

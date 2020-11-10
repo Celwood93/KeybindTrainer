@@ -211,7 +211,7 @@ describe('Tests for Manual Keybind Editor', () => {
 				],
 				RETRIBUTION: [
 					['Blessing of Sacrifice', 'Party1', 'Alt', 's'],
-					['Hand of Hinderance', 'Arena1', 'None', 'y'],
+					['Judgment', 'Arena1', 'None', 'y'],
 				],
 			};
 			const values = [
