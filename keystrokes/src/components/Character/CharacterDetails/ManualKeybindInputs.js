@@ -73,7 +73,6 @@ function ManualKeybindInputs({
 					value={keybinding.spellId || ''}
 					label="Spell"
 					onChange={event => {
-						console.log(event);
 						setKeybinding({
 							spellId: event.target.value,
 							target: null,
