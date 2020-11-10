@@ -54,7 +54,7 @@ function Game({ userInfo }) {
 				if (snapShot.exists()) {
 					const rawKeys = snapShot.val();
 					const detailedKeys = rawKeys.map(e => ({
-						...allSpells[e.SpellId],
+						...allSpells[e.spellId],
 						...e,
 					}));
 					setKeyBindings(detailedKeys);
@@ -105,8 +105,8 @@ function Game({ userInfo }) {
 		if (validatePress(keyPressed.key)) {
 			const expectedKey = keyBindings[key];
 			if (
-				keyPressed.key === expectedKey.Key &&
-				keyPressed[expectedKey.Mod]
+				keyPressed.key === expectedKey.key &&
+				keyPressed[expectedKey.mod]
 			) {
 				const newKey = getNextKey(Object.keys(keyBindings));
 				setKey(newKey);
@@ -140,17 +140,17 @@ function Game({ userInfo }) {
 				</div>
 				<div className="App-header" id="keybind-prompt" tabIndex="1">
 					{keyBindings && key && keyBindings[key] && (
-						<div tabIndex="1">on {keyBindings[key].Target}</div>
+						<div tabIndex="1">on {keyBindings[key].target}</div>
 					)}
 				</div>
 				<div>
 					{failedFirstTry && (
 						<div id="failed-prompt" tabIndex="1">
 							correct keybinding:{' '}
-							{keyBindings[key].Mod === 'None'
+							{keyBindings[key].mod === 'None'
 								? ''
-								: keyBindings[key].Mod}{' '}
-							{keyBindings[key].Key}
+								: keyBindings[key].mod}{' '}
+							{keyBindings[key].key}
 						</div>
 					)}
 				</div>

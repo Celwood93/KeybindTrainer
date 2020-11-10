@@ -97,68 +97,68 @@
 	"Keybindings": {
 		"-MFRzD0B9Dxl__8_qhoY": [
 			{
-				"Key": "1",
-				"Mod": "None",
-				"SpellId": "33763",
-				"Target": "Target"
+				"key": "1",
+				"mod": "None",
+				"spellId": "33763",
+				"target": "Target"
 			},
 			{
-				"Key": "2",
-				"Mod": "None",
-				"SpellId": "18562",
-				"Target": "Target"
+				"key": "2",
+				"mod": "None",
+				"spellId": "18562",
+				"target": "Target"
 			},
 			{
-				"Key": "2",
-				"Mod": "Shift",
-				"SpellId": "18562",
-				"Target": "Focus"
+				"key": "2",
+				"mod": "Shift",
+				"spellId": "18562",
+				"target": "Focus"
 			}
 		],
 		"-MFRzQa8mAwUd0hkyzT7": [
 			{
-				"Key": "j",
-				"Mod": "None",
-				"SpellId": "20473",
-				"Target": "Target"
+				"key": "j",
+				"mod": "None",
+				"spellId": "20473",
+				"target": "Target"
 			},
 			{
-				"Key": "r",
-				"Mod": "Ctrl",
-				"SpellId": "853",
-				"Target": "Arena3"
+				"key": "r",
+				"mod": "Ctrl",
+				"spellId": "853",
+				"target": "Arena3"
 			},
 			{
-				"Key": "r",
-				"Mod": "Shift",
-				"SpellId": "853",
-				"Target": "Arena2"
+				"key": "r",
+				"mod": "Shift",
+				"spellId": "853",
+				"target": "Arena2"
 			},
 			{
-				"Key": "r",
-				"Mod": "None",
-				"SpellId": "853",
-				"Target": "Arena1"
+				"key": "r",
+				"mod": "None",
+				"spellId": "853",
+				"target": "Arena1"
 			}
 		],
 		"-MFRzhiijx1xBIk9HECi": [
 			{
-				"Key": "r",
-				"Mod": "None",
-				"SpellId": "119381",
-				"Target": "Target"
+				"key": "r",
+				"mod": "None",
+				"spellId": "119381",
+				"target": "Target"
 			},
 			{
-				"Key": "r",
-				"Mod": "Shift",
-				"SpellId": "233759",
-				"Target": "Target"
+				"key": "r",
+				"mod": "Shift",
+				"spellId": "233759",
+				"target": "Target"
 			},
 			{
-				"Key": "s",
-				"Mod": "None",
-				"SpellId": "116849",
-				"Target": "Target"
+				"key": "s",
+				"mod": "None",
+				"spellId": "116849",
+				"target": "Target"
 			}
 		]
 	},

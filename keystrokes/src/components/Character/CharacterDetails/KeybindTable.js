@@ -59,20 +59,20 @@ function KeybindTable({
 						{allKeybinds &&
 							allKeybinds.map(row => (
 								<TableRow
-									key={row.SpellId + row.Target}
+									key={row.spellId + row.target}
 									id="keybind-row-container"
 								>
 									<TableCell component="th" scope="row">
-										{allSpells[row.SpellId].spellName}
+										{allSpells[row.spellId].spellName}
 									</TableCell>
 									<TableCell align="right">
-										{row.Target}
+										{row.target}
 									</TableCell>
 									<TableCell align="right">
-										{row.Mod}
+										{row.mod}
 									</TableCell>
 									<TableCell align="right">
-										{row.Key}
+										{row.key}
 									</TableCell>
 									<TableCell align="right">
 										{editing && (
@@ -81,8 +81,8 @@ function KeybindTable({
 													disabled={
 														editingKey &&
 														editingKey !==
-															row.SpellId +
-																row.Target
+															row.spellId +
+																row.target
 													}
 													onClick={() => {
 														editThisRow(row);
@@ -92,25 +92,25 @@ function KeybindTable({
 													}}
 												>
 													{editingKey !==
-													row.SpellId + row.Target ? (
+													row.spellId + row.target ? (
 														<EditIcon
 															id={`${allSpells[
-																row.SpellId
+																row.spellId
 															].spellName.replace(
 																/ /g,
 																''
 															) +
-																row.Target}-edit`}
+																row.target}-edit`}
 														/>
 													) : (
 														<CancelOutlined
 															id={`${allSpells[
-																row.SpellId
+																row.spellId
 															].spellName.replace(
 																/ /g,
 																''
 															) +
-																row.Target}-cancel`}
+																row.target}-cancel`}
 														/>
 													)}
 												</IconButton>
@@ -124,11 +124,11 @@ function KeybindTable({
 												>
 													<DeleteIcon
 														id={`${allSpells[
-															row.SpellId
+															row.spellId
 														].spellName.replace(
 															/ /g,
 															''
-														) + row.Target}-delete`}
+														) + row.target}-delete`}
 													/>
 												</IconButton>
 											</div>

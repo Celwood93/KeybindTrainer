@@ -30,10 +30,10 @@ function ManualKeybindModal({
 	const classes = styleGuide();
 	const allSpells = useContext(AllSpellsContext);
 	const [keybinding, setKeybinding] = useState({
-		SpellId: null,
-		Target: null,
-		Mod: null,
-		Key: null,
+		spellId: null,
+		target: null,
+		mod: null,
+		key: null,
 	});
 	const [allKeybinds, setAllKeybinds] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -72,10 +72,10 @@ function ManualKeybindModal({
 			allKeybinds.filter(
 				bind =>
 					!('delete' in bind) &&
-					((bind.Key === currKeybinding.Key &&
-						bind.Mod === currKeybinding.Mod) ||
-						(bind.SpellId === currKeybinding.SpellId &&
-							bind.Target === currKeybinding.Target))
+					((bind.key === currKeybinding.key &&
+						bind.mod === currKeybinding.mod) ||
+						(bind.spellId === currKeybinding.spellId &&
+							bind.target === currKeybinding.target))
 			)
 		);
 	}
@@ -89,23 +89,23 @@ function ManualKeybindModal({
 	}
 
 	function editThisRow(row) {
-		if (editingKey === row.SpellId + row.Target) {
+		if (editingKey === row.spellId + row.target) {
 			setKeybinding({
-				SpellId: null,
-				Target: null,
-				Mod: null,
-				Key: null,
+				spellId: null,
+				target: null,
+				mod: null,
+				key: null,
 			});
 			delete row.delete;
 			setEditingKey();
 		} else {
-			setEditingKey(row.SpellId + row.Target);
+			setEditingKey(row.spellId + row.target);
 			row['delete'] = false;
 			setKeybinding({
-				Key: row.Key,
-				Mod: row.Mod,
-				SpellId: row.SpellId,
-				Target: row.Target,
+				key: row.key,
+				mod: row.mod,
+				spellId: row.spellId,
+				target: row.target,
 			});
 		}
 	}
@@ -120,10 +120,10 @@ function ManualKeybindModal({
 			]);
 			setEditingKey();
 			setKeybinding({
-				SpellId: null,
-				Target: null,
-				Mod: null,
-				Key: null,
+				spellId: null,
+				target: null,
+				mod: null,
+				key: null,
 			});
 		}
 	}
@@ -147,12 +147,12 @@ function ManualKeybindModal({
 								<ul id="warning-modal-items">
 									{invalidBinds
 										.map(e => ({
-											...allSpells[e.SpellId],
+											...allSpells[e.spellId],
 											...e,
 										}))
 										.map(bind => (
-											<li key={bind.Target}>
-												<Typography>{`${bind.spellName} ${bind.Target} ${bind.Mod} ${bind.Key}`}</Typography>
+											<li key={bind.target}>
+												<Typography>{`${bind.spellName} ${bind.target} ${bind.mod} ${bind.key}`}</Typography>
 											</li>
 										))}
 								</ul>
@@ -190,16 +190,16 @@ function ManualKeybindModal({
 																dontFilterBind =
 																	dontFilterBind &&
 																	!(
-																		bind.SpellId ===
+																		bind.spellId ===
 																			invalidBinds[
 																				i
 																			]
-																				.SpellId &&
-																		bind.Target ===
+																				.spellId &&
+																		bind.target ===
 																			invalidBinds[
 																				i
 																			]
-																				.Target
+																				.target
 																	);
 															}
 
@@ -217,10 +217,10 @@ function ManualKeybindModal({
 												setInvalidBinds([]);
 												setEditingKey();
 												setKeybinding({
-													SpellId: null,
-													Target: null,
-													Mod: null,
-													Key: null,
+													spellId: null,
+													target: null,
+													mod: null,
+													key: null,
 												});
 												setIsKBConflictOpen(false);
 											}}
@@ -238,10 +238,10 @@ function ManualKeybindModal({
 									variant="contained"
 									onClick={() => {
 										setKeybinding({
-											SpellId: null,
-											Target: null,
-											Mod: null,
-											Key: null,
+											spellId: null,
+											target: null,
+											mod: null,
+											key: null,
 										});
 										setAllKeybinds(
 											allKeybindings[keyBindingKey]

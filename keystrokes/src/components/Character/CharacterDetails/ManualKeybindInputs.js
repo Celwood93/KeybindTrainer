@@ -50,7 +50,7 @@ function ManualKeybindInputs({
 		if (validatePress(newKey)) {
 			const newKeybinding = {
 				...keybinding,
-				Key: verifyKey(newKey),
+				key: verifyKey(newKey),
 			};
 			setKeybinding(newKeybinding);
 			checkIfInvalidAndAdd(newKeybinding);
@@ -70,15 +70,15 @@ function ManualKeybindInputs({
 					select
 					id="spell-selector"
 					variant="outlined"
-					value={keybinding.SpellId || ''}
+					value={keybinding.spellId || ''}
 					label="Spell"
 					onChange={event => {
 						console.log(event);
 						setKeybinding({
-							SpellId: event.target.value,
-							Target: null,
-							Mod: null,
-							Key: null,
+							spellId: event.target.value,
+							target: null,
+							mod: null,
+							key: null,
 						});
 						setInvalidBinds([]);
 					}}
@@ -88,7 +88,7 @@ function ManualKeybindInputs({
 						.filter(spell => spell.spec.includes(spec))
 						.map(spell => {
 							const existingSpellBinds = allKeybinds.filter(
-								bind => bind.SpellId === spell.spellId
+								bind => bind.spellId === spell.spellId
 							);
 							return (
 								<MenuItem
@@ -99,7 +99,7 @@ function ManualKeybindInputs({
 									)}-option`}
 									value={spell.spellId}
 								>
-									{keybinding.SpellId !== spell.spellId ? (
+									{keybinding.spellId !== spell.spellId ? (
 										<Grid
 											container
 											direction="row"
@@ -129,10 +129,10 @@ function ManualKeybindInputs({
 																		bind => (
 																			<li
 																				key={
-																					bind.Target
+																					bind.target
 																				}
 																			>
-																				<Typography>{`${bind.Target} ${bind.Mod} ${bind.Key}`}</Typography>
+																				<Typography>{`${bind.target} ${bind.mod} ${bind.key}`}</Typography>
 																			</li>
 																		)
 																	)}
@@ -174,29 +174,29 @@ function ManualKeybindInputs({
 			<Grid item className={classes.keybindingOptions}>
 				<TextField
 					className={classes.button}
-					select={!!keybinding.SpellId}
-					disabled={!keybinding.SpellId}
+					select={!!keybinding.spellId}
+					disabled={!keybinding.spellId}
 					id="target-selector"
 					variant="outlined"
-					value={keybinding.Target || ''}
+					value={keybinding.target || ''}
 					label="Target"
 					onChange={event => {
 						const keybindingUpdates = {
 							...keybinding,
-							Target: event.target.value,
+							target: event.target.value,
 						};
 						setKeybinding(keybindingUpdates);
 						checkIfInvalidAndAdd(keybindingUpdates);
 					}}
 				>
-					{keybinding.SpellId &&
+					{keybinding.spellId &&
 						targetting[
-							allSpells[keybinding.SpellId].targetType
+							allSpells[keybinding.spellId].targetType
 						].map(option => {
 							const existingSpellBinds = allKeybinds.filter(
 								bind =>
-									bind.SpellId === keybinding.SpellId &&
-									bind.Target === option
+									bind.spellId === keybinding.spellId &&
+									bind.target === option
 							);
 							return (
 								<MenuItem
@@ -204,7 +204,7 @@ function ManualKeybindInputs({
 									id={`${option.replace(/ /g, '')}-option`}
 									value={option}
 								>
-									{keybinding.Target !== option ? (
+									{keybinding.target !== option ? (
 										<Grid
 											container
 											direction="row"
@@ -223,15 +223,15 @@ function ManualKeybindInputs({
 															<Typography>
 																{`Already set for keybinding: ${existingSpellBinds &&
 																	existingSpellBinds[0]
-																		.Mod} ${existingSpellBinds &&
+																		.mod} ${existingSpellBinds &&
 																	existingSpellBinds[0]
-																		.Key}`}
+																		.key}`}
 															</Typography>
 														) : (
 															<Typography>{`Not set for ${
 																allSpells[
 																	keybinding
-																		.SpellId
+																		.spellId
 																].spellName
 															}!`}</Typography>
 														)
@@ -270,18 +270,18 @@ function ManualKeybindInputs({
 					className={classes.button}
 					select
 					id="modifier-selector"
-					disabled={!keybinding.SpellId}
+					disabled={!keybinding.spellId}
 					variant="outlined"
-					value={keybinding.Mod || ''}
+					value={keybinding.mod || ''}
 					label="Mod"
 					onChange={event => {
 						setKeybinding({
 							...keybinding,
-							Mod: event.target.value,
+							mod: event.target.value,
 						});
 						checkIfInvalidAndAdd({
 							...keybinding,
-							Mod: event.target.value,
+							mod: event.target.value,
 						});
 					}}
 				>
@@ -299,10 +299,10 @@ function ManualKeybindInputs({
 			<Grid item className={classes.keybindingOptions}>
 				<TextField
 					className={classes.button}
-					disabled={!keybinding.SpellId}
+					disabled={!keybinding.spellId}
 					variant="outlined"
 					id="keystroke-selector"
-					value={keybinding.Key || ''}
+					value={keybinding.key || ''}
 					label="Key"
 					onFocus={() => {
 						document.body.onkeydown = handleKeyPress;
@@ -317,10 +317,10 @@ function ManualKeybindInputs({
 					className={classes.button}
 					color="primary"
 					disabled={
-						!keybinding.Key ||
-						!keybinding.Mod ||
-						!keybinding.SpellId ||
-						!keybinding.Target
+						!keybinding.key ||
+						!keybinding.mod ||
+						!keybinding.spellId ||
+						!keybinding.target
 					}
 					variant="contained"
 					size="large"
@@ -338,11 +338,11 @@ function ManualKeybindInputs({
 							<Typography>Conflicting Keybindings:</Typography>
 							<ul>
 								{invalidBinds.map(bind => (
-									<li key={bind.Target + bind.SpellId}>
+									<li key={bind.target + bind.spellId}>
 										<Typography>{`${
-											allSpells[bind.SpellId].spellName
-										} ${bind.Target} ${bind.Mod} ${
-											bind.Key
+											allSpells[bind.spellId].spellName
+										} ${bind.target} ${bind.mod} ${
+											bind.key
 										}`}</Typography>
 									</li>
 								))}
