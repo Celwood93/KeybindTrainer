@@ -94,7 +94,7 @@ function ManualKeybindInputs({
 								<MenuItem
 									key={spell.spellId}
 									id={`${spell.spellName.replace(
-										/ /g,
+										/ |:|'/g,
 										''
 									)}-option`}
 									value={spell.spellId}
@@ -110,7 +110,7 @@ function ManualKeybindInputs({
 												<Tooltip
 													placement="right-end"
 													id={`${spell.spellName.replace(
-														/ /g,
+														/ |:|'/g,
 														''
 													)}-popup`}
 													title={
@@ -151,7 +151,7 @@ function ManualKeybindInputs({
 																: classes.keybindsIncomplete
 														}
 														id={`${spell.spellName.replace(
-															/ /g,
+															/ |:|'/g,
 															''
 														)}-status`}
 													>
@@ -201,7 +201,10 @@ function ManualKeybindInputs({
 							return (
 								<MenuItem
 									key={option}
-									id={`${option.replace(/ /g, '')}-option`}
+									id={`${option.replace(
+										/ |:|'/g,
+										''
+									)}-option`}
 									value={option}
 								>
 									{keybinding.target !== option ? (
@@ -214,7 +217,7 @@ function ManualKeybindInputs({
 											<Grid item>
 												<Tooltip
 													id={`${option.replace(
-														/ /g,
+														/ |:|'/g,
 														''
 													)}-popup`}
 													title={
@@ -246,7 +249,7 @@ function ManualKeybindInputs({
 																: classes.keybindsTargetIncomplete
 														}
 														id={`${option.replace(
-															/ /g,
+															/ |:|'/g,
 															''
 														)}-status`}
 													>
@@ -289,7 +292,7 @@ function ManualKeybindInputs({
 						<MenuItem
 							key={option}
 							value={option}
-							id={`${option.replace(/ /g, '')}-option`}
+							id={`${option.replace(/ |:|'/g, '')}-option`}
 						>
 							{option}
 						</MenuItem>

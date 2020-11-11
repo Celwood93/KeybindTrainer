@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
+import { Grid, Typography } from '@material-ui/core';
 import { ref, characterDetails } from '../../../../../config/constants';
 import { AllSpellsContext } from '../../../../../contexts/AllSpellsContext';
 import NormalTalentRow from './NormalTalentRow';
@@ -22,6 +23,38 @@ function NormalTalentCalculator({ character, setCharacter, spec }) {
 		6: 50,
 	};
 	useEffect(() => {
+		console.log('toolTip useEffect');
+		const toolTips = document.querySelectorAll(
+			`#panel1a-content > div > div > div > div > div > a`
+		);
+		toolTips.forEach(e => {
+			function getRidOfIt() {
+				const waterMark = document.querySelector('.wowhead-tooltip');
+				if (
+					waterMark &&
+					waterMark.children &&
+					waterMark.children.length === 3
+				) {
+					waterMark.children[2].parentNode.removeChild(
+						waterMark.children[2]
+					);
+					e.removeEventListener('mousemove', getRidOfIt);
+				}
+				if (
+					waterMark &&
+					waterMark.children &&
+					waterMark.children.length < 3
+				) {
+					e.removeEventListener('mousemove', getRidOfIt);
+				}
+			}
+			if (e) {
+				e.addEventListener('mousemove', getRidOfIt);
+			}
+		});
+	});
+
+	useEffect(() => {
 		async function getNormalTalents() {
 			try {
 				const snapShot = await ref
@@ -41,8 +74,9 @@ function NormalTalentCalculator({ character, setCharacter, spec }) {
 		getNormalTalents();
 	}, [spec]);
 	return (
-		<div>
+		<Grid container xs={8} style={{ width: '611px', height: '400px' }}>
 			{normalTalents &&
+				normalTalents.length > 0 &&
 				normalTalents
 					.reduce(
 						(storage, talentId) => {
@@ -82,7 +116,7 @@ function NormalTalentCalculator({ character, setCharacter, spec }) {
 							/>
 						);
 					})}
-		</div>
+		</Grid>
 	);
 }
 

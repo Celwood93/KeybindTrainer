@@ -97,7 +97,7 @@ function KeybindTable({
 															id={`${allSpells[
 																row.spellId
 															].spellName.replace(
-																/ /g,
+																/ |:|'/g,
 																''
 															) +
 																row.target}-edit`}
@@ -107,7 +107,7 @@ function KeybindTable({
 															id={`${allSpells[
 																row.spellId
 															].spellName.replace(
-																/ /g,
+																/ |:|'/g,
 																''
 															) +
 																row.target}-cancel`}
@@ -126,7 +126,7 @@ function KeybindTable({
 														id={`${allSpells[
 															row.spellId
 														].spellName.replace(
-															/ /g,
+															/ |:|'/g,
 															''
 														) + row.target}-delete`}
 													/>

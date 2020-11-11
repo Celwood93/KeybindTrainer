@@ -12,25 +12,32 @@ NormalTalentRow.propTypes = {
 function NormalTalentRow({ character, setCharacter, level, spellsInfo }) {
 	const [selectedTalent, setSelectedTalent] = useState('');
 	return (
-		<Grid
-			container
-			justify="center"
-			direction="row"
-			spacing={0}
-			xs={12}
-			style={{ maxHeight: '45px' }}
-		>
-			{spellsInfo.map(spellInfo => {
-				return (
-					<Grid item xs={4} style={{ maxHeight: '45px' }}>
-						<NormalTalentBox
-							spellInfo={spellInfo}
-							selectedTalent={selectedTalent}
-							setSelectedTalent={setSelectedTalent}
-						/>
-					</Grid>
-				);
-			})}
+		<Grid item xs={12}>
+			<Grid
+				container
+				justify="center"
+				direction="row"
+				spacing={1}
+				xs={12}
+				style={{ maxHeight: '45px' }}
+			>
+				{spellsInfo.map(spellInfo => {
+					return (
+						<Grid
+							key={spellInfo.spellId}
+							item
+							xs={4}
+							style={{ maxHeight: '45px' }}
+						>
+							<NormalTalentBox
+								spellInfo={spellInfo}
+								selectedTalent={selectedTalent}
+								setSelectedTalent={setSelectedTalent}
+							/>
+						</Grid>
+					);
+				})}
+			</Grid>
 		</Grid>
 	);
 }
