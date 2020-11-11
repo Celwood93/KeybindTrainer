@@ -59,6 +59,18 @@ function CharacterDetailPage({ userId, match }) {
 			setLoading(false);
 		}
 	}, []);
+	useEffect(() => {
+		const script = document.createElement('script');
+
+		script.src = 'https://wow.zamimg.com/widgets/power.js';
+		script.async = true;
+
+		document.body.appendChild(script);
+
+		return () => {
+			document.body.removeChild(script);
+		};
+	}, []);
 
 	function newKeybindings(spec, char) {
 		const key = ref.child('/Keybindings').push().key;

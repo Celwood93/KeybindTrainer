@@ -18,6 +18,7 @@ import styleGuide from '../../../stylesheets/style';
 import { TabPanel } from '../helpers/TabPanels';
 import { characterKeybindings } from '../../utils/utils';
 import KeybindEditor from './KeybindEditor';
+import TalentCalculator from './TalentCalc/TalentCalculator';
 
 CharacterKeybindDisplay.propTypes = {
 	index: PropTypes.number,
@@ -198,16 +199,6 @@ function CharacterKeybindDisplay({
 					<Grid item>
 						<Typography variant="h2">Talents</Typography>
 					</Grid>
-					<Grid item>
-						<Button
-							variant="contained"
-							id="talent-edit-button"
-							color="primary"
-							className={classes.bottomMarginNegTwo}
-						>
-							Edit
-						</Button>
-					</Grid>
 				</Grid>
 				<Grid container direction="row">
 					<Grid item md={12}>
@@ -218,11 +209,15 @@ function CharacterKeybindDisplay({
 								id="panel1a-header"
 							>
 								<Typography variant="h5" align="left">
-									Preview
+									Talent Calculator
 								</Typography>
 							</ExpansionPanelSummary>
 							<ExpansionPanelDetails>
-								<Typography>Work In Progress</Typography>
+								<TalentCalculator
+									character={character}
+									setCharacter={setCharacter}
+									spec={spec}
+								/>
 							</ExpansionPanelDetails>
 						</ExpansionPanel>
 					</Grid>
