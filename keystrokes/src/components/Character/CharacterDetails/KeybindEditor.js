@@ -8,9 +8,9 @@ import {
 	Menu,
 	MenuItem,
 	CircularProgress,
-	ExpansionPanel,
-	ExpansionPanelSummary,
-	ExpansionPanelDetails,
+	Accordion,
+	AccordionSummary,
+	AccordionDetails,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import styleGuide from '../../../stylesheets/style';
@@ -153,8 +153,8 @@ function KeybindEditor({
 			</Grid>
 			<Grid container direction="row">
 				<Grid item md={12}>
-					<ExpansionPanel>
-						<ExpansionPanelSummary
+					<Accordion>
+						<AccordionSummary
 							expandIcon={<ExpandMoreIcon />}
 							aria-controls="panel1a-content"
 							id="panel1a-header-keybinds"
@@ -162,8 +162,8 @@ function KeybindEditor({
 							<Typography variant="h5" align="left">
 								Preview
 							</Typography>
-						</ExpansionPanelSummary>
-						<ExpansionPanelDetails>
+						</AccordionSummary>
+						<AccordionDetails>
 							<Grid item md={12}>
 								{!loading &&
 								allKeybindings[
@@ -188,8 +188,8 @@ function KeybindEditor({
 									<CircularProgress />
 								)}
 							</Grid>
-						</ExpansionPanelDetails>
-					</ExpansionPanel>
+						</AccordionDetails>
+					</Accordion>
 				</Grid>
 			</Grid>
 		</React.Fragment>

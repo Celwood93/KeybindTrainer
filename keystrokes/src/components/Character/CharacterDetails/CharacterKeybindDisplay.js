@@ -5,9 +5,9 @@ import {
 	Button,
 	Typography,
 	Paper,
-	ExpansionPanel,
-	ExpansionPanelSummary,
-	ExpansionPanelDetails,
+	Accordion,
+	AccordionSummary,
+	AccordionDetails,
 } from '@material-ui/core';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -202,8 +202,8 @@ function CharacterKeybindDisplay({
 				</Grid>
 				<Grid container direction="row">
 					<Grid item md={12}>
-						<ExpansionPanel>
-							<ExpansionPanelSummary
+						<Accordion>
+							<AccordionSummary
 								expandIcon={<ExpandMoreIcon />}
 								aria-controls="panel1a-content"
 								id="panel1a-header"
@@ -211,15 +211,15 @@ function CharacterKeybindDisplay({
 								<Typography variant="h5" align="left">
 									Talent Calculator
 								</Typography>
-							</ExpansionPanelSummary>
-							<ExpansionPanelDetails>
+							</AccordionSummary>
+							<AccordionDetails>
 								<TalentCalculator
 									character={character}
 									setCharacter={setCharacter}
 									spec={spec}
 								/>
-							</ExpansionPanelDetails>
-						</ExpansionPanel>
+							</AccordionDetails>
+						</Accordion>
 					</Grid>
 				</Grid>
 				<br />
