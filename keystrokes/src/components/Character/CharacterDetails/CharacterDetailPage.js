@@ -14,6 +14,7 @@ import { ref } from '../../../config/constants';
 import CharacterSpecNavigation from './CharacterSpecNavigation';
 import { Character, Spec } from '../../Factories/CharacterFactories';
 import { characterKeybindings } from '../../utils/utils';
+import { enableToolTips } from '../../utils/toolTipHooks';
 
 CharacterDetailPage.propTypes = {
 	userId: PropTypes.string,
@@ -59,18 +60,8 @@ function CharacterDetailPage({ userId, match }) {
 			setLoading(false);
 		}
 	}, []);
-	useEffect(() => {
-		const script = document.createElement('script');
 
-		script.src = 'https://wow.zamimg.com/widgets/power.js';
-		script.async = true;
-
-		document.body.appendChild(script);
-
-		return () => {
-			document.body.removeChild(script);
-		};
-	}, []);
+	enableToolTips();
 
 	function newKeybindings(spec, char) {
 		const key = ref.child('/Keybindings').push().key;

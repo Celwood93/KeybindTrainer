@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, CircularProgress } from '@material-ui/core';
 import { ref, characterDetails } from '../../../../../config/constants';
 import { AllSpellsContext } from '../../../../../contexts/AllSpellsContext';
 import NormalTalentRow from './NormalTalentRow';
+import { removeWaterMark } from '../../../../utils/toolTipHooks';
 
 NormalTalentCalculator.propTypes = {
 	character: PropTypes.object,
@@ -12,6 +13,7 @@ NormalTalentCalculator.propTypes = {
 };
 function NormalTalentCalculator({ character, setCharacter, spec }) {
 	const [normalTalents, setNormalTalents] = useState();
+	const [loading, setLoading] = useState(true);
 	const allSpells = useContext(AllSpellsContext);
 	const indexLevelRelation = {
 		0: 15,
@@ -22,37 +24,8 @@ function NormalTalentCalculator({ character, setCharacter, spec }) {
 		5: 45,
 		6: 50,
 	};
-	useEffect(() => {
-		console.log('toolTip useEffect');
-		const toolTips = document.querySelectorAll(
-			`#panel1a-content > div > div > div > div > div > a`
-		);
-		toolTips.forEach(e => {
-			function getRidOfIt() {
-				const waterMark = document.querySelector('.wowhead-tooltip');
-				if (
-					waterMark &&
-					waterMark.children &&
-					waterMark.children.length === 3
-				) {
-					waterMark.children[2].parentNode.removeChild(
-						waterMark.children[2]
-					);
-					e.removeEventListener('mousemove', getRidOfIt);
-				}
-				if (
-					waterMark &&
-					waterMark.children &&
-					waterMark.children.length < 3
-				) {
-					e.removeEventListener('mousemove', getRidOfIt);
-				}
-			}
-			if (e) {
-				e.addEventListener('mousemove', getRidOfIt);
-			}
-		});
-	});
+
+	removeWaterMark(`#panel1a-content > div > div > div > div > div > a`);
 
 	useEffect(() => {
 		async function getNormalTalents() {
@@ -66,6 +39,7 @@ function NormalTalentCalculator({ character, setCharacter, spec }) {
 					.once('value');
 				if (snapShot.exists()) {
 					setNormalTalents(snapShot.val());
+					setLoading(false);
 				}
 			} catch (e) {
 				console.error(`failed to get talents for ${character.class}`);
@@ -73,7 +47,9 @@ function NormalTalentCalculator({ character, setCharacter, spec }) {
 		}
 		getNormalTalents();
 	}, [spec]);
-	return (
+	return loading ? (
+		<CircularProgress />
+	) : (
 		<Grid container xs={8} style={{ width: '611px', height: '400px' }}>
 			{normalTalents &&
 				normalTalents.length > 0 &&
