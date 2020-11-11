@@ -32,12 +32,15 @@ export const removeWaterMark = path => {
 					waterMark.children[2].parentNode.removeChild(
 						waterMark.children[2]
 					);
+					waterMark.children[0].parentNode.removeChild(
+						waterMark.children[0]
+					);
 					e.removeEventListener('mousemove', getRidOfIt);
 				}
 				if (
 					waterMark &&
 					waterMark.children &&
-					waterMark.children.length === 2
+					waterMark.children.length < 3
 				) {
 					e.removeEventListener('mousemove', getRidOfIt);
 				}

@@ -14,7 +14,11 @@
 							"-MFRzD0B9Dxl__8_qhoY": {
 								"description": "",
 								"key": "-MFRzD0B9Dxl__8_qhoY",
-								"talents": [null, 1, 2, 3]
+								"talents": {
+									"normal": { "15": "", "25": "", "30": "", "35": "", "40": "", "45": "", "50": "" },
+									"pvp": { "0": "", "1": "", "2": "" }
+								},
+								"covenant": ""
 							}
 						}
 					],
@@ -38,7 +42,11 @@
 							"-MFRzQa8mAwUd0hkyzT7": {
 								"description": "<p>test description</p>",
 								"key": "-MFRzQa8mAwUd0hkyzT7",
-								"talents": [null, 1, 2, 3]
+								"talents": {
+									"normal": { "15": "", "25": "", "30": "", "35": "", "40": "", "45": "", "50": "" },
+									"pvp": { "0": "", "1": "", "2": "" }
+								},
+								"covenant": ""
 							}
 						}
 					],
@@ -60,7 +68,11 @@
 							"-MFRzhiijx1xBIk9HECi": {
 								"description": "<p>test description</p>",
 								"key": "-MFRzhiijx1xBIk9HECi",
-								"talents": [null, 1, 2, 3]
+								"talents": {
+									"normal": { "15": "", "25": "", "30": "", "35": "", "40": "", "45": "", "50": "" },
+									"pvp": { "0": "", "1": "", "2": "" }
+								},
+								"covenant": ""
 							}
 						}
 					],
@@ -84,7 +96,11 @@
 							"-MJ4SzSWtuTTKAcAqHzE": {
 								"description": "",
 								"key": "-MJ4SzSWtuTTKAcAqHzE",
-								"talents": [null, 1, 2, 3]
+								"talents": {
+									"normal": { "15": "", "25": "", "30": "", "35": "", "40": "", "45": "", "50": "" },
+									"pvp": { "0": "", "1": "", "2": "" }
+								},
+								"covenant": ""
 							}
 						}
 					],

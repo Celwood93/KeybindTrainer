@@ -217,6 +217,7 @@ function CharacterKeybindDisplay({
 									character={character}
 									setCharacter={setCharacter}
 									spec={spec}
+									keyBinding={keyBinding}
 								/>
 							</AccordionDetails>
 						</Accordion>

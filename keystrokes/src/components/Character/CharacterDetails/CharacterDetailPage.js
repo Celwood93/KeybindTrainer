@@ -22,6 +22,7 @@ CharacterDetailPage.propTypes = {
 };
 function CharacterDetailPage({ userId, match }) {
 	const [loading, setLoading] = useState(true);
+	const [isSaved, setIsSaved] = useState(false);
 	const [alert, setAlert] = alerter();
 	const [character, setCharacter] = useState(0);
 	const [allKeybindings, setAllKeybindings] = useState({});
@@ -45,6 +46,7 @@ function CharacterDetailPage({ userId, match }) {
 					);
 					setSpec(charDetails.selectedSpec);
 					setCharacter(charDetails);
+					setIsSaved(true);
 				}
 				//Set something to say "character not found"
 				setLoading(false);
@@ -62,6 +64,12 @@ function CharacterDetailPage({ userId, match }) {
 	}, []);
 
 	enableToolTips();
+
+	useEffect(() => {
+		return () => {
+			console.log('we out');
+		};
+	}, []);
 
 	function newKeybindings(spec, char) {
 		const key = ref.child('/Keybindings').push().key;
@@ -92,8 +100,9 @@ function CharacterDetailPage({ userId, match }) {
 			});
 		}
 		try {
-			const error = await ref.update(updates);
-			setAlertMessage(error);
+			const res = await ref.update(updates);
+			setAlertMessage(res);
+			setIsSaved(true);
 		} catch (e) {
 			console.error('error saving character updates');
 		}
@@ -131,6 +140,17 @@ function CharacterDetailPage({ userId, match }) {
 		}
 	}
 
+	function checkIfValidSelect() {
+		console.log('pass');
+		return !(
+			isSaved &&
+			character.specs[spec] &&
+			allKeybindings[characterKeybindings(character, spec, keyBinding)] &&
+			allKeybindings[characterKeybindings(character, spec, keyBinding)]
+				.length > 0
+		);
+	}
+
 	return !loading ? (
 		<React.Fragment>
 			<Snackbar
@@ -164,25 +184,7 @@ function CharacterDetailPage({ userId, match }) {
 							<span>
 								<Button
 									variant="contained"
-									disabled={
-										!(
-											character.specs[spec] &&
-											allKeybindings[
-												characterKeybindings(
-													character,
-													spec,
-													keyBinding
-												)
-											] &&
-											allKeybindings[
-												characterKeybindings(
-													character,
-													spec,
-													keyBinding
-												)
-											].length > 0
-										)
-									}
+									disabled={checkIfValidSelect()}
 									className={classes.bottomMarginNegTwo}
 									onClick={selectCharacter}
 								>

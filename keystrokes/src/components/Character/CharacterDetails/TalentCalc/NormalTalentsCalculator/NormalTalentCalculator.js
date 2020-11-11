@@ -10,8 +10,9 @@ NormalTalentCalculator.propTypes = {
 	character: PropTypes.object,
 	setCharacter: PropTypes.func,
 	spec: PropTypes.number,
+	keyBinding: PropTypes.number,
 };
-function NormalTalentCalculator({ character, setCharacter, spec }) {
+function NormalTalentCalculator({ character, setCharacter, spec, keyBinding }) {
 	const [normalTalents, setNormalTalents] = useState();
 	const [loading, setLoading] = useState(true);
 	const allSpells = useContext(AllSpellsContext);
@@ -25,7 +26,7 @@ function NormalTalentCalculator({ character, setCharacter, spec }) {
 		6: 50,
 	};
 
-	removeWaterMark(`#panel1a-content > div > div > div > div > div > a`);
+	removeWaterMark(`#panel1a-content a`);
 
 	useEffect(() => {
 		async function getNormalTalents() {
@@ -47,10 +48,11 @@ function NormalTalentCalculator({ character, setCharacter, spec }) {
 		}
 		getNormalTalents();
 	}, [spec]);
+
 	return loading ? (
 		<CircularProgress />
 	) : (
-		<Grid container xs={8} style={{ width: '611px', height: '400px' }}>
+		<Grid container style={{ width: '611px', height: '400px' }}>
 			{normalTalents &&
 				normalTalents.length > 0 &&
 				normalTalents
@@ -85,6 +87,9 @@ function NormalTalentCalculator({ character, setCharacter, spec }) {
 					.map((spellsInfo, index) => {
 						return (
 							<NormalTalentRow
+								key={index}
+								spec={spec}
+								keyBinding={keyBinding}
 								level={indexLevelRelation[index]}
 								character={character}
 								setCharacter={setCharacter}
