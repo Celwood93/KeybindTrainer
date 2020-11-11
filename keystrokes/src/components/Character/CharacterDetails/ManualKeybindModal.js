@@ -16,6 +16,7 @@ ManualKeybindModal.propTypes = {
 	setAllKeybindings: PropTypes.func.isRequired,
 	allKeybindings: PropTypes.object.isRequired,
 	keyBindingKey: PropTypes.string.isRequired,
+	normalTalents: PropTypes.array.isRequired,
 };
 
 function ManualKeybindModal({
@@ -26,6 +27,7 @@ function ManualKeybindModal({
 	setAllKeybindings,
 	allKeybindings,
 	keyBindingKey,
+	normalTalents,
 }) {
 	const classes = styleGuide();
 	const allSpells = useContext(AllSpellsContext);
@@ -37,7 +39,7 @@ function ManualKeybindModal({
 	});
 	const [allKeybinds, setAllKeybinds] = useState([]);
 	const [loading, setLoading] = useState(true);
-	const [Spells, setSpells] = useState();
+	const [classSpells, setClassSpells] = useState();
 	const [editingKey, setEditingKey] = useState();
 	const [invalidBinds, setInvalidBinds] = useState([]);
 	const [isKBConflictOpen, setIsKBConflictOpen] = useState(false);
@@ -57,7 +59,7 @@ function ManualKeybindModal({
 					.child(`/Spells/${characterClass}`)
 					.once('value');
 				if (snapShot.exists()) {
-					setSpells(snapShot.val());
+					setClassSpells(snapShot.val());
 					setLoading(false);
 				}
 			} catch (e) {
@@ -287,7 +289,8 @@ function ManualKeybindModal({
 							keybinding={keybinding}
 							setKeybinding={setKeybinding}
 							checkIfInvalidAndAdd={checkIfInvalidAndAdd}
-							Spells={Spells}
+							classSpells={classSpells}
+							normalTalents={normalTalents}
 						/>
 						<KeybindTable
 							allKeybinds={allKeybinds}

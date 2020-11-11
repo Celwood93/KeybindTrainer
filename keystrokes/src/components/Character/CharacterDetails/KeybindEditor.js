@@ -99,6 +99,16 @@ function KeybindEditor({
 					spec,
 					keyBinding
 				)}
+				normalTalents={Object.keys(
+					character.specs[spec].keybindings[keyBinding][
+						characterKeybindings(character, spec, keyBinding)
+					].talents.normal
+				).map(
+					lvl =>
+						character.specs[spec].keybindings[keyBinding][
+							characterKeybindings(character, spec, keyBinding)
+						].talents.normal[lvl]
+				)}
 			/>
 			<RapidFireKeybindModal
 				isOpen={rapidFireModal}

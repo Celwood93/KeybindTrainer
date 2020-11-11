@@ -25,7 +25,8 @@ ManualKeybindInputs.propTypes = {
 	keybinding: PropTypes.object.isRequired,
 	setKeybinding: PropTypes.func.isRequired,
 	checkIfInvalidAndAdd: PropTypes.func.isRequired,
-	Spells: PropTypes.array.isRequired,
+	classSpells: PropTypes.array.isRequired,
+	normalTalents: PropTypes.array.isRequired,
 };
 
 function ManualKeybindInputs({
@@ -37,7 +38,8 @@ function ManualKeybindInputs({
 	keybinding,
 	setKeybinding,
 	checkIfInvalidAndAdd,
-	Spells,
+	classSpells,
+	normalTalents,
 }) {
 	const classes = styleGuide();
 	const allSpells = useContext(AllSpellsContext);
@@ -84,8 +86,14 @@ function ManualKeybindInputs({
 					}}
 				>
 					{/*Going to have to change this to account for talents/covenants/racials*/
-					Spells.map(e => allSpells[e])
+					classSpells
+						.map(e => allSpells[e])
 						.filter(spell => spell.spec.includes(spec))
+						.concat(
+							normalTalents
+								.filter(codeString => !!codeString)
+								.map(code => allSpells[code])
+						)
 						.map(spell => {
 							const existingSpellBinds = allKeybinds.filter(
 								bind => bind.spellId === spell.spellId
