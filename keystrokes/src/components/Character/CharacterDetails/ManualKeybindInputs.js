@@ -44,6 +44,7 @@ function ManualKeybindInputs({
 	const classes = styleGuide();
 	const allSpells = useContext(AllSpellsContext);
 	const [formattedSpells, setFormattedSpells] = useState([]);
+	const [targetOptions, setTargetOptions] = useState(targetting['ALL']);
 
 	function handleKeyPress(e) {
 		if (!e.metaKey) {
@@ -60,7 +61,7 @@ function ManualKeybindInputs({
 		}
 	}
 
-	useEffect(() => {
+	function updateSpellList() {
 		const talentSpells = normalTalents
 			.filter(codeString => !!codeString)
 			.map(code => allSpells[code])
@@ -82,8 +83,30 @@ function ManualKeybindInputs({
 			.concat(spellsAddedByOtherSpells)
 			.filter(elem => !replacedSpellIds.includes(elem.spellId));
 
-		setFormattedSpells(formattedSpellsList);
+		return formattedSpellsList;
+	}
+
+	useEffect(() => {
+		const newSpells = updateSpellList();
+		setFormattedSpells(newSpells);
 	}, [classSpells]);
+
+	useEffect(() => {
+		if (!!keybinding.spellId) {
+			setTargetOptions(
+				targetting[allSpells[keybinding.spellId].targetType]
+			);
+		} else if (!keybinding.spellId && keybinding.target) {
+			const baseSpells = updateSpellList();
+			setFormattedSpells(
+				baseSpells.filter(spell => {
+					return targetting[
+						allSpells[spell.spellId].targetType
+					].includes(keybinding.target);
+				})
+			);
+		}
+	}, [keybinding]);
 
 	return (
 		<Grid
@@ -102,8 +125,8 @@ function ManualKeybindInputs({
 					label="Spell"
 					onChange={event => {
 						setKeybinding({
+							...keybinding,
 							spellId: event.target.value,
-							target: null,
 							mod: null,
 							key: null,
 						});
@@ -213,8 +236,7 @@ function ManualKeybindInputs({
 			<Grid item className={classes.keybindingOptions}>
 				<TextField
 					className={classes.button}
-					select={!!keybinding.spellId}
-					disabled={!keybinding.spellId}
+					select={true}
 					id="target-selector"
 					variant="outlined"
 					value={keybinding.target || ''}
@@ -228,32 +250,28 @@ function ManualKeybindInputs({
 						checkIfInvalidAndAdd(keybindingUpdates);
 					}}
 				>
-					{keybinding.spellId &&
-						targetting[
-							allSpells[keybinding.spellId].targetType
-						].map(option => {
-							const existingSpellBinds = allKeybinds.filter(
-								bind =>
-									bind.spellId === keybinding.spellId &&
-									bind.target === option
-							);
-							return (
-								<MenuItem
-									key={option}
-									id={`${option.replace(
-										/ |:|'/g,
-										''
-									)}-option`}
-									value={option}
-								>
-									{keybinding.target !== option ? (
-										<Grid
-											container
-											direction="row"
-											justify="space-between"
-										>
-											<Grid item>{option}</Grid>
-											<Grid item>
+					{targetOptions.map(option => {
+						const existingSpellBinds = allKeybinds.filter(
+							bind =>
+								bind.spellId === keybinding.spellId &&
+								bind.target === option
+						);
+						return (
+							<MenuItem
+								key={option}
+								id={`${option.replace(/ |:|'/g, '')}-option`}
+								value={option}
+							>
+								{keybinding.target !== option ? (
+									<Grid
+										container
+										direction="row"
+										justify="space-between"
+									>
+										<Grid item>{option}</Grid>
+
+										<Grid item>
+											{keybinding.spellId ? (
 												<Tooltip
 													id={`${option.replace(
 														/ |:|'/g,
@@ -297,14 +315,17 @@ function ManualKeybindInputs({
 														</Typography>
 													</Avatar>
 												</Tooltip>
-											</Grid>
+											) : (
+												<span></span>
+											)}
 										</Grid>
-									) : (
-										option
-									)}
-								</MenuItem>
-							);
-						})}
+									</Grid>
+								) : (
+									option
+								)}
+							</MenuItem>
+						);
+					})}
 				</TextField>
 			</Grid>
 			<Grid item className={classes.keybindingOptions}>
