@@ -67,10 +67,7 @@ function ManualKeybindInputs({
 			.filter(spellDetails => !spellDetails.isPassive);
 		const spellsAddedByOtherSpells = normalTalents
 			.filter(codeString => !!codeString)
-			.map(code => {
-				console.log(allSpells[code]);
-				return allSpells[code].enabledSpells || [];
-			})
+			.map(code => allSpells[code].enabledSpells || [])
 			.flat()
 			.map(code => allSpells[code])
 			.filter(spellDetails => !spellDetails.isPassive);
@@ -133,6 +130,20 @@ function ManualKeybindInputs({
 										direction="row"
 										justify="space-between"
 									>
+										<Grid>
+											<a
+												data-wowhead={`https://www.wowhead.com/spell=${spell.spellId}`}
+												style={{ cursor: 'default' }}
+											>
+												<img
+													src={`https://wow.zamimg.com/images/wow/icons/medium/${spell.iconId}.jpg`}
+													alt=""
+													style={{
+														maxHeight: '24px',
+													}}
+												/>
+											</a>
+										</Grid>
 										<Grid item>{spell.spellName}</Grid>
 										<Grid item>
 											<Tooltip

@@ -13,6 +13,7 @@ import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import styleGuide from '../../../stylesheets/style';
 import EditIcon from '@material-ui/icons/Edit';
+import { removeWaterMark } from '../../utils/toolTipHooks';
 import CancelOutlined from '@material-ui/icons/CancelOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { AllSpellsContext } from '../../../contexts/AllSpellsContext';
@@ -34,6 +35,7 @@ function KeybindTable({
 }) {
 	const allSpells = useContext(AllSpellsContext);
 	const classes = styleGuide();
+	removeWaterMark('#keybind-row-container a');
 	return (
 		<Grid item>
 			<TableContainer
@@ -48,6 +50,7 @@ function KeybindTable({
 				>
 					<TableHead>
 						<TableRow>
+							<TableCell align="left">Icon</TableCell>
 							<TableCell>Spell</TableCell>
 							<TableCell align="right">Target</TableCell>
 							<TableCell align="right">Modifier</TableCell>
@@ -64,6 +67,25 @@ function KeybindTable({
 										key={row.spellId + row.target}
 										id="keybind-row-container"
 									>
+										<TableCell>
+											<a
+												data-wowhead={`https://www.wowhead.com/spell=${row.spellId}`}
+												style={{ cursor: 'default' }}
+											>
+												<img
+													src={`https://wow.zamimg.com/images/wow/icons/medium/${
+														allSpells[row.spellId]
+															.iconId
+													}.jpg`}
+													alt=""
+													style={{
+														maxHeight: editing
+															? '36px'
+															: '24px',
+													}}
+												/>
+											</a>
+										</TableCell>
 										<TableCell component="th" scope="row">
 											{allSpells[row.spellId].spellName}
 										</TableCell>
