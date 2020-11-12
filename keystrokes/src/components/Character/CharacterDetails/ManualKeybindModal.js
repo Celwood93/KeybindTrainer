@@ -129,6 +129,35 @@ function ManualKeybindModal({
 			});
 		}
 	}
+	function confirmDelete() {
+		setAllKeybinds([
+			keybinding,
+			...allKeybinds.filter(bind => {
+				let dontFilterBind = true;
+				for (let i = 0; i < invalidBinds.length; i++) {
+					dontFilterBind =
+						dontFilterBind &&
+						!(
+							bind.spellId === invalidBinds[i].spellId &&
+							bind.target === invalidBinds[i].target
+						);
+				}
+
+				dontFilterBind = dontFilterBind && !('delete' in bind);
+
+				return dontFilterBind;
+			}),
+		]);
+		setInvalidBinds([]);
+		setEditingKey();
+		setKeybinding({
+			spellId: null,
+			target: null,
+			mod: null,
+			key: null,
+		});
+		setIsKBConflictOpen(false);
+	}
 
 	return (
 		<Modal open={isOpen} onClose={() => {}} className={classes.modal}>
@@ -154,7 +183,18 @@ function ManualKeybindModal({
 										}))
 										.map(bind => (
 											<li key={bind.target}>
-												<Typography>{`${bind.spellName} ${bind.target} ${bind.mod} ${bind.key}`}</Typography>
+												{bind.disabled ? (
+													<div
+														style={{
+															fontSize: '1rem',
+															color: 'red',
+														}}
+													>
+														{`Currently Disabled: ${bind.spellName} ${bind.target} ${bind.mod} ${bind.key}`}
+													</div>
+												) : (
+													<Typography>{`${bind.spellName} ${bind.target} ${bind.mod} ${bind.key}`}</Typography>
+												)}
 											</li>
 										))}
 								</ul>
@@ -177,55 +217,7 @@ function ManualKeybindModal({
 											color="primary"
 											variant="contained"
 											size="large"
-											onClick={() => {
-												setAllKeybinds([
-													keybinding,
-													...allKeybinds.filter(
-														bind => {
-															let dontFilterBind = true;
-															for (
-																let i = 0;
-																i <
-																invalidBinds.length;
-																i++
-															) {
-																dontFilterBind =
-																	dontFilterBind &&
-																	!(
-																		bind.spellId ===
-																			invalidBinds[
-																				i
-																			]
-																				.spellId &&
-																		bind.target ===
-																			invalidBinds[
-																				i
-																			]
-																				.target
-																	);
-															}
-
-															dontFilterBind =
-																dontFilterBind &&
-																!(
-																	'delete' in
-																	bind
-																);
-
-															return dontFilterBind;
-														}
-													),
-												]);
-												setInvalidBinds([]);
-												setEditingKey();
-												setKeybinding({
-													spellId: null,
-													target: null,
-													mod: null,
-													key: null,
-												});
-												setIsKBConflictOpen(false);
-											}}
+											onClick={confirmDelete}
 										>
 											Confirm
 										</Button>

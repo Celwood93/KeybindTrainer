@@ -94,7 +94,6 @@ function NormalTalentBox({ selectedTalent, setSelectedTalent, spellInfo }) {
 									position: 'absolute',
 									marginLeft: '-25px',
 									marginTop: '3px',
-									zIndex: '0',
 								}}
 								src={`https://wow.zamimg.com/images/wow/icons/medium/${spellInfo.iconId}.jpg`}
 							/>
@@ -108,7 +107,6 @@ function NormalTalentBox({ selectedTalent, setSelectedTalent, spellInfo }) {
 									fontSize: '0.75rem',
 									marginTop: margTopVal,
 									color: 'white',
-									zIndex: '0',
 								}}
 							>
 								{spellInfo.spellName}

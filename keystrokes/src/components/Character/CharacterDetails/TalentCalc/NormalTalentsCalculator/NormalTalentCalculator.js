@@ -11,8 +11,17 @@ NormalTalentCalculator.propTypes = {
 	setCharacter: PropTypes.func,
 	spec: PropTypes.number,
 	keyBinding: PropTypes.number,
+	allKeybindings: PropTypes.object,
+	setAllKeybindings: PropTypes.func,
 };
-function NormalTalentCalculator({ character, setCharacter, spec, keyBinding }) {
+function NormalTalentCalculator({
+	character,
+	setCharacter,
+	spec,
+	keyBinding,
+	allKeybindings,
+	setAllKeybindings,
+}) {
 	const [normalTalents, setNormalTalents] = useState();
 	const [loading, setLoading] = useState(true);
 	const allSpells = useContext(AllSpellsContext);
@@ -94,6 +103,8 @@ function NormalTalentCalculator({ character, setCharacter, spec, keyBinding }) {
 								character={character}
 								setCharacter={setCharacter}
 								spellsInfo={spellsInfo}
+								allKeybindings={allKeybindings}
+								setAllKeybindings={setAllKeybindings}
 							/>
 						);
 					})}

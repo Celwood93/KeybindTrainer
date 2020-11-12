@@ -218,6 +218,8 @@ function CharacterKeybindDisplay({
 									setCharacter={setCharacter}
 									spec={spec}
 									keyBinding={keyBinding}
+									allKeybindings={allKeybindings}
+									setAllKeybindings={setAllKeybindings}
 								/>
 							</AccordionDetails>
 						</Accordion>

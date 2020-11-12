@@ -7214,6 +7214,7 @@
 				{ "spec": "RESTORATION", "row": "2", "col": "0" }
 			],
 			"iconId": "ability_druid_improvedmoonkinform",
+			"enabledSpells": ["24858", "78674", "194153", "132469"],
 			"isPassive": true
 		},
 		"197690": {
@@ -7951,6 +7952,7 @@
 			"spellName": "Feral Affinity",
 			"talentCalcLoc": [{ "spec": "GUARDIAN", "row": "2", "col": "1" }],
 			"iconId": "talentspec_druid_feral_cat",
+			"enabledSpells": ["1822", "1079", "22570"],
 			"isPassive": true
 		},
 		"202157": {
@@ -7958,6 +7960,7 @@
 			"spellName": "Feral Affinity",
 			"talentCalcLoc": [{ "spec": "BALANCE", "row": "2", "col": "0" }],
 			"iconId": "talentspec_druid_feral_cat",
+			"enabledSpells": ["1822", "1079", "213764", "22570"],
 			"isPassive": true
 		},
 		"202162": {
@@ -9818,6 +9821,7 @@
 			"spellName": "Guardian Affinity",
 			"talentCalcLoc": [{ "spec": "FERAL", "row": "2", "col": "1" }],
 			"iconId": "talentspec_druid_feral_bear",
+			"enabledSpells": ["22842", "99"],
 			"isPassive": true
 		},
 		"217832": {

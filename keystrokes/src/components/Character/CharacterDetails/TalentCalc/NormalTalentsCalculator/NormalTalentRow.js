@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core';
 import update from 'immutability-helper';
+import { AllSpellsContext } from '../../../../../contexts/AllSpellsContext';
 import { characterKeybindings } from '../../../../utils/utils';
 import NormalTalentBox from './NormalTalentBox';
 
@@ -12,6 +13,8 @@ NormalTalentRow.propTypes = {
 	spellsInfo: PropTypes.array,
 	spec: PropTypes.number,
 	keyBinding: PropTypes.number,
+	allKeybindings: PropTypes.object,
+	setAllKeybindings: PropTypes.func,
 };
 function NormalTalentRow({
 	character,
@@ -20,24 +23,103 @@ function NormalTalentRow({
 	spellsInfo,
 	spec,
 	keyBinding,
+	allKeybindings,
+	setAllKeybindings,
 }) {
 	const [selectedTalent, setSelectedTalent] = useState(
 		character.specs[spec].keybindings[keyBinding][
 			characterKeybindings(character, spec, keyBinding)
 		].talents.normal[level]
 	);
+	const allSpells = useContext(AllSpellsContext);
+	//Maybe move this logic to Talent Calculator so it can be used accross all 3 custom spells (talents,pvp,covs)
 	useEffect(() => {
-		if (
-			selectedTalent !==
+		const currentTalentId =
 			character.specs[spec].keybindings[keyBinding][
 				characterKeybindings(character, spec, keyBinding)
-			].talents.normal[level]
-		) {
+			].talents.normal[level];
+		//add disable to:
+		//talents on the same row //2
+		//any spells added by previous talent 0-5
+		//enable any spells previously disabled by previous talent 0-1
+		if (selectedTalent !== currentTalentId) {
 			const keyBindingKey = characterKeybindings(
 				character,
 				spec,
 				keyBinding
 			);
+			const talentsSameRow = spellsInfo
+				.filter(e => e.spellId !== selectedTalent)
+				.map(e => e.spellId);
+
+			const spellsPreviouslyAdded =
+				(currentTalentId && allSpells[currentTalentId].enabledSpells) ||
+				[];
+			//this is for things like when u keybind an affinity spell, switch affinities, then come back to the affinity spells affinity.
+			const spellsBeingReadded =
+				(selectedTalent && allSpells[selectedTalent].enabledSpells) ||
+				[];
+
+			const spellsPreviouslyDisabled =
+				(currentTalentId &&
+					allSpells[currentTalentId].idOfReplacedSpell) ||
+				[];
+			const spellsBeingDisabled =
+				(selectedTalent &&
+					allSpells[selectedTalent].idOfReplacedSpell &&
+					allSpells[selectedTalent].idOfReplacedSpell) ||
+				[];
+
+			allKeybindings[keyBindingKey].forEach((keybind, index) => {
+				if (
+					talentsSameRow.includes(keybind.spellId) ||
+					spellsPreviouslyAdded.includes(keybind.spellId)
+				) {
+					setAllKeybindings(
+						update(allKeybindings, {
+							[keyBindingKey]: {
+								[index]: {
+									$merge: { disabled: true },
+								},
+							},
+						})
+					);
+				}
+				if (spellsPreviouslyDisabled.includes(keybind.spellId)) {
+					setAllKeybindings(
+						update(allKeybindings, {
+							[keyBindingKey]: {
+								[index]: {
+									$unset: ['disabled'],
+								},
+							},
+						})
+					);
+				}
+				if (spellsBeingReadded.includes(keybind.spellId)) {
+					setAllKeybindings(
+						update(allKeybindings, {
+							[keyBindingKey]: {
+								[index]: {
+									$unset: ['disabled'],
+								},
+							},
+						})
+					);
+				}
+				if (spellsBeingDisabled.includes(keybind.spellId)) {
+					setAllKeybindings(
+						update(allKeybindings, {
+							[keyBindingKey]: {
+								[index]: {
+									$merge: { disabled: true },
+								},
+							},
+						})
+					);
+				}
+			});
+
 			setCharacter(
 				update(character, {
 					specs: {
