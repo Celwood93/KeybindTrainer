@@ -35,7 +35,7 @@ function KeybindTable({
 }) {
 	const allSpells = useContext(AllSpellsContext);
 	const classes = styleGuide();
-	removeWaterMark('#keybind-row-container a');
+	removeWaterMark('#keybind-row-container a', []);
 	return (
 		<Grid item>
 			<TableContainer

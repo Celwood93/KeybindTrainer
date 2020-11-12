@@ -15,9 +15,9 @@ export const enableToolTips = () => {
 	}, []);
 };
 
-export const removeWaterMark = path => {
-	useEffect(() => {
-		console.log('toolTip useEffect');
+export const removeWaterMark = (path, dep) => {
+	const useEffectFunction = () => {
+		console.log('toolTip useEffect', path);
 		const toolTips = document.querySelectorAll(path);
 		toolTips.forEach(e => {
 			function getRidOfIt() {
@@ -47,5 +47,10 @@ export const removeWaterMark = path => {
 				e.addEventListener('mousemove', getRidOfIt);
 			}
 		});
-	});
+	};
+	if (!dep) {
+		useEffect(useEffectFunction);
+	} else {
+		useEffect(useEffectFunction, dep);
+	}
 };
