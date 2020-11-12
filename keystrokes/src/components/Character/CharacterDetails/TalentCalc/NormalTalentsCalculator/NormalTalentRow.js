@@ -70,54 +70,62 @@ function NormalTalentRow({
 					allSpells[selectedTalent].idOfReplacedSpell) ||
 				[];
 
-			allKeybindings[keyBindingKey].forEach((keybind, index) => {
+			let keybindingChanges = { ...allKeybindings };
+			const runs = allKeybindings[keyBindingKey].map((keybind, index) => {
 				if (
 					talentsSameRow.includes(keybind.spellId) ||
 					spellsPreviouslyAdded.includes(keybind.spellId)
 				) {
-					setAllKeybindings(
-						update(allKeybindings, {
-							[keyBindingKey]: {
-								[index]: {
-									$merge: { disabled: true },
-								},
+					keybindingChanges = update(keybindingChanges, {
+						[keyBindingKey]: {
+							[index]: {
+								$merge: { disabled: true },
 							},
-						})
-					);
+						},
+					});
 				}
 				if (spellsPreviouslyDisabled.includes(keybind.spellId)) {
-					setAllKeybindings(
-						update(allKeybindings, {
-							[keyBindingKey]: {
-								[index]: {
-									$unset: ['disabled'],
-								},
+					keybindingChanges = update(keybindingChanges, {
+						[keyBindingKey]: {
+							[index]: {
+								$unset: ['disabled'],
 							},
-						})
-					);
+						},
+					});
 				}
 				if (spellsBeingReadded.includes(keybind.spellId)) {
-					setAllKeybindings(
-						update(allKeybindings, {
-							[keyBindingKey]: {
-								[index]: {
-									$unset: ['disabled'],
-								},
+					keybindingChanges = update(keybindingChanges, {
+						[keyBindingKey]: {
+							[index]: {
+								$unset: ['disabled'],
 							},
-						})
-					);
+						},
+					});
+				}
+
+				if (selectedTalent === keybind.spellId && keybind.disabled) {
+					keybindingChanges = update(keybindingChanges, {
+						[keyBindingKey]: {
+							[index]: {
+								$unset: ['disabled'],
+							},
+						},
+					});
 				}
 				if (spellsBeingDisabled.includes(keybind.spellId)) {
-					setAllKeybindings(
-						update(allKeybindings, {
-							[keyBindingKey]: {
-								[index]: {
-									$merge: { disabled: true },
-								},
+					keybindingChanges = update(keybindingChanges, {
+						[keyBindingKey]: {
+							[index]: {
+								$merge: { disabled: true },
 							},
-						})
-					);
+						},
+					});
 				}
+				return true;
+			});
+
+			Promise.all(runs).then(e => {
+				setAllKeybindings(keybindingChanges);
 			});
 
 			setCharacter(

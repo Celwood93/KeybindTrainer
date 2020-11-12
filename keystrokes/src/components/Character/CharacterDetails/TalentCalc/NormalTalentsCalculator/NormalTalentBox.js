@@ -31,8 +31,8 @@ function NormalTalentBox({ selectedTalent, setSelectedTalent, spellInfo }) {
 		}
 	}, [spellInfo]);
 	return (
-		// <a data-wowhead={`spell=${spellInfo.spellId}`}>
 		<Grid
+			id={`talent-container-${spellInfo.spellId}`}
 			container
 			onMouseEnter={() => {
 				setMousedOver(true);
@@ -134,7 +134,6 @@ function NormalTalentBox({ selectedTalent, setSelectedTalent, spellInfo }) {
 				/>
 			</Grid>
 		</Grid>
-		// </a>
 	);
 }
 
