@@ -86,7 +86,18 @@ function KeybindTable({
 												/>
 											</a>
 										</TableCell>
-										<TableCell component="th" scope="row">
+										<TableCell
+											component="th"
+											scope="row"
+											id={`${allSpells[
+												row.spellId
+											].spellName.replace(
+												/ |:|'/g,
+												''
+											)}-${
+												editing ? 'edit' : 'no-edit'
+											}-display-row`}
+										>
 											{allSpells[row.spellId].spellName}
 										</TableCell>
 										<TableCell align="right">

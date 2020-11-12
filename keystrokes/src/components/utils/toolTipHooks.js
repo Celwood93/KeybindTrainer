@@ -18,9 +18,7 @@ export const enableToolTips = () => {
 export const removeWaterMark = path => {
 	useEffect(() => {
 		console.log('toolTip useEffect');
-		const toolTips = document.querySelectorAll(
-			path //`#panel1a-content > div > div > div > div > div > a`
-		);
+		const toolTips = document.querySelectorAll(path);
 		toolTips.forEach(e => {
 			function getRidOfIt() {
 				const waterMark = document.querySelector('.wowhead-tooltip');
