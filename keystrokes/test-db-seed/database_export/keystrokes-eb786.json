@@ -18,7 +18,7 @@
 									"normal": { "15": "", "25": "", "30": "", "35": "", "40": "", "45": "", "50": "" },
 									"pvp": { "0": "", "1": "", "2": "" }
 								},
-								"covenant": ""
+								"covenant": {"none":[""]}
 							}
 						}
 					],
@@ -46,7 +46,7 @@
 									"normal": { "15": "", "25": "", "30": "", "35": "", "40": "", "45": "", "50": "" },
 									"pvp": { "0": "", "1": "", "2": "" }
 								},
-								"covenant": ""
+								"covenant": {"none":[""]}
 							}
 						}
 					],
@@ -72,7 +72,7 @@
 									"normal": { "15": "", "25": "", "30": "", "35": "", "40": "", "45": "", "50": "" },
 									"pvp": { "0": "", "1": "", "2": "" }
 								},
-								"covenant": ""
+								"covenant": {"none":[""]}
 							}
 						}
 					],
@@ -100,7 +100,7 @@
 									"normal": { "15": "", "25": "", "30": "", "35": "", "40": "", "45": "", "50": "" },
 									"pvp": { "0": "", "1": "", "2": "" }
 								},
-								"covenant": ""
+								"covenant": {"none":[""]}
 							}
 						}
 					],
@@ -2195,7 +2195,7 @@
 		},
 		"Warrior": {
 			"Kyrian": ["307865", "324739"],
-			"Venthyr": ["300728", "317320", "317349", "317485"],
+			"Venthyr": ["300728", "317320"],
 			"Night Fae": ["310143", "325886"],
 			"Necrolord": ["324143", "324631"]
 		}
@@ -6710,7 +6710,7 @@
 			"spellId": "193876",
 			"spellName": "Shamanism",
 			"idOfReplacedSpell": ["32182", "2825"],
-			"enableSpells": ["204362", "204361"],
+			"enabledSpells": ["204362", "204361"],
 			"iconId": "trade_archaeology_ancientorcshamanheaddress",
 			"isPassive": true
 		},
@@ -11945,9 +11945,9 @@
 			"targetType": "ONE_ENEMY"
 		},
 		"317320": {
-			"spellId": "317349",
+			"spellId": "317320",
 			"idOfReplacedSpell": ["5308", "163201"],
-			"enableSpells": ["317485", "317349"],
+			"enabledSpells": ["317485", "317349"],
 			"spellName": "Condemn",
 			"iconId": "ability_revendreth_warrior",
 			"isPassive": true

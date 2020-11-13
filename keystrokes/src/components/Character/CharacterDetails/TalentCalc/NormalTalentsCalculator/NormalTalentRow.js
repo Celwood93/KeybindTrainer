@@ -5,6 +5,7 @@ import update from 'immutability-helper';
 import { AllSpellsContext } from '../../../../../contexts/AllSpellsContext';
 import { characterKeybindings } from '../../../../utils/utils';
 import NormalTalentBox from './NormalTalentBox';
+import ButtonTalCovFrame from '../ButtonTalCovFrame';
 
 NormalTalentRow.propTypes = {
 	character: PropTypes.object,
@@ -38,10 +39,6 @@ function NormalTalentRow({
 			character.specs[spec].keybindings[keyBinding][
 				characterKeybindings(character, spec, keyBinding)
 			].talents.normal[level];
-		//add disable to:
-		//talents on the same row //2
-		//any spells added by previous talent 0-5
-		//enable any spells previously disabled by previous talent 0-1
 		if (selectedTalent !== currentTalentId) {
 			const keyBindingKey = characterKeybindings(
 				character,
@@ -179,10 +176,16 @@ function NormalTalentRow({
 								md={4}
 								style={{ maxHeight: '45px' }}
 							>
-								<NormalTalentBox
+								<ButtonTalCovFrame
 									spellInfo={spellInfo}
-									selectedTalent={selectedTalent}
-									setSelectedTalent={setSelectedTalent}
+									selectedOption={selectedTalent}
+									setSelectedOption={setSelectedTalent}
+									children={
+										<NormalTalentBox
+											spellInfo={spellInfo}
+											selectedTalent={selectedTalent}
+										/>
+									}
 								/>
 							</Grid>
 						);

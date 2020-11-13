@@ -27,6 +27,8 @@ ManualKeybindInputs.propTypes = {
 	checkIfInvalidAndAdd: PropTypes.func.isRequired,
 	classSpells: PropTypes.array.isRequired,
 	normalTalents: PropTypes.array.isRequired,
+	covChoice: PropTypes.array.isRequired,
+	pvpTalents: PropTypes.array.isRequired,
 };
 
 function ManualKeybindInputs({
@@ -40,6 +42,8 @@ function ManualKeybindInputs({
 	checkIfInvalidAndAdd,
 	classSpells,
 	normalTalents,
+	covChoice,
+	pvpTalents,
 }) {
 	const classes = styleGuide();
 	const allSpells = useContext(AllSpellsContext);
@@ -62,25 +66,43 @@ function ManualKeybindInputs({
 	}
 
 	function updateSpellList() {
+		console.log(covChoice);
 		const talentSpells = normalTalents
 			.filter(codeString => !!codeString)
-			.map(code => allSpells[code])
-			.filter(spellDetails => !spellDetails.isPassive);
+			.map(code => allSpells[code]);
 		const spellsAddedByOtherSpells = normalTalents
 			.filter(codeString => !!codeString)
 			.map(code => allSpells[code].enabledSpells || [])
 			.flat()
 			.map(code => allSpells[code])
 			.filter(spellDetails => !spellDetails.isPassive);
-		const replacedSpellIds = talentSpells
+		let replacedSpellIds = talentSpells
 			.filter(e => !!e.idOfReplacedSpell)
 			.map(val => val.idOfReplacedSpell)
 			.flat();
+		const covSpells = covChoice
+			.filter(codeString => !!codeString) //useful for for default empty string
+			.map(code => allSpells[code]);
+		const spellsAddedByCovSpells = covChoice //might be not needed because we already have it included in the cov grouping
+			.filter(codeString => !!codeString)
+			.map(code => allSpells[code].enabledSpells || [])
+			.flat()
+			.map(code => allSpells[code])
+			.filter(spellDetails => !spellDetails.isPassive);
+		replacedSpellIds = replacedSpellIds.concat(
+			covSpells
+				.filter(e => !!e.idOfReplacedSpell)
+				.map(val => val.idOfReplacedSpell)
+				.flat()
+		);
 		const formattedSpellsList = classSpells
 			.map(e => allSpells[e])
-			.filter(spell => spell.spec.includes(spec))
 			.concat(talentSpells)
 			.concat(spellsAddedByOtherSpells)
+			.concat(covSpells)
+			.concat(spellsAddedByCovSpells)
+			.filter(spell => !spell.spec || spell.spec.includes(spec))
+			.filter(spellDetails => !spellDetails.isPassive)
 			.filter(elem => !replacedSpellIds.includes(elem.spellId));
 
 		return formattedSpellsList;

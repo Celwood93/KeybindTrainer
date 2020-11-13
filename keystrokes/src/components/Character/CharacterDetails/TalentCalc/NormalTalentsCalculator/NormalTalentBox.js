@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core';
-import talentPanel from '../../../../../assets/talentPanel.png';
 
 NormalTalentBox.propTypes = {
 	spellInfo: PropTypes.object,
 	selectedTalent: PropTypes.string,
-	setSelectedTalent: PropTypes.func,
 };
-function NormalTalentBox({ selectedTalent, setSelectedTalent, spellInfo }) {
+function NormalTalentBox({ selectedTalent, spellInfo }) {
 	const [margTopVal, setMargTopVal] = useState('5.5px');
-	const [mousedOver, setMousedOver] = useState(false);
 	useEffect(() => {
 		const resizeObserver = new window.ResizeObserver(entry => {
 			if (entry && entry[0] && entry[0].contentRect) {
@@ -31,107 +28,42 @@ function NormalTalentBox({ selectedTalent, setSelectedTalent, spellInfo }) {
 		}
 	}, [spellInfo]);
 	return (
-		<Grid
-			id={`talent-container-${spellInfo.spellId}`}
-			container
-			onMouseEnter={() => {
-				setMousedOver(true);
-			}}
-			onMouseLeave={() => {
-				setMousedOver(false);
-			}}
-			style={{
-				height: '45px',
-				backgroundColor: 'black',
-				border: `2px solid ${
-					selectedTalent !== spellInfo.spellId ? 'gray' : '#b08f00'
-				}`,
-				cursor: 'pointer',
-			}}
-			onClick={() => {
-				setSelectedTalent(spellInfo.spellId);
-			}}
-			onContextMenu={ev => {
-				ev.preventDefault();
-				if (selectedTalent === spellInfo.spellId) {
-					setSelectedTalent('');
-				}
-			}}
-		>
-			<Grid item md={2} style={{ height: '45px' }}>
-				<img
-					alt=""
-					style={{
-						transform: 'rotateY(180deg)',
-						height: '41px', //45
-						filter: `grayscale(${
-							selectedTalent !== spellInfo.spellId
-								? mousedOver
-									? 60
-									: 100
-								: 0
-						}%)`,
-						position: 'absolute',
-						marginLeft: '-16.5px',
-					}}
-					src={talentPanel}
-				/>
-			</Grid>
-			<Grid item md={8} style={{ height: '45px' }}>
-				<Grid container style={{ height: '45px' }}>
-					<Grid item md={4} style={{ height: '45px' }}>
-						<a data-wowhead={`spell=${spellInfo.spellId}`}>
-							<img
-								alt=""
-								style={{
-									filter: `grayscale(${
-										selectedTalent !== spellInfo.spellId
-											? !selectedTalent
-												? 0
-												: 100
-											: 0
-									}%)`,
-									position: 'absolute',
-									marginLeft: '-25px',
-									marginTop: '3px',
-								}}
-								src={`https://wow.zamimg.com/images/wow/icons/medium/${spellInfo.iconId}.jpg`}
-							/>
-						</a>
-					</Grid>
-					<Grid item md={8} style={{ height: '45px' }}>
-						<a data-wowhead={`spell=${spellInfo.spellId}`}>
-							<div
-								id={`cs${spellInfo.spellId}`}
-								style={{
-									fontSize: '0.75rem',
-									marginTop: margTopVal,
-									color: 'white',
-								}}
-							>
-								{spellInfo.spellName}
-							</div>
-						</a>
-					</Grid>
+		<Grid item md={12} style={{ height: '45px' }}>
+			<Grid container style={{ height: '45px' }}>
+				<Grid item md={4} style={{ height: '45px' }}>
+					<a data-wowhead={`spell=${spellInfo.spellId}`}>
+						<img
+							alt=""
+							style={{
+								filter: `grayscale(${
+									selectedTalent !== spellInfo.spellId
+										? !selectedTalent
+											? 0
+											: 100
+										: 0
+								}%)`,
+								position: 'absolute',
+								marginLeft: '-25px',
+								marginTop: '3px',
+							}}
+							src={`https://wow.zamimg.com/images/wow/icons/medium/${spellInfo.iconId}.jpg`}
+						/>
+					</a>
 				</Grid>
-			</Grid>
-			<Grid item md={2} style={{ height: '45px' }}>
-				<img
-					alt=""
-					style={{
-						height: '41px',
-						filter: `grayscale(${
-							selectedTalent !== spellInfo.spellId
-								? mousedOver
-									? 60
-									: 100
-								: 0
-						}%)`,
-						position: 'absolute',
-						marginLeft: '-8.5px',
-					}}
-					src={talentPanel}
-				/>
+				<Grid item md={8} style={{ height: '45px' }}>
+					<a data-wowhead={`spell=${spellInfo.spellId}`}>
+						<div
+							id={`cs${spellInfo.spellId}`}
+							style={{
+								fontSize: '0.75rem',
+								marginTop: margTopVal,
+								color: 'white',
+							}}
+						>
+							{spellInfo.spellName}
+						</div>
+					</a>
+				</Grid>
 			</Grid>
 		</Grid>
 	);

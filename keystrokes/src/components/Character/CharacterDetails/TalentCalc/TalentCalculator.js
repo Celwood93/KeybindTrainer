@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import NormalTalentCalculator from './NormalTalentsCalculator/NormalTalentCalculator';
+import CovenantCalculator from './CovenantCalculator/CovenantCalculator';
 
 TalentCalculator.propTypes = {
 	character: PropTypes.object,
@@ -19,14 +20,24 @@ function TalentCalculator({
 	setAllKeybindings,
 }) {
 	return (
-		<NormalTalentCalculator
-			character={character}
-			setCharacter={setCharacter}
-			spec={spec}
-			keyBinding={keyBinding}
-			allKeybindings={allKeybindings}
-			setAllKeybindings={setAllKeybindings}
-		/>
+		<div>
+			<NormalTalentCalculator
+				character={character}
+				setCharacter={setCharacter}
+				spec={spec}
+				keyBinding={keyBinding}
+				allKeybindings={allKeybindings}
+				setAllKeybindings={setAllKeybindings}
+			/>
+			<CovenantCalculator
+				character={character}
+				setCharacter={setCharacter}
+				spec={spec}
+				keyBinding={keyBinding}
+				allKeybindings={allKeybindings}
+				setAllKeybindings={setAllKeybindings}
+			/>
+		</div>
 	);
 }
 

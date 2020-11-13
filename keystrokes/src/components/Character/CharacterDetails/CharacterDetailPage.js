@@ -141,13 +141,13 @@ function CharacterDetailPage({ userId, match }) {
 	}
 
 	function checkIfValidSelect() {
-		console.log('pass');
 		return !(
 			isSaved &&
 			character.specs[spec] &&
 			allKeybindings[characterKeybindings(character, spec, keyBinding)] &&
-			allKeybindings[characterKeybindings(character, spec, keyBinding)]
-				.length > 0
+			allKeybindings[
+				characterKeybindings(character, spec, keyBinding)
+			].filter(e => !e.disabled).length > 0
 		);
 	}
 

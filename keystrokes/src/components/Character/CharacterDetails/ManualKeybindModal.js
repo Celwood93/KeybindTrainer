@@ -17,6 +17,8 @@ ManualKeybindModal.propTypes = {
 	allKeybindings: PropTypes.object.isRequired,
 	keyBindingKey: PropTypes.string.isRequired,
 	normalTalents: PropTypes.array.isRequired,
+	covChoice: PropTypes.array.isRequired,
+	pvpTalents: PropTypes.array.isRequired,
 };
 
 function ManualKeybindModal({
@@ -28,6 +30,8 @@ function ManualKeybindModal({
 	allKeybindings,
 	keyBindingKey,
 	normalTalents,
+	covChoice,
+	pvpTalents,
 }) {
 	const classes = styleGuide();
 	const allSpells = useContext(AllSpellsContext);
@@ -283,6 +287,8 @@ function ManualKeybindModal({
 							checkIfInvalidAndAdd={checkIfInvalidAndAdd}
 							classSpells={classSpells}
 							normalTalents={normalTalents}
+							covChoice={covChoice}
+							pvpTalents={pvpTalents}
 						/>
 						<KeybindTable
 							allKeybinds={allKeybinds}

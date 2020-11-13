@@ -84,7 +84,6 @@ function KeybindEditor({
 	const handleClose = () => {
 		setEditOptions();
 	};
-
 	return (
 		<React.Fragment>
 			<ManualKeybindModal
@@ -109,6 +108,14 @@ function KeybindEditor({
 							characterKeybindings(character, spec, keyBinding)
 						].talents.normal[lvl]
 				)}
+				covChoice={
+					Object.values(
+						character.specs[spec].keybindings[keyBinding][
+							characterKeybindings(character, spec, keyBinding)
+						].covenant
+					)[0]
+				}
+				pvpTalents={[]}
 			/>
 			<RapidFireKeybindModal
 				isOpen={rapidFireModal}

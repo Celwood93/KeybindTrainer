@@ -31,5 +31,5 @@ export function KeyBindings(key, description = '') {
 		normal: { 15: '', 25: '', 30: '', 35: '', 40: '', 45: '', 50: '' },
 		pvp: { 0: '', 1: '', 2: '' },
 	};
-	return { key, description, talents: baseTalents, covenant: '' };
+	return { key, description, talents: baseTalents, covenant: { none: [''] } };
 }
