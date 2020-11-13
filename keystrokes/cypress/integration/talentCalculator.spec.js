@@ -211,6 +211,11 @@ describe('Tests for Talent Calculator', () => {
 
 				cy.get('#panel1a-header-talents').click();
 				cy.get('#talent-container-197491').click(); //Guardian affinity for resto
+				cy.get('#talent-container-197491')
+					.children()
+					.children()
+					.eq(0)
+					.should('have.css', 'filter', 'grayscale(0)');
 
 				cy.get('#keybind-edit-button').click();
 				cy.contains('Manual').click();

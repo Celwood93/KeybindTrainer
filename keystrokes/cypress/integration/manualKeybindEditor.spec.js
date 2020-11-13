@@ -42,18 +42,18 @@ describe('Tests for Manual Keybind Editor', () => {
 				.children()
 				.within(ele => {
 					cy.wrap(ele)
-						.eq(0)
+						.eq(1)
 						.should('have.text', 'Holy Shock');
 					cy.wrap(ele)
-						.eq(1)
+						.eq(2)
 						.should('have.text', 'Target');
 
 					cy.wrap(ele)
-						.eq(2)
+						.eq(3)
 						.should('have.text', 'Shift');
 
 					cy.wrap(ele)
-						.eq(3)
+						.eq(4)
 						.should('have.text', 'k');
 				});
 			cy.contains('Apply').click();
@@ -62,18 +62,18 @@ describe('Tests for Manual Keybind Editor', () => {
 				.children()
 				.within(ele => {
 					cy.wrap(ele)
-						.eq(0)
+						.eq(1)
 						.should('have.text', 'Holy Shock');
 					cy.wrap(ele)
-						.eq(1)
+						.eq(2)
 						.should('have.text', 'Target');
 
 					cy.wrap(ele)
-						.eq(2)
+						.eq(3)
 						.should('have.text', 'Shift');
 
 					cy.wrap(ele)
-						.eq(3)
+						.eq(4)
 						.should('have.text', 'k');
 				});
 			cy.contains('SAVE').click();
@@ -84,18 +84,18 @@ describe('Tests for Manual Keybind Editor', () => {
 				.children()
 				.within(ele => {
 					cy.wrap(ele)
-						.eq(0)
+						.eq(1)
 						.should('have.text', 'Holy Shock');
 					cy.wrap(ele)
-						.eq(1)
+						.eq(2)
 						.should('have.text', 'Target');
 
 					cy.wrap(ele)
-						.eq(2)
+						.eq(3)
 						.should('have.text', 'Shift');
 
 					cy.wrap(ele)
-						.eq(3)
+						.eq(4)
 						.should('have.text', 'k');
 				});
 
