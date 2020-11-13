@@ -2,9 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Grid, CircularProgress, Typography } from '@material-ui/core';
 import update from 'immutability-helper';
-import { ref, characterDetails } from '../../../../../config/constants';
+import { ref } from '../../../../../config/constants';
 import { AllSpellsContext } from '../../../../../contexts/AllSpellsContext';
-import { removeWaterMark } from '../../../../utils/toolTipHooks';
 import ButtonTalCovFrame from '../ButtonTalCovFrame';
 import CovenantBox from './CovenantBox';
 import { characterKeybindings } from '../../../../utils/utils';
@@ -41,8 +40,6 @@ function CovenantCalculator({
 	);
 	const [loading, setLoading] = useState(true);
 	const allSpells = useContext(AllSpellsContext);
-	removeWaterMark(`#panel1a-content a`);
-	//The covenant will be read here as just "venthyr" or whichever, but we save it into character as venthyr: [...ids] so that we can more easily access the spells.
 
 	useEffect(() => {
 		const currentTalentObject = Object.keys(

@@ -4,7 +4,6 @@ import { Grid, CircularProgress } from '@material-ui/core';
 import { ref, characterDetails } from '../../../../../config/constants';
 import { AllSpellsContext } from '../../../../../contexts/AllSpellsContext';
 import NormalTalentRow from './NormalTalentRow';
-import { removeWaterMark } from '../../../../utils/toolTipHooks';
 
 NormalTalentCalculator.propTypes = {
 	character: PropTypes.object,
@@ -34,8 +33,6 @@ function NormalTalentCalculator({
 		5: 45,
 		6: 50,
 	};
-
-	removeWaterMark(`#panel1a-content a`);
 
 	useEffect(() => {
 		async function getNormalTalents() {

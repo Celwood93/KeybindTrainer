@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import NormalTalentCalculator from './NormalTalentsCalculator/NormalTalentCalculator';
 import CovenantCalculator from './CovenantCalculator/CovenantCalculator';
+import { removeWaterMark } from '../../../utils/toolTipHooks';
 
 TalentCalculator.propTypes = {
 	character: PropTypes.object,
@@ -19,6 +20,7 @@ function TalentCalculator({
 	allKeybindings,
 	setAllKeybindings,
 }) {
+	removeWaterMark(`#panel1a-content a`);
 	return (
 		<div>
 			<NormalTalentCalculator
