@@ -1,18 +1,17 @@
 import { useEffect } from 'react';
 
 export const enableToolTips = () => {
-	useEffect(() => {
-		const script = document.createElement('script');
-
-		script.src = 'https://wow.zamimg.com/widgets/power.js';
-		script.async = true;
-
-		document.body.appendChild(script);
-
-		return () => {
-			document.body.removeChild(script);
-		};
-	}, []);
+	if (process.env.REACT_APP_DISABLE_TOOLTIPS !== 'disabled') {
+		useEffect(() => {
+			const script = document.createElement('script');
+			script.src = 'https://wow.zamimg.com/widgets/power.js';
+			script.async = true;
+			document.body.appendChild(script);
+			return () => {
+				document.body.removeChild(script);
+			};
+		}, []);
+	}
 };
 
 export const removeWaterMark = (path, dep) => {
@@ -48,9 +47,11 @@ export const removeWaterMark = (path, dep) => {
 			}
 		});
 	};
-	if (!dep) {
-		useEffect(useEffectFunction);
-	} else {
-		useEffect(useEffectFunction, dep);
+	if (process.env.REACT_APP_DISABLE_TOOLTIPS !== 'disabled') {
+		if (!dep) {
+			useEffect(useEffectFunction);
+		} else {
+			useEffect(useEffectFunction, dep);
+		}
 	}
 };
