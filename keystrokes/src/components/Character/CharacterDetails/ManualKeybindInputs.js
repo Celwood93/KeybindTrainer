@@ -66,7 +66,6 @@ function ManualKeybindInputs({
 	}
 
 	function updateSpellList() {
-		console.log(covChoice);
 		const talentSpells = normalTalents
 			.filter(codeString => !!codeString)
 			.map(code => allSpells[code]);
@@ -98,10 +97,10 @@ function ManualKeybindInputs({
 		const formattedSpellsList = classSpells
 			.map(e => allSpells[e])
 			.concat(talentSpells)
-			.concat(spellsAddedByOtherSpells)
 			.concat(covSpells)
 			.concat(spellsAddedByCovSpells)
 			.filter(spell => !spell.spec || spell.spec.includes(spec))
+			.concat(spellsAddedByOtherSpells)
 			.filter(spellDetails => !spellDetails.isPassive)
 			.filter(elem => !replacedSpellIds.includes(elem.spellId));
 
