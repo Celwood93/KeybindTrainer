@@ -25,28 +25,12 @@ function CovenantCalculator({
 	setAllKeybindings,
 }) {
 	const [covenants, setCovenants] = useState();
-	const [selectedCov, setSelectedCov] = useState(
-		Object.keys(
-			character.specs[spec].keybindings[keyBinding][
-				characterKeybindings(character, spec, keyBinding)
-			].covenant
-		)
-			? Object.keys(
-					character.specs[spec].keybindings[keyBinding][
-						characterKeybindings(character, spec, keyBinding)
-					].covenant
-			  )[0]
-			: ''
-	);
+	const [selectedCov, setSelectedCov] = useState(getCovenant());
 	const [loading, setLoading] = useState(true);
 	const allSpells = useContext(AllSpellsContext);
 
 	useEffect(() => {
-		const currentTalentObject = Object.keys(
-			character.specs[spec].keybindings[keyBinding][
-				characterKeybindings(character, spec, keyBinding)
-			].covenant
-		)[0];
+		const currentTalentObject = getCovenant();
 		if (
 			currentTalentObject &&
 			selectedCov &&
@@ -128,53 +112,29 @@ function CovenantCalculator({
 			const runs = allKeybindings[keyBindingKey].map((keybind, index) => {
 				if (
 					otherCovenants.includes(keybind.spellId) ||
-					spellsPreviouslyAdded.includes(keybind.spellId)
+					spellsPreviouslyAdded.includes(keybind.spellId) ||
+					spellsBeingDisabled.includes(keybind.spellId)
 				) {
 					keybindingChanges = update(keybindingChanges, {
 						[keyBindingKey]: {
 							[index]: {
 								$merge: { disabled: true },
-							},
-						},
-					});
-				}
-				if (spellsPreviouslyDisabled.includes(keybind.spellId)) {
-					keybindingChanges = update(keybindingChanges, {
-						[keyBindingKey]: {
-							[index]: {
-								$unset: ['disabled'],
-							},
-						},
-					});
-				}
-				if (spellsBeingReadded.includes(keybind.spellId)) {
-					keybindingChanges = update(keybindingChanges, {
-						[keyBindingKey]: {
-							[index]: {
-								$unset: ['disabled'],
 							},
 						},
 					});
 				}
 
 				if (
-					covenants[selectedCov] &&
-					covenants[selectedCov].includes(keybind.spellId) &&
-					keybind.disabled
+					spellsPreviouslyDisabled.includes(keybind.spellId) ||
+					spellsBeingReadded.includes(keybind.spellId) ||
+					(covenants[selectedCov] &&
+						covenants[selectedCov].includes(keybind.spellId) &&
+						keybind.disabled)
 				) {
 					keybindingChanges = update(keybindingChanges, {
 						[keyBindingKey]: {
 							[index]: {
 								$unset: ['disabled'],
-							},
-						},
-					});
-				}
-				if (spellsBeingDisabled.includes(keybind.spellId)) {
-					keybindingChanges = update(keybindingChanges, {
-						[keyBindingKey]: {
-							[index]: {
-								$merge: { disabled: true },
 							},
 						},
 					});
@@ -210,20 +170,22 @@ function CovenantCalculator({
 	}, [selectedCov]);
 
 	useEffect(() => {
-		setSelectedCov(
-			Object.keys(
-				character.specs[spec].keybindings[keyBinding][
-					characterKeybindings(character, spec, keyBinding)
-				].covenant
-			)
-				? Object.keys(
-						character.specs[spec].keybindings[keyBinding][
-							characterKeybindings(character, spec, keyBinding)
-						].covenant
-				  )[0]
-				: ''
-		);
+		setSelectedCov(getCovenant());
 	}, [keyBinding, spec]);
+
+	function getCovenant() {
+		return Object.keys(
+			character.specs[spec].keybindings[keyBinding][
+				characterKeybindings(character, spec, keyBinding)
+			].covenant
+		)
+			? Object.keys(
+					character.specs[spec].keybindings[keyBinding][
+						characterKeybindings(character, spec, keyBinding)
+					].covenant
+			  )[0]
+			: 'none';
+	}
 
 	useEffect(() => {
 		async function getCovenants() {

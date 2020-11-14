@@ -71,7 +71,8 @@ function NormalTalentRow({
 			const runs = allKeybindings[keyBindingKey].map((keybind, index) => {
 				if (
 					talentsSameRow.includes(keybind.spellId) ||
-					spellsPreviouslyAdded.includes(keybind.spellId)
+					spellsPreviouslyAdded.includes(keybind.spellId) ||
+					spellsBeingDisabled.includes(keybind.spellId)
 				) {
 					keybindingChanges = update(keybindingChanges, {
 						[keyBindingKey]: {
@@ -81,39 +82,15 @@ function NormalTalentRow({
 						},
 					});
 				}
-				if (spellsPreviouslyDisabled.includes(keybind.spellId)) {
+				if (
+					spellsPreviouslyDisabled.includes(keybind.spellId) ||
+					spellsBeingReadded.includes(keybind.spellId) ||
+					(selectedTalent === keybind.spellId && keybind.disabled)
+				) {
 					keybindingChanges = update(keybindingChanges, {
 						[keyBindingKey]: {
 							[index]: {
 								$unset: ['disabled'],
-							},
-						},
-					});
-				}
-				if (spellsBeingReadded.includes(keybind.spellId)) {
-					keybindingChanges = update(keybindingChanges, {
-						[keyBindingKey]: {
-							[index]: {
-								$unset: ['disabled'],
-							},
-						},
-					});
-				}
-
-				if (selectedTalent === keybind.spellId && keybind.disabled) {
-					keybindingChanges = update(keybindingChanges, {
-						[keyBindingKey]: {
-							[index]: {
-								$unset: ['disabled'],
-							},
-						},
-					});
-				}
-				if (spellsBeingDisabled.includes(keybind.spellId)) {
-					keybindingChanges = update(keybindingChanges, {
-						[keyBindingKey]: {
-							[index]: {
-								$merge: { disabled: true },
 							},
 						},
 					});
