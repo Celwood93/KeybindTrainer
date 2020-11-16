@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import '../../stylesheets/nav.css';
 
 function NavBar() {
-	const logout = e => {
+	const logout = _ => {
 		auth.signOut();
 	};
 

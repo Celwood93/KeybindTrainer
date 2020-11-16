@@ -45,7 +45,8 @@
 		"test": "react-scripts test --env=jsdom",
 		"eject": "react-scripts eject",
 		"cy": "cypress open",
-		"cypress": "cypress run",
+		"cypress": "cypress run --headless",
+		"cypressHead": "cypress run",
 		"deploy": "yarn build && firebase deploy --only hosting"
 	},
 	"prettier": {

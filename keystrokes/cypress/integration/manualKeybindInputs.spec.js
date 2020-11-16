@@ -47,7 +47,8 @@ describe('Tests for Manual Keybind Inputs', () => {
 
 			cy.contains('Enter').click();
 
-			cy.contains('Judgment')
+			cy.get('#Judgment-edit-display-row')
+				.parent()
 				.parent()
 				.children()
 				.its('length')
@@ -55,7 +56,7 @@ describe('Tests for Manual Keybind Inputs', () => {
 
 			cy.contains('Apply').click();
 			cy.get('#panel1a-header-keybinds').click();
-			cy.contains('Judgment')
+			cy.get('#Judgment-no-edit-display-row')
 				.parent()
 				.parent()
 				.children()
@@ -119,7 +120,7 @@ describe('Tests for Manual Keybind Inputs', () => {
 							.children()
 							.children()
 							.as('row')
-							.eq(0)
+							.eq(1)
 							.within(rowSpellName => {
 								if (
 									rowSpellName.text() ===
@@ -127,16 +128,14 @@ describe('Tests for Manual Keybind Inputs', () => {
 									rowSpellName.text() === 'Holy Shock'
 								) {
 									cy.get('@row')
-										.eq(1)
+										.eq(2)
 										.children()
-										.eq(0)
 										.should('have.css', 'background-color')
 										.and('eq', 'rgb(76, 175, 80)');
 								} else {
 									cy.get('@row')
-										.eq(1)
+										.eq(2)
 										.children()
-										.eq(0)
 										.should('have.css', 'background-color')
 										.and('eq', 'rgb(233, 30, 99)');
 								}

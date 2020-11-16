@@ -16,6 +16,9 @@ ManualKeybindModal.propTypes = {
 	setAllKeybindings: PropTypes.func.isRequired,
 	allKeybindings: PropTypes.object.isRequired,
 	keyBindingKey: PropTypes.string.isRequired,
+	normalTalents: PropTypes.array.isRequired,
+	covChoice: PropTypes.array.isRequired,
+	pvpTalents: PropTypes.array.isRequired,
 };
 
 function ManualKeybindModal({
@@ -26,6 +29,9 @@ function ManualKeybindModal({
 	setAllKeybindings,
 	allKeybindings,
 	keyBindingKey,
+	normalTalents,
+	covChoice,
+	pvpTalents,
 }) {
 	const classes = styleGuide();
 	const allSpells = useContext(AllSpellsContext);
@@ -37,7 +43,7 @@ function ManualKeybindModal({
 	});
 	const [allKeybinds, setAllKeybinds] = useState([]);
 	const [loading, setLoading] = useState(true);
-	const [Spells, setSpells] = useState();
+	const [classSpells, setClassSpells] = useState();
 	const [editingKey, setEditingKey] = useState();
 	const [invalidBinds, setInvalidBinds] = useState([]);
 	const [isKBConflictOpen, setIsKBConflictOpen] = useState(false);
@@ -57,7 +63,7 @@ function ManualKeybindModal({
 					.child(`/Spells/${characterClass}`)
 					.once('value');
 				if (snapShot.exists()) {
-					setSpells(snapShot.val());
+					setClassSpells(snapShot.val());
 					setLoading(false);
 				}
 			} catch (e) {
@@ -127,6 +133,35 @@ function ManualKeybindModal({
 			});
 		}
 	}
+	function confirmDelete() {
+		setAllKeybinds([
+			keybinding,
+			...allKeybinds.filter(bind => {
+				let dontFilterBind = true;
+				for (let i = 0; i < invalidBinds.length; i++) {
+					dontFilterBind =
+						dontFilterBind &&
+						!(
+							bind.spellId === invalidBinds[i].spellId &&
+							bind.target === invalidBinds[i].target
+						);
+				}
+
+				dontFilterBind = dontFilterBind && !('delete' in bind);
+
+				return dontFilterBind;
+			}),
+		]);
+		setInvalidBinds([]);
+		setEditingKey();
+		setKeybinding({
+			spellId: null,
+			target: null,
+			mod: null,
+			key: null,
+		});
+		setIsKBConflictOpen(false);
+	}
 
 	return (
 		<Modal open={isOpen} onClose={() => {}} className={classes.modal}>
@@ -146,13 +181,24 @@ function ManualKeybindModal({
 								</Typography>
 								<ul id="warning-modal-items">
 									{invalidBinds
-										.map(e => ({
-											...allSpells[e.spellId],
-											...e,
+										.map(spell => ({
+											...allSpells[spell.spellId],
+											...spell,
 										}))
 										.map(bind => (
 											<li key={bind.target}>
-												<Typography>{`${bind.spellName} ${bind.target} ${bind.mod} ${bind.key}`}</Typography>
+												{bind.disabled ? (
+													<div
+														style={{
+															fontSize: '1rem',
+															color: 'red',
+														}}
+													>
+														{`Currently Disabled: ${bind.spellName} ${bind.target} ${bind.mod} ${bind.key}`}
+													</div>
+												) : (
+													<Typography>{`${bind.spellName} ${bind.target} ${bind.mod} ${bind.key}`}</Typography>
+												)}
 											</li>
 										))}
 								</ul>
@@ -175,55 +221,7 @@ function ManualKeybindModal({
 											color="primary"
 											variant="contained"
 											size="large"
-											onClick={() => {
-												setAllKeybinds([
-													keybinding,
-													...allKeybinds.filter(
-														bind => {
-															let dontFilterBind = true;
-															for (
-																let i = 0;
-																i <
-																invalidBinds.length;
-																i++
-															) {
-																dontFilterBind =
-																	dontFilterBind &&
-																	!(
-																		bind.spellId ===
-																			invalidBinds[
-																				i
-																			]
-																				.spellId &&
-																		bind.target ===
-																			invalidBinds[
-																				i
-																			]
-																				.target
-																	);
-															}
-
-															dontFilterBind =
-																dontFilterBind &&
-																!(
-																	'delete' in
-																	bind
-																);
-
-															return dontFilterBind;
-														}
-													),
-												]);
-												setInvalidBinds([]);
-												setEditingKey();
-												setKeybinding({
-													spellId: null,
-													target: null,
-													mod: null,
-													key: null,
-												});
-												setIsKBConflictOpen(false);
-											}}
+											onClick={confirmDelete}
 										>
 											Confirm
 										</Button>
@@ -287,7 +285,10 @@ function ManualKeybindModal({
 							keybinding={keybinding}
 							setKeybinding={setKeybinding}
 							checkIfInvalidAndAdd={checkIfInvalidAndAdd}
-							Spells={Spells}
+							classSpells={classSpells}
+							normalTalents={normalTalents}
+							covChoice={covChoice}
+							pvpTalents={pvpTalents}
 						/>
 						<KeybindTable
 							allKeybinds={allKeybinds}

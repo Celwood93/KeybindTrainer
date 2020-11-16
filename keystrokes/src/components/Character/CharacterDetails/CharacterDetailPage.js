@@ -14,6 +14,7 @@ import { ref } from '../../../config/constants';
 import CharacterSpecNavigation from './CharacterSpecNavigation';
 import { Character, Spec } from '../../Factories/CharacterFactories';
 import { characterKeybindings } from '../../utils/utils';
+import { enableToolTips } from '../../utils/toolTipHooks';
 
 CharacterDetailPage.propTypes = {
 	userId: PropTypes.string,
@@ -21,6 +22,7 @@ CharacterDetailPage.propTypes = {
 };
 function CharacterDetailPage({ userId, match }) {
 	const [loading, setLoading] = useState(true);
+	const [isSaved, setIsSaved] = useState(false);
 	const [alert, setAlert] = alerter();
 	const [character, setCharacter] = useState(0);
 	const [allKeybindings, setAllKeybindings] = useState({});
@@ -44,6 +46,7 @@ function CharacterDetailPage({ userId, match }) {
 					);
 					setSpec(charDetails.selectedSpec);
 					setCharacter(charDetails);
+					setIsSaved(true);
 				}
 				//Set something to say "character not found"
 				setLoading(false);
@@ -58,6 +61,14 @@ function CharacterDetailPage({ userId, match }) {
 			newKeybindings(fields.spec, Character(fields));
 			setLoading(false);
 		}
+	}, []);
+
+	enableToolTips();
+
+	useEffect(() => {
+		return () => {
+			console.log('we out');
+		};
 	}, []);
 
 	function newKeybindings(spec, char) {
@@ -89,8 +100,9 @@ function CharacterDetailPage({ userId, match }) {
 			});
 		}
 		try {
-			const error = await ref.update(updates);
-			setAlertMessage(error);
+			const res = await ref.update(updates);
+			setAlertMessage(res);
+			setIsSaved(true);
 		} catch (e) {
 			console.error('error saving character updates');
 		}
@@ -128,6 +140,17 @@ function CharacterDetailPage({ userId, match }) {
 		}
 	}
 
+	function checkIfValidSelect() {
+		return !(
+			isSaved &&
+			character.specs[spec] &&
+			allKeybindings[characterKeybindings(character, spec, keyBinding)] &&
+			allKeybindings[
+				characterKeybindings(character, spec, keyBinding)
+			].filter(bind => !bind.disabled).length > 0
+		);
+	}
+
 	return !loading ? (
 		<React.Fragment>
 			<Snackbar
@@ -161,25 +184,7 @@ function CharacterDetailPage({ userId, match }) {
 							<span>
 								<Button
 									variant="contained"
-									disabled={
-										!(
-											character.specs[spec] &&
-											allKeybindings[
-												characterKeybindings(
-													character,
-													spec,
-													keyBinding
-												)
-											] &&
-											allKeybindings[
-												characterKeybindings(
-													character,
-													spec,
-													keyBinding
-												)
-											].length > 0
-										)
-									}
+									disabled={checkIfValidSelect()}
 									className={classes.bottomMarginNegTwo}
 									onClick={selectCharacter}
 								>

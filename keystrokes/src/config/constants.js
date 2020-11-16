@@ -30,6 +30,17 @@ export const targetting = {
 	SELF: ['Self'],
 	PLACED: ['Cursor', 'Self'],
 	FRIENDLY_NOT_SELF: ['Target', 'Focus', 'Party1', 'Party2'],
+	ALL: [
+		'Self',
+		'Target',
+		'Focus',
+		'Party1',
+		'Party2',
+		'Arena1',
+		'Arena2',
+		'Arena3',
+		'Cursor',
+	],
 };
 
 export const mods = ['None', 'Shift', 'Ctrl', 'Alt'];
@@ -43,7 +54,7 @@ export const characterDetails = {
 		'Worgen',
 		'Dwarf',
 		'Gnome',
-		'Toren',
+		'Tauren',
 		'Blood Elf',
 		'Orc',
 		'Troll',

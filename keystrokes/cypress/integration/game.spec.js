@@ -5,6 +5,9 @@ describe('Tests for the Game with valid keybinds', () => {
 		cy.login('ILHEEvO7wmWa0r7xtHqMmmQ3vxe2'); //might want to put this somewhere else
 		cy.contains('LandingPage');
 	});
+	before(() => {
+		cy.resetDB();
+	});
 
 	describe('play the game', () => {
 		beforeEach(() => {
@@ -32,6 +35,9 @@ describe('Tests for the Game with valid keybinds', () => {
 });
 
 describe('Test selecting different keybinds/specs/characters for the game.', () => {
+	before(() => {
+		cy.resetDB();
+	});
 	it('Should work with a different set of keybindings for the selected character', () => {
 		cy.contains('Character Management').click();
 		cy.contains('TestCharacter1').click();
@@ -232,6 +238,9 @@ describe('Tests for the game with a empty user', () => {
 		cy.visit('/');
 		cy.login('JgxSAHHAOzONr1wdD74zwlrtGee2'); //might want to put this somewhere else
 		cy.contains('LandingPage');
+	});
+	before(() => {
+		cy.resetDB();
 	});
 
 	describe('A user without a selected character should prompt a popup when attempting to play the game', () => {
