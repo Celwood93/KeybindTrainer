@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
 	Grid,
 	TableContainer,
@@ -15,6 +15,7 @@ import styleGuide from '../../../stylesheets/style';
 import EditIcon from '@material-ui/icons/Edit';
 import CancelOutlined from '@material-ui/icons/CancelOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { AllSpellsContext } from '../../../contexts/AllSpellsContext';
 
 KeybindTable.propTypes = {
 	allKeybinds: PropTypes.array.isRequired,
@@ -31,6 +32,7 @@ function KeybindTable({
 	deleteThisRow,
 	editingKey,
 }) {
+	const allSpells = useContext(AllSpellsContext);
 	const classes = styleGuide();
 	return (
 		<Grid item>
@@ -57,20 +59,20 @@ function KeybindTable({
 						{allKeybinds &&
 							allKeybinds.map(row => (
 								<TableRow
-									key={row.Spell + row.Target}
+									key={row.spellId + row.target}
 									id="keybind-row-container"
 								>
 									<TableCell component="th" scope="row">
-										{row.Spell}
+										{allSpells[row.spellId].spellName}
 									</TableCell>
 									<TableCell align="right">
-										{row.Target}
+										{row.target}
 									</TableCell>
 									<TableCell align="right">
-										{row.Mod}
+										{row.mod}
 									</TableCell>
 									<TableCell align="right">
-										{row.Key}
+										{row.key}
 									</TableCell>
 									<TableCell align="right">
 										{editing && (
@@ -79,8 +81,8 @@ function KeybindTable({
 													disabled={
 														editingKey &&
 														editingKey !==
-															row.Spell +
-																row.Target
+															row.spellId +
+																row.target
 													}
 													onClick={() => {
 														editThisRow(row);
@@ -90,21 +92,25 @@ function KeybindTable({
 													}}
 												>
 													{editingKey !==
-													row.Spell + row.Target ? (
+													row.spellId + row.target ? (
 														<EditIcon
-															id={`${row.Spell.replace(
+															id={`${allSpells[
+																row.spellId
+															].spellName.replace(
 																/ /g,
 																''
 															) +
-																row.Target}-edit`}
+																row.target}-edit`}
 														/>
 													) : (
 														<CancelOutlined
-															id={`${row.Spell.replace(
+															id={`${allSpells[
+																row.spellId
+															].spellName.replace(
 																/ /g,
 																''
 															) +
-																row.Target}-cancel`}
+																row.target}-cancel`}
 														/>
 													)}
 												</IconButton>
@@ -117,10 +123,12 @@ function KeybindTable({
 													}}
 												>
 													<DeleteIcon
-														id={`${row.Spell.replace(
+														id={`${allSpells[
+															row.spellId
+														].spellName.replace(
 															/ /g,
 															''
-														) + row.Target}-delete`}
+														) + row.target}-delete`}
 													/>
 												</IconButton>
 											</div>

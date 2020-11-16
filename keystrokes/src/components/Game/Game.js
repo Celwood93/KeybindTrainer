@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import '../../stylesheets/App.css';
@@ -11,6 +11,7 @@ import {
 	verifyKey,
 } from '../utils/utils';
 import { Alert, alerter } from '../utils/Alert';
+import { AllSpellsContext } from '../../contexts/AllSpellsContext';
 
 import { ref } from '../../config/constants';
 
@@ -22,6 +23,7 @@ function Game({ userInfo }) {
 	const [keyBindings, setKeyBindings] = useState();
 	const [failedFirstTry, setFailedFirstTry] = useState(false);
 	const [alert, setAlert] = alerter();
+	const allSpells = useContext(AllSpellsContext);
 
 	useEffect(() => {
 		async function collectCharacterInfo() {
@@ -50,13 +52,17 @@ function Game({ userInfo }) {
 			try {
 				const snapShot = await ref.child(path).once('value');
 				if (snapShot.exists()) {
-					const k = snapShot.val();
-					setKeyBindings(k);
-					const newKey = getNextKey(Object.keys(k));
+					const rawKeys = snapShot.val();
+					const detailedKeys = rawKeys.map(e => ({
+						...allSpells[e.spellId],
+						...e,
+					}));
+					setKeyBindings(detailedKeys);
+					const newKey = getNextKey(Object.keys(detailedKeys));
 					setKey(newKey);
 				}
 			} catch (e) {
-				console.log(`failed to get value for path ${path}`);
+				console.log(`failed to get value for path ${path}`, e);
 			}
 		}
 		collectCharacterInfo();
@@ -99,8 +105,8 @@ function Game({ userInfo }) {
 		if (validatePress(keyPressed.key)) {
 			const expectedKey = keyBindings[key];
 			if (
-				keyPressed.key === expectedKey.Key &&
-				keyPressed[expectedKey.Mod]
+				keyPressed.key === expectedKey.key &&
+				keyPressed[expectedKey.mod]
 			) {
 				const newKey = getNextKey(Object.keys(keyBindings));
 				setKey(newKey);
@@ -130,18 +136,21 @@ function Game({ userInfo }) {
 					{keyBindings &&
 						key &&
 						keyBindings[key] &&
-						keyBindings[key].Spell}
+						keyBindings[key].spellName}
 				</div>
 				<div className="App-header" id="keybind-prompt" tabIndex="1">
 					{keyBindings && key && keyBindings[key] && (
-						<div tabIndex="1">on {keyBindings[key].Target}</div>
+						<div tabIndex="1">on {keyBindings[key].target}</div>
 					)}
 				</div>
 				<div>
 					{failedFirstTry && (
 						<div id="failed-prompt" tabIndex="1">
-							correct keybinding: {keyBindings[key].Mod}{' '}
-							{keyBindings[key].Key}
+							correct keybinding:{' '}
+							{keyBindings[key].mod === 'None'
+								? ''
+								: keyBindings[key].mod}{' '}
+							{keyBindings[key].key}
 						</div>
 					)}
 				</div>

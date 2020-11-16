@@ -28,8 +28,8 @@ describe('Tests for Manual Keybind Inputs', () => {
 			cy.contains('Manual').click();
 
 			cy.get('#spell-selector').click();
-			cy.get('#Judgement-option').click();
-			cy.get('#spell-selector').should('have.text', 'Judgement');
+			cy.get('#Judgment-option').click();
+			cy.get('#spell-selector').should('have.text', 'Judgment');
 
 			cy.get('#target-selector').click();
 			cy.get('#Target-option').click();
@@ -47,7 +47,7 @@ describe('Tests for Manual Keybind Inputs', () => {
 
 			cy.contains('Enter').click();
 
-			cy.contains('Judgement')
+			cy.contains('Judgment')
 				.parent()
 				.children()
 				.its('length')
@@ -55,7 +55,7 @@ describe('Tests for Manual Keybind Inputs', () => {
 
 			cy.contains('Apply').click();
 			cy.get('#panel1a-header-keybinds').click();
-			cy.contains('Judgement')
+			cy.contains('Judgment')
 				.parent()
 				.parent()
 				.children()
@@ -72,7 +72,7 @@ describe('Tests for Manual Keybind Inputs', () => {
 			cy.contains('Enter').should('be.disabled');
 
 			cy.get('#spell-selector').click();
-			cy.get('#Judgement-option').click();
+			cy.get('#Judgment-option').click();
 
 			cy.contains('Enter').should('be.disabled');
 
