@@ -8,12 +8,14 @@ ButtonTalCovFrame.propTypes = {
 	selectedOption: PropTypes.string,
 	setSelectedOption: PropTypes.func,
 	children: PropTypes.node.isRequired,
+	styling: PropTypes.array,
 };
 function ButtonTalCovFrame({
 	selectedOption,
 	setSelectedOption,
 	spellInfo,
 	children,
+	styling = [{}, {}, {}],
 }) {
 	const [mousedOver, setMousedOver] = useState(false);
 	return (
@@ -27,12 +29,17 @@ function ButtonTalCovFrame({
 				setMousedOver(false);
 			}}
 			style={{
-				height: '45px',
-				backgroundColor: 'black',
-				border: `2px solid ${
-					selectedOption !== spellInfo.spellId ? 'gray' : '#b08f00'
-				}`,
-				cursor: 'pointer',
+				...{
+					height: '45px',
+					backgroundColor: 'black',
+					border: `2px solid ${
+						selectedOption !== spellInfo.spellId
+							? 'gray'
+							: '#b08f00'
+					}`,
+					cursor: 'pointer',
+				},
+				...styling[2],
 			}}
 			onClick={() => {
 				setSelectedOption(spellInfo.spellId);
@@ -48,17 +55,20 @@ function ButtonTalCovFrame({
 				<img
 					alt=""
 					style={{
-						transform: 'rotateY(180deg)',
-						height: '41px',
-						filter: `grayscale(${
-							selectedOption !== spellInfo.spellId
-								? mousedOver
-									? 60
-									: 100
-								: 0
-						}%)`,
-						position: 'absolute',
-						marginLeft: '-16.5px',
+						...{
+							transform: 'rotateY(180deg)',
+							height: '41px',
+							filter: `grayscale(${
+								selectedOption !== spellInfo.spellId
+									? mousedOver
+										? 60
+										: 100
+									: 0
+							}%)`,
+							position: 'absolute',
+							marginLeft: '-16.5px',
+						},
+						...styling[0],
 					}}
 					src={talentPanel}
 				/>
@@ -70,16 +80,19 @@ function ButtonTalCovFrame({
 				<img
 					alt=""
 					style={{
-						height: '41px',
-						filter: `grayscale(${
-							selectedOption !== spellInfo.spellId
-								? mousedOver
-									? 60
-									: 100
-								: 0
-						}%)`,
-						position: 'absolute',
-						marginLeft: '-8.5px',
+						...{
+							height: '41px',
+							filter: `grayscale(${
+								selectedOption !== spellInfo.spellId
+									? mousedOver
+										? 60
+										: 100
+									: 0
+							}%)`,
+							position: 'absolute',
+							marginLeft: '-8.5px',
+						},
+						...styling[1],
 					}}
 					src={talentPanel}
 				/>

@@ -55,3 +55,16 @@ export const removeWaterMark = (path, dep) => {
 		}
 	}
 };
+
+export const removeLingeringPopups = () => {
+	const popup = Array.from(
+		document.getElementsByClassName(
+			'wowhead-tooltip wowhead-tooltip-width-restriction'
+		)
+	);
+	if (popup.length > 0) {
+		popup.forEach(e => {
+			e.setAttribute('style', 'display: none');
+		});
+	}
+};

@@ -58,7 +58,10 @@ function NormalTalentCalculator({
 	return loading ? (
 		<CircularProgress />
 	) : (
-		<Grid container style={{ width: '611px', height: '400px' }}>
+		<Grid
+			container
+			style={{ width: '611px', height: '400px', marginLeft: '-87px' }}
+		>
 			{normalTalents &&
 				normalTalents.length > 0 &&
 				normalTalents

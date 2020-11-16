@@ -27,18 +27,11 @@ function NormalTalentRow({
 	allKeybindings,
 	setAllKeybindings,
 }) {
-	const [selectedTalent, setSelectedTalent] = useState(
-		character.specs[spec].keybindings[keyBinding][
-			characterKeybindings(character, spec, keyBinding)
-		].talents.normal[level]
-	);
+	const [selectedTalent, setSelectedTalent] = useState(getSelectedTalent());
 	const allSpells = useContext(AllSpellsContext);
 	//Maybe move this logic to Talent Calculator so it can be used accross all 3 custom spells (talents,pvp,covs)
 	useEffect(() => {
-		const currentTalentId =
-			character.specs[spec].keybindings[keyBinding][
-				characterKeybindings(character, spec, keyBinding)
-			].talents.normal[level];
+		const currentTalentId = getSelectedTalent();
 		if (selectedTalent !== currentTalentId) {
 			const keyBindingKey = characterKeybindings(
 				character,
@@ -127,12 +120,16 @@ function NormalTalentRow({
 	}, [selectedTalent]);
 
 	useEffect(() => {
-		setSelectedTalent(
+		setSelectedTalent(getSelectedTalent());
+	}, [spec, keyBinding]);
+
+	function getSelectedTalent() {
+		let talentId =
 			character.specs[spec].keybindings[keyBinding][
 				characterKeybindings(character, spec, keyBinding)
-			].talents.normal[level]
-		);
-	}, [spec, keyBinding]);
+			].talents.normal[level];
+		return talentId ? talentId : '';
+	}
 
 	return (
 		<Grid item md={12}>

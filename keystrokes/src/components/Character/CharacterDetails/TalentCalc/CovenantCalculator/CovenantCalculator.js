@@ -208,9 +208,6 @@ function CovenantCalculator({
 		<CircularProgress />
 	) : (
 		<React.Fragment>
-			<Typography align="left" variant="h4">
-				Covenants
-			</Typography>
 			<Grid
 				container
 				justify="center"

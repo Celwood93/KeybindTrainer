@@ -7,6 +7,11 @@ const styleGuide = makeStyles(theme => ({
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
+	pvpTalentModal: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
 	keybindsComplete: {
 		color: theme.palette.getContrastText(green[500]),
 		backgroundColor: green[500],
@@ -48,6 +53,13 @@ const styleGuide = makeStyles(theme => ({
 	manualModalBackground: {
 		width: '70%',
 		height: '80%',
+		backgroundColor: theme.palette.background.paper,
+		border: '2px solid #000',
+		boxShadow: theme.shadows[5],
+		padding: theme.spacing(2, 4, 3),
+	},
+	pvpTalentModalBackground: {
+		width: '200px',
 		backgroundColor: theme.palette.background.paper,
 		border: '2px solid #000',
 		boxShadow: theme.shadows[5],

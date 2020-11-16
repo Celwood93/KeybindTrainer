@@ -115,7 +115,11 @@ function KeybindEditor({
 						].covenant
 					)[0]
 				}
-				pvpTalents={[]}
+				pvpTalents={
+					character.specs[spec].keybindings[keyBinding][
+						characterKeybindings(character, spec, keyBinding)
+					].talents.pvp
+				}
 			/>
 			<RapidFireKeybindModal
 				isOpen={rapidFireModal}

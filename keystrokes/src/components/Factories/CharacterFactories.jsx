@@ -29,7 +29,7 @@ export function Spec({ keybindings = [], selectedKeybindings = 0 }, key) {
 export function KeyBindings(key, description = '') {
 	const baseTalents = {
 		normal: { 15: '', 25: '', 30: '', 35: '', 40: '', 45: '', 50: '' },
-		pvp: { 0: '', 1: '', 2: '' },
+		pvp: ['', '', ''],
 	};
 	return { key, description, talents: baseTalents, covenant: { none: [''] } };
 }

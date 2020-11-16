@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import WarningIcon from '@material-ui/icons/Warning';
 import PropTypes from 'prop-types';
+import { removeLingeringPopups } from '../../utils/toolTipHooks';
 import styleGuide from '../../../stylesheets/style';
 import { verifyKey, validatePress } from '../../utils/utils';
 import { targetting, mods } from '../../../config/constants';
@@ -94,11 +95,28 @@ function ManualKeybindInputs({
 				.map(val => val.idOfReplacedSpell)
 				.flat()
 		);
+		const pvpTalentSpells = pvpTalents
+			.filter(codeString => !!codeString)
+			.map(code => allSpells[code]);
+		const spellsAddedByOtherPvpTalentSpells = pvpTalents
+			.filter(codeString => !!codeString)
+			.map(code => allSpells[code].enabledSpells || [])
+			.flat()
+			.map(code => allSpells[code])
+			.filter(spellDetails => !spellDetails.isPassive);
+		replacedSpellIds = replacedSpellIds.concat(
+			pvpTalentSpells
+				.filter(e => !!e.idOfReplacedSpell)
+				.map(val => val.idOfReplacedSpell)
+				.flat()
+		);
 		const formattedSpellsList = classSpells
 			.map(e => allSpells[e])
 			.concat(talentSpells)
 			.concat(covSpells)
 			.concat(spellsAddedByCovSpells)
+			.concat(pvpTalentSpells)
+			.concat(spellsAddedByOtherPvpTalentSpells)
 			.filter(spell => !spell.spec || spell.spec.includes(spec))
 			.concat(spellsAddedByOtherSpells)
 			.filter(spellDetails => !spellDetails.isPassive)
@@ -152,6 +170,7 @@ function ManualKeybindInputs({
 							key: null,
 						});
 						setInvalidBinds([]);
+						removeLingeringPopups();
 					}}
 				>
 					{/*Going to have to change this to account for talents/covenants/racials*/

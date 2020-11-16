@@ -5,8 +5,9 @@ import { Grid } from '@material-ui/core';
 NormalTalentBox.propTypes = {
 	spellInfo: PropTypes.object,
 	selectedTalent: PropTypes.string,
+	styling: PropTypes.array,
 };
-function NormalTalentBox({ selectedTalent, spellInfo }) {
+function NormalTalentBox({ selectedTalent, spellInfo, styling = [{}, {}] }) {
 	const [margTopVal, setMargTopVal] = useState('5.5px');
 	useEffect(() => {
 		const resizeObserver = new window.ResizeObserver(entry => {
@@ -35,16 +36,19 @@ function NormalTalentBox({ selectedTalent, spellInfo }) {
 						<img
 							alt=""
 							style={{
-								filter: `grayscale(${
-									selectedTalent !== spellInfo.spellId
-										? !selectedTalent
-											? 0
-											: 100
-										: 0
-								}%)`,
-								position: 'absolute',
-								marginLeft: '-25px',
-								marginTop: '3px',
+								...{
+									filter: `grayscale(${
+										selectedTalent !== spellInfo.spellId
+											? !selectedTalent
+												? 0
+												: 100
+											: 0
+									}%)`,
+									position: 'absolute',
+									marginLeft: '-25px',
+									marginTop: '3px',
+								},
+								...styling[0],
 							}}
 							src={`https://wow.zamimg.com/images/wow/icons/medium/${spellInfo.iconId}.jpg`}
 						/>
@@ -55,9 +59,12 @@ function NormalTalentBox({ selectedTalent, spellInfo }) {
 						<div
 							id={`cs${spellInfo.spellId}`}
 							style={{
-								fontSize: '0.75rem',
-								marginTop: margTopVal,
-								color: 'white',
+								...{
+									fontSize: '0.75rem',
+									marginTop: margTopVal,
+									color: 'white',
+								},
+								...styling[1],
 							}}
 						>
 							{spellInfo.spellName}
