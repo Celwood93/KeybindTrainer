@@ -28,8 +28,8 @@ function CovenantBox({ selectedCov, spellsInfo }) {
 	}
 
 	let list = Object.keys(spellsInfo.spellsDetails)
-		.map(e => spellsInfo.spellsDetails[e].spellDetail)
-		.filter(e => !e.hidden);
+		.map(code => spellsInfo.spellsDetails[code].spellDetail)
+		.filter(spell => !spell.hidden);
 	list.splice(1, 0, {
 		spellId: spellsInfo.spellId,
 		notASpell: true,

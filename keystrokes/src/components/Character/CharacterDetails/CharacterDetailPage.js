@@ -147,7 +147,7 @@ function CharacterDetailPage({ userId, match }) {
 			allKeybindings[characterKeybindings(character, spec, keyBinding)] &&
 			allKeybindings[
 				characterKeybindings(character, spec, keyBinding)
-			].filter(e => !e.disabled).length > 0
+			].filter(bind => !bind.disabled).length > 0
 		);
 	}
 

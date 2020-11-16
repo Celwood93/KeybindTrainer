@@ -7,6 +7,7 @@ import { AllSpellsContext } from '../../../../../contexts/AllSpellsContext';
 import ButtonTalCovFrame from '../ButtonTalCovFrame';
 import CovenantBox from './CovenantBox';
 import { characterKeybindings } from '../../../../utils/utils';
+import _default from 'immutability-helper';
 
 CovenantCalculator.propTypes = {
 	character: PropTypes.object,
@@ -43,8 +44,8 @@ function CovenantCalculator({
 				keyBinding
 			);
 			const otherCovenants = Object.keys(covenants)
-				.filter(e => e !== selectedCov)
-				.map(e => covenants[e])
+				.filter(id => id !== selectedCov)
+				.map(code => covenants[code])
 				.flat();
 
 			const spellsPreviouslyAdded =
@@ -142,7 +143,7 @@ function CovenantCalculator({
 				return true;
 			});
 
-			Promise.all(runs).then(e => {
+			Promise.all(runs).then(_ => {
 				setAllKeybindings(keybindingChanges);
 			});
 			const covSetter =
@@ -226,10 +227,10 @@ function CovenantCalculator({
 					Object.keys(covenants).map((covName, index) => {
 						const covDetails = {
 							spellsDetails: Object.keys(covenants[covName]).map(
-								e => {
+								id => {
 									return {
 										spellDetail:
-											allSpells[covenants[covName][e]],
+											allSpells[covenants[covName][id]],
 									};
 								}
 							),

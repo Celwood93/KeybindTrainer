@@ -39,8 +39,8 @@ function NormalTalentRow({
 				keyBinding
 			);
 			const talentsSameRow = spellsInfo
-				.filter(e => e.spellId !== selectedTalent)
-				.map(e => e.spellId);
+				.filter(spell => spell.spellId !== selectedTalent)
+				.map(spell => spell.spellId);
 
 			const spellsPreviouslyAdded =
 				(currentTalentId && allSpells[currentTalentId].enabledSpells) ||
@@ -91,7 +91,7 @@ function NormalTalentRow({
 				return true;
 			});
 
-			Promise.all(runs).then(e => {
+			Promise.all(runs).then(_ => {
 				setAllKeybindings(keybindingChanges);
 			});
 
@@ -141,7 +141,7 @@ function NormalTalentRow({
 				style={{ maxHeight: '45px' }}
 			>
 				{spellsInfo
-					.filter(e => e.spellId)
+					.filter(spell => spell.spellId)
 					.map(spellInfo => {
 						return (
 							<Grid

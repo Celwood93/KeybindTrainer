@@ -18,7 +18,7 @@ export const removeWaterMark = (path, dep) => {
 	const useEffectFunction = () => {
 		console.log('toolTip useEffect', path);
 		const toolTips = document.querySelectorAll(path);
-		toolTips.forEach(e => {
+		toolTips.forEach(element => {
 			function getRidOfIt() {
 				const waterMark = document.querySelector('.wowhead-tooltip');
 				if (
@@ -32,18 +32,18 @@ export const removeWaterMark = (path, dep) => {
 					waterMark.children[0].parentNode.removeChild(
 						waterMark.children[0]
 					);
-					e.removeEventListener('mousemove', getRidOfIt);
+					element.removeEventListener('mousemove', getRidOfIt);
 				}
 				if (
 					waterMark &&
 					waterMark.children &&
 					waterMark.children.length < 3
 				) {
-					e.removeEventListener('mousemove', getRidOfIt);
+					element.removeEventListener('mousemove', getRidOfIt);
 				}
 			}
-			if (e) {
-				e.addEventListener('mousemove', getRidOfIt);
+			if (element) {
+				element.addEventListener('mousemove', getRidOfIt);
 			}
 		});
 	};
@@ -63,8 +63,8 @@ export const removeLingeringPopups = () => {
 		)
 	);
 	if (popup.length > 0) {
-		popup.forEach(e => {
-			e.setAttribute('style', 'display: none');
+		popup.forEach(element => {
+			element.setAttribute('style', 'display: none');
 		});
 	}
 };

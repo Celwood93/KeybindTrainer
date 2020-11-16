@@ -64,7 +64,7 @@ function PvpTalentModal({
 				</div>
 				<Grid container direction="column">
 					{pvpTalents
-						.filter(e => !allSpells[e].hidden)
+						.filter(code => !allSpells[code].hidden)
 						.map(talent => {
 							const spellInfo = allSpells[talent];
 							return (

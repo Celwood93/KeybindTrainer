@@ -70,8 +70,8 @@ function NormalTalentCalculator({
 							const rowColData =
 								allSpells[talentId] &&
 								allSpells[talentId].talentCalcLoc.filter(
-									e =>
-										e.spec ===
+									calcLoc =>
+										calcLoc.spec ===
 										characterDetails.class[character.class][
 											spec
 										]

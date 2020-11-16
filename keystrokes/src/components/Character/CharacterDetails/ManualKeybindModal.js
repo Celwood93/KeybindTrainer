@@ -181,9 +181,9 @@ function ManualKeybindModal({
 								</Typography>
 								<ul id="warning-modal-items">
 									{invalidBinds
-										.map(e => ({
-											...allSpells[e.spellId],
-											...e,
+										.map(spell => ({
+											...allSpells[spell.spellId],
+											...spell,
 										}))
 										.map(bind => (
 											<li key={bind.target}>

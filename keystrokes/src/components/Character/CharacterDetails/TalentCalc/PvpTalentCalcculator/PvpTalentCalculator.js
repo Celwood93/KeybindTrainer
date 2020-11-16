@@ -73,7 +73,7 @@ function PvpTalentCalculator({
 			});
 			console.log(currentPvpTalentIds);
 			const isSpellAlreadyInList = currentPvpTalentIds.findIndex(
-				e => e === selectedPvpTalents[changedIndex]
+				code => code === selectedPvpTalents[changedIndex]
 			);
 			if (isSpellAlreadyInList === -1) {
 				const pvpTalentReplaced = [currentPvpTalentIds[changedIndex]];
@@ -140,7 +140,7 @@ function PvpTalentCalculator({
 					}
 				);
 
-				Promise.all(runs).then(e => {
+				Promise.all(runs).then(_ => {
 					setAllKeybindings(keybindingChanges);
 				});
 			} else {

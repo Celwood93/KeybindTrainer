@@ -77,7 +77,7 @@ function ManualKeybindInputs({
 			.map(code => allSpells[code])
 			.filter(spellDetails => !spellDetails.isPassive);
 		let replacedSpellIds = talentSpells
-			.filter(e => !!e.idOfReplacedSpell)
+			.filter(spell => !!spell.idOfReplacedSpell)
 			.map(val => val.idOfReplacedSpell)
 			.flat();
 		const covSpells = covChoice
@@ -91,7 +91,7 @@ function ManualKeybindInputs({
 			.filter(spellDetails => !spellDetails.isPassive);
 		replacedSpellIds = replacedSpellIds.concat(
 			covSpells
-				.filter(e => !!e.idOfReplacedSpell)
+				.filter(spell => !!spell.idOfReplacedSpell)
 				.map(val => val.idOfReplacedSpell)
 				.flat()
 		);
@@ -106,12 +106,12 @@ function ManualKeybindInputs({
 			.filter(spellDetails => !spellDetails.isPassive);
 		replacedSpellIds = replacedSpellIds.concat(
 			pvpTalentSpells
-				.filter(e => !!e.idOfReplacedSpell)
+				.filter(spell => !!spell.idOfReplacedSpell)
 				.map(val => val.idOfReplacedSpell)
 				.flat()
 		);
 		const formattedSpellsList = classSpells
-			.map(e => allSpells[e])
+			.map(code => allSpells[code])
 			.concat(talentSpells)
 			.concat(covSpells)
 			.concat(spellsAddedByCovSpells)
@@ -432,7 +432,7 @@ function ManualKeybindInputs({
 					Enter
 				</Button>
 			</Grid>
-			{invalidBinds.filter(e => !e.disabled).length ? (
+			{invalidBinds.filter(bind => !bind.disabled).length ? (
 				<Tooltip
 					placement="right-end"
 					id="Invalid-bind-warning-popup"

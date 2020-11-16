@@ -61,7 +61,7 @@ function KeybindTable({
 					<TableBody>
 						{allKeybinds &&
 							allKeybinds
-								.filter(e => !e.disabled)
+								.filter(bind => !bind.disabled)
 								.map(row => (
 									<TableRow
 										key={row.spellId + row.target}
