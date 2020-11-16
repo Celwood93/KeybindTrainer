@@ -184,6 +184,12 @@ function CovenantCalculator({
 						characterKeybindings(character, spec, keyBinding)
 					].covenant
 			  )[0]
+				? Object.keys(
+						character.specs[spec].keybindings[keyBinding][
+							characterKeybindings(character, spec, keyBinding)
+						].covenant
+				  )[0]
+				: 'none'
 			: 'none';
 	}
 

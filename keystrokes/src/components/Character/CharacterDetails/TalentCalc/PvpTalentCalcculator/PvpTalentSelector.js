@@ -20,6 +20,7 @@ function PvpTalentSelector({ selectedPvpTalents, setIsOpenIndex, index }) {
 	return (
 		<Grid
 			item
+			id={`pvp-talent-selector-${index}`}
 			md={12}
 			onClick={() => {
 				setIsOpenIndex(index);

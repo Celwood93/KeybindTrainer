@@ -45,6 +45,7 @@ function PvpTalentModal({
 		>
 			<div className={classes.pvpTalentModalBackground}>
 				<div
+					id="close-pvp-modal"
 					style={{
 						position: 'relative',
 						float: 'right',
@@ -52,7 +53,7 @@ function PvpTalentModal({
 						top: '-13px',
 						left: '21px',
 						maxWidth: '10px',
-						maxHeight: '0px',
+						maxHeight: '1px',
 						cursor: 'pointer',
 					}}
 					onClick={() => {
