@@ -526,7 +526,6 @@ describe('Tests for Talent Calculator', () => {
 				cy.get('#Execute-option').click();
 				cy.contains('Cancel').click();
 
-				cy.get('#panel1a-header-talents').click();
 				cy.get('#talent-container-Venthyr').click();
 
 				cy.get('#keybind-edit-button').click();
