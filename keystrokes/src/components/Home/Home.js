@@ -4,6 +4,7 @@ import Nav from '../NavBar/NavBar';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { AllSpellsContext } from '../../contexts/AllSpellsContext';
 import { ref } from '../../config/constants';
+import Tour from '../../tour/Tour';
 import CharacterList from '../Character/CharacterLists/CharacterList';
 import CharacterDetailPage from '../Character/CharacterDetails/CharacterDetailPage';
 
@@ -65,6 +66,7 @@ function Home(props) {
 		<div>
 			{allSpells ? (
 				<AllSpellsContext.Provider value={allSpells}>
+					<Tour />
 					<BrowserRouter>
 						<div className="App">
 							<Route path="/" component={Nav} />
