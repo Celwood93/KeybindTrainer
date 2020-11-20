@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { throttle } from 'lodash';
 import PropTypes from 'prop-types';
 import '../../stylesheets/App.css';
 import { Snackbar } from '@material-ui/core';

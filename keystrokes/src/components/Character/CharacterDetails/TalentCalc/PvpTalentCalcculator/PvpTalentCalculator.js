@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, CircularProgress, Modal } from '@material-ui/core';
+import { Grid, CircularProgress } from '@material-ui/core';
 import { isEqual } from 'lodash';
 import update from 'immutability-helper';
 import { ref, characterDetails } from '../../../../../config/constants';
