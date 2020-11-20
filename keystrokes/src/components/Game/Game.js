@@ -88,9 +88,22 @@ function Game({ userInfo }) {
 				});
 			}
 		};
-		el.onwheel = throttle(
-			event => {
-				event.preventDefault();
+		let time;
+
+		function throttle2(fn, wait) {
+			return function() {
+				if (time + wait - Date.now() < 0) {
+					fn();
+					time = null;
+				}
+			};
+		}
+		el.onwheel = event => {
+			event.preventDefault();
+			if (!time) {
+				time = Date.now();
+			}
+			throttle2(e => {
 				if (event.deltaY > 0) {
 					handleKeyPress({
 						altKey: event.altKey,
@@ -116,10 +129,8 @@ function Game({ userInfo }) {
 						code: 'wheelup',
 					});
 				}
-			},
-			400,
-			{ leading: true, trailing: false }
-		);
+			}, 300)();
+		};
 		return () => {
 			document.body.onkeydown = null;
 			el.onmousedown = null;
