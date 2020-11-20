@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { throttle } from 'lodash';
 import PropTypes from 'prop-types';
 import '../../stylesheets/App.css';
 import { Snackbar } from '@material-ui/core';
@@ -87,34 +88,38 @@ function Game({ userInfo }) {
 				});
 			}
 		};
-		el.onwheel = event => {
-			event.preventDefault();
-			if (event.deltaY > 0) {
-				handleKeyPress({
-					altKey: event.altKey,
-					shiftKey: event.shiftKey,
-					ctrlKey: event.ctrlKey,
-					preventDefault: () => {
-						if (event.preventDefault) {
-							event.preventDefault();
-						}
-					},
-					code: 'wheeldown',
-				});
-			} else {
-				handleKeyPress({
-					altKey: event.altKey,
-					shiftKey: event.shiftKey,
-					ctrlKey: event.ctrlKey,
-					preventDefault: () => {
-						if (event.preventDefault) {
-							event.preventDefault();
-						}
-					},
-					code: 'wheelup',
-				});
-			}
-		};
+		el.onwheel = throttle(
+			event => {
+				event.preventDefault();
+				if (event.deltaY > 0) {
+					handleKeyPress({
+						altKey: event.altKey,
+						shiftKey: event.shiftKey,
+						ctrlKey: event.ctrlKey,
+						preventDefault: () => {
+							if (event.preventDefault) {
+								event.preventDefault();
+							}
+						},
+						code: 'wheeldown',
+					});
+				} else {
+					handleKeyPress({
+						altKey: event.altKey,
+						shiftKey: event.shiftKey,
+						ctrlKey: event.ctrlKey,
+						preventDefault: () => {
+							if (event.preventDefault) {
+								event.preventDefault();
+							}
+						},
+						code: 'wheelup',
+					});
+				}
+			},
+			400,
+			{ leading: true, trailing: false }
+		);
 		return () => {
 			document.body.onkeydown = null;
 			el.onmousedown = null;
@@ -155,7 +160,10 @@ function Game({ userInfo }) {
 				keyPressed.key === expectedKey.key &&
 				keyPressed[expectedKey.mod]
 			) {
-				const newKey = getNextKey(Object.keys(keyBindings));
+				let newKey = key;
+				while (newKey === key) {
+					newKey = getNextKey(Object.keys(keyBindings));
+				}
 				setKey(newKey);
 				setFailedFirstTry(false);
 			} else {
