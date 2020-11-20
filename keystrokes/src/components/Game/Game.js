@@ -70,8 +70,55 @@ function Game({ userInfo }) {
 
 	useEffect(() => {
 		document.body.onkeydown = handleKeyPress;
+		const el = document.querySelector('#root');
+		el.onmousedown = event => {
+			event.preventDefault();
+			if (event.which === 2 && event.button === 1) {
+				handleKeyPress({
+					altKey: event.altKey,
+					shiftKey: event.shiftKey,
+					ctrlKey: event.ctrlKey,
+					preventDefault: () => {
+						if (event.preventDefault) {
+							event.preventDefault();
+						}
+					},
+					code: 'wheelclick',
+				});
+			}
+		};
+		el.onwheel = event => {
+			event.preventDefault();
+			if (event.deltaY > 0) {
+				handleKeyPress({
+					altKey: event.altKey,
+					shiftKey: event.shiftKey,
+					ctrlKey: event.ctrlKey,
+					preventDefault: () => {
+						if (event.preventDefault) {
+							event.preventDefault();
+						}
+					},
+					code: 'wheeldown',
+				});
+			} else {
+				handleKeyPress({
+					altKey: event.altKey,
+					shiftKey: event.shiftKey,
+					ctrlKey: event.ctrlKey,
+					preventDefault: () => {
+						if (event.preventDefault) {
+							event.preventDefault();
+						}
+					},
+					code: 'wheelup',
+				});
+			}
+		};
 		return () => {
 			document.body.onkeydown = null;
+			el.onmousedown = null;
+			el.onwheel = null;
 		};
 	}, [keyBindings, key]);
 

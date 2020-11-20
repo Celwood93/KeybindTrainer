@@ -409,9 +409,32 @@ function ManualKeybindInputs({
 					label="Key"
 					onFocus={() => {
 						document.body.onkeydown = handleKeyPress;
+						document.body.onmousedown = event => {
+							if (event.which === 2 && event.button === 1) {
+								handleKeyPress({
+									preventDefault: () => {},
+									code: 'wheelclick',
+								});
+							}
+						};
+						document.body.onmousewheel = event => {
+							if (event.deltaY > 0) {
+								handleKeyPress({
+									preventDefault: () => {},
+									code: 'wheeldown',
+								});
+							} else {
+								handleKeyPress({
+									preventDefault: () => {},
+									code: 'wheelup',
+								});
+							}
+						};
 					}}
 					onBlur={() => {
 						document.body.onkeydown = null;
+						document.body.onmousedown = null;
+						document.body.onmousewheel = null;
 					}}
 				/>
 			</Grid>
