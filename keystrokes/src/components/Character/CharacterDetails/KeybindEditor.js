@@ -47,13 +47,13 @@ function KeybindEditor({
 				spec,
 				keyBinding
 			)}`;
-			try {
-				const snapShot = await ref.child(path).once('value');
-				if (
-					!Object.keys(allKeybindings).includes(
-						characterKeybindings(character, spec, keyBinding)
-					)
-				) {
+			if (
+				!Object.keys(allKeybindings).includes(
+					characterKeybindings(character, spec, keyBinding)
+				)
+			) {
+				try {
+					const snapShot = await ref.child(path).once('value');
 					const keybindingsWeGot = snapShot.exists()
 						? snapShot.val()
 						: [];
@@ -62,17 +62,39 @@ function KeybindEditor({
 						spec,
 						keyBinding
 					);
+					const storage = window.localStorage.getItem('backup');
+					if (storage) {
+						const jsonStorage = JSON.parse(storage);
+						jsonStorage.fromDB['keybindings'] = jsonStorage.fromDB
+							.keybindings
+							? update(jsonStorage.fromDB.keybindings, {
+									[key]: { $set: keybindingsWeGot },
+							  })
+							: update(
+									{},
+									{
+										[key]: { $set: keybindingsWeGot },
+									}
+							  );
+						window.localStorage.setItem(
+							'backup',
+							JSON.stringify(jsonStorage)
+						);
+					}
 					setAllKeybindings(
 						update(allKeybindings, {
 							[key]: { $set: keybindingsWeGot },
 						})
 					);
+				} catch (e) {
+					console.error(
+						`failed to collect keybindings for path ${path}`,
+						e
+					);
 				}
-				//Set something to say "character not found"
-				setLoading(false);
-			} catch (e) {
-				console.error(`failed to collect keybindings for path ${path}`);
 			}
+			//Set something to say "character not found"
+			setLoading(false);
 		}
 		collectKeybindings();
 	});

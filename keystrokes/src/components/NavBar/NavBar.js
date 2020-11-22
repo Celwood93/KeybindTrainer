@@ -2,8 +2,9 @@ import React from 'react';
 import { auth } from '../../config/constants';
 import { Link } from 'react-router-dom';
 import '../../stylesheets/nav.css';
+import UnsavedCharacterModal from '../utils/UnsavedCharacterModal';
 
-function NavBar() {
+function NavBar({ userId }) {
 	const logout = _ => {
 		auth.signOut();
 	};
@@ -14,6 +15,7 @@ function NavBar() {
 
 	return (
 		<nav className="nav-general">
+			<UnsavedCharacterModal userId={userId} />
 			<h3>Logo</h3>
 			<div className="nav-links">
 				<Link style={navStyle} to="/Game">

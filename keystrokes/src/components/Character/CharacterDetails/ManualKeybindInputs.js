@@ -55,7 +55,12 @@ function ManualKeybindInputs({
 		if (!e.metaKey) {
 			e.preventDefault();
 		}
-		const newKey = e.code.toLowerCase().replace(/digit|key/i, '');
+		let newKey;
+		try {
+			newKey = e.code.toLowerCase().replace(/digit|key/i, '');
+		} catch (e) {
+			return;
+		}
 		if (validatePress(newKey)) {
 			const newKeybinding = {
 				...keybinding,
