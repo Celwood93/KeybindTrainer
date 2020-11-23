@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Modal, Button, Grid } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import styleGuide from '../../../stylesheets/style';
@@ -17,20 +17,31 @@ function RapidFireKeybindModal({ isOpen, setIsOpen }) {
 			onClose={() => setIsOpen(false)}
 			className={classes.modal}
 		>
-			<div className={classes.paper}>
-				<Grid container justify="flex-end">
-					<Grid item>Work in Progress</Grid>
-					<Grid item style={{ paddingTop: '5rem' }}>
-						<Button
-							onClick={() => {
-								setIsOpen(false);
-							}}
-							size="large"
-						>
-							Close
-						</Button>
+			<div className={classes.rapidFireModalBackground}>
+				<React.Fragment>
+					<Grid container justify="space-between">
+						<Grid item>
+							<Button
+								color="secondary"
+								variant="contained"
+								onClick={() => {}}
+								size="large"
+							>
+								Cancel
+							</Button>
+						</Grid>
+						<Grid item>
+							<Button
+								color="primary"
+								variant="contained"
+								size="large"
+								onClick={() => {}}
+							>
+								Continue
+							</Button>
+						</Grid>
 					</Grid>
-				</Grid>
+				</React.Fragment>
 			</div>
 		</Modal>
 	);

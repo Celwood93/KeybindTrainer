@@ -21,7 +21,6 @@ function CharacterList({ collectUserInfo, userPath, user, ...props }) {
 		async function gettingUser() {
 			try {
 				const user = await collectUserInfo();
-
 				if (user) {
 					setCharacters(user.characters || {});
 					setSelectedCharacter(user.selectedCharacter);

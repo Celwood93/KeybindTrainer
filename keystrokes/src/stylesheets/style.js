@@ -58,6 +58,15 @@ const styleGuide = makeStyles(theme => ({
 		boxShadow: theme.shadows[5],
 		padding: theme.spacing(2, 4, 3),
 	},
+
+	rapidFireModalBackground: {
+		width: '70%',
+		height: '80%',
+		backgroundColor: theme.palette.background.paper,
+		border: '2px solid #000',
+		boxShadow: theme.shadows[5],
+		padding: theme.spacing(2, 4, 3),
+	},
 	unsavedCharacterModalBackground: {
 		width: '30%',
 		backgroundColor: theme.palette.background.paper,
