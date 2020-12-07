@@ -7,6 +7,16 @@ const styleGuide = makeStyles(theme => ({
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
+	detailedDropdownConfig: {
+		position: 'absolute',
+		top: 28,
+		right: 0,
+		left: 0,
+		zIndex: 1,
+		border: '1px solid',
+		padding: theme.spacing(1),
+		backgroundColor: theme.palette.background.paper,
+	},
 	pvpTalentModal: {
 		display: 'flex',
 		alignItems: 'center',

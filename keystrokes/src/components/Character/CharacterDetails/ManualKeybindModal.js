@@ -50,6 +50,7 @@ function ManualKeybindModal({
 	const spec = characterDetails.class[characterClass][
 		characterSpec
 	].toUpperCase();
+
 	useEffect(() => {
 		if (allKeybindings[keyBindingKey]) {
 			setAllKeybinds(allKeybindings[keyBindingKey]);

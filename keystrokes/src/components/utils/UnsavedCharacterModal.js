@@ -14,6 +14,20 @@ function UnsavedCharacterModal({ userId }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [alert, setAlert] = alerter();
 
+	function getObjectDiff(obj1, obj2) {
+		const diff = Object.keys(obj1).reduce((result, key) => {
+			if (!obj2.hasOwnProperty(key)) {
+				result.push(key);
+			} else if (isEqual(obj1[key], obj2[key])) {
+				const resultKeyIndex = result.indexOf(key);
+				result.splice(resultKeyIndex, 1);
+			}
+			return result;
+		}, Object.keys(obj2));
+
+		return diff;
+	}
+
 	useEffect(() => {
 		const localStorage = window.localStorage;
 		if ('backup' in localStorage) {
@@ -27,6 +41,21 @@ function UnsavedCharacterModal({ userId }) {
 					))
 			) {
 				setIsOpen(true);
+				console.log(backup);
+				if (
+					backup &&
+					backup.fromDB &&
+					backup.updated &&
+					backup.fromDB.keybindings &&
+					backup.updated.keybindings
+				) {
+					console.log(
+						getObjectDiff(
+							backup.fromDB.keybindings,
+							backup.updated.keybindings
+						)
+					);
+				}
 			}
 		}
 	});
