@@ -1,91 +1,80 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Modal, Button, Grid, Typography } from '@material-ui/core';
-import { targettingDetails, targetting } from '../../../config/constants';
+import React, { useState, useEffect } from 'react';
+import { Modal } from '@material-ui/core';
+import { removeWaterMark } from '../../utils/toolTipHooks';
 import PropTypes from 'prop-types';
 import styleGuide from '../../../stylesheets/style';
-import DetailedDropdownConfig from './DetailedDropdownConfig';
+import RapidFireModalConfiguration from './RapidFireModalConfiguration';
+import RapidFireModalAction from './RapidFireModalAction';
 
 RapidFireKeybindModal.propTypes = {
 	isOpen: PropTypes.bool.isRequired,
 	setIsOpen: PropTypes.func.isRequired,
+	formattedSpells: PropTypes.array.isRequired,
+	setAllKeybindings: PropTypes.func.isRequired,
+	allKeybindings: PropTypes.object.isRequired,
+	keyBindingKey: PropTypes.string.isRequired,
 };
-
-function RapidFireKeybindModal({ isOpen, setIsOpen }) {
+function RapidFireKeybindModal({
+	isOpen,
+	setIsOpen,
+	setAllKeybindings,
+	allKeybindings,
+	keyBindingKey,
+	formattedSpells,
+}) {
 	const classes = styleGuide();
-	const [targettingOpts, setTargettingOpts] = useState(
-		createTargetOptsBaseline()
-	);
+	const [spellTargetOpts, setSpellTargetOpts] = useState();
+	const [lifecycleStep, setLifecycleStep] = useState(1); //steps of the app, 1 is configuration, 2 is game, 3 is writing to db?
+	removeWaterMark('#rapid-fire-modal a');
 
-	function resetFilter() {
-		console.log('here');
+	function closeInConf() {
+		setIsOpen(false);
 	}
-
-	function createTargetOptsBaseline() {
-		let targetOpts = {};
-		Object.keys(targettingDetails).forEach(targetType =>
-			targetting[targetType].forEach(targetSubType => {
-				targetOpts[[targetType, targetSubType]] = true;
-			})
-		);
-		return targetOpts;
+	function closeInAction() {
+		setIsOpen(false);
+		setLifecycleStep(1);
+	}
+	function finishConf() {
+		setLifecycleStep(2);
 	}
 
 	return (
-		<Modal open={isOpen} onClose={() => {}} className={classes.modal}>
-			<div className={classes.rapidFireModalBackground}>
-				<React.Fragment>
-					<Grid container justify="space-between">
-						<Grid item>
-							<Button
-								color="secondary"
-								variant="contained"
-								onClick={() => setIsOpen(false)}
-								size="large"
-							>
-								Cancel
-							</Button>
-						</Grid>
-						<Grid item>
-							<Button
-								color="primary"
-								variant="contained"
-								size="large"
-								onClick={() => {}}
-							>
-								Start Rapid Fire
-							</Button>
-						</Grid>
-					</Grid>
-					<Grid
-						direction="row"
-						container
-						justify="space-evenly"
-						alignItems="center"
-					>
-						<React.Fragment></React.Fragment>
-						<Typography variant="button">
-							Preset Configurations
-						</Typography>{' '}
-						<Button
-							variant="contained"
-							size="small"
-							onClick={resetFilter}
-						>
-							Reset Filter
-						</Button>
-						<React.Fragment></React.Fragment>
-					</Grid>
-					<Grid container direction="row">
-						{Object.keys(targettingDetails).map(targetType => (
-							<DetailedDropdownConfig
-								key={targetType}
-								targetType={targetType}
-								targettingOptions={targettingOpts}
-								setTargettingOpts={setTargettingOpts}
-							/>
-						))}
-					</Grid>
-				</React.Fragment>
+		<Modal
+			open={isOpen}
+			onClose={() => {}}
+			className={classes.modal}
+			keepMounted={true}
+		>
+			<div
+				id="rapid-fire-modal"
+				className={classes.rapidFireModalBackground}
+			>
+				<div
+					style={{
+						display: lifecycleStep === 1 ? '' : 'none',
+						height: '100%',
+						width: '100%',
+					}}
+				>
+					<RapidFireModalConfiguration
+						formattedSpells={formattedSpells}
+						spellTargetOpts={spellTargetOpts}
+						setSpellTargetOpts={setSpellTargetOpts}
+						closeInConf={closeInConf}
+						finishConf={finishConf}
+					/>
+				</div>
+				{lifecycleStep === 2 && (
+					<RapidFireModalAction
+						formattedSpells={formattedSpells}
+						spellTargetOpts={spellTargetOpts}
+						setSpellTargetOpts={setSpellTargetOpts}
+						closeInAction={closeInAction}
+						setAllKeybindings={setAllKeybindings}
+						allKeybindings={allKeybindings}
+						keyBindingKey={keyBindingKey}
+					/>
+				)}
 			</div>
 		</Modal>
 	);

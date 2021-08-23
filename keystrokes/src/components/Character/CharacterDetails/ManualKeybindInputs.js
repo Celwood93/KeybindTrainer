@@ -18,7 +18,6 @@ import { targetting, mods } from '../../../config/constants';
 import { AllSpellsContext } from '../../../contexts/AllSpellsContext';
 
 ManualKeybindInputs.propTypes = {
-	spec: PropTypes.string.isRequired,
 	invalidBinds: PropTypes.array.isRequired,
 	setInvalidBinds: PropTypes.func.isRequired,
 	onSubmit: PropTypes.func.isRequired,
@@ -26,14 +25,10 @@ ManualKeybindInputs.propTypes = {
 	keybinding: PropTypes.object.isRequired,
 	setKeybinding: PropTypes.func.isRequired,
 	checkIfInvalidAndAdd: PropTypes.func.isRequired,
-	classSpells: PropTypes.array.isRequired,
-	normalTalents: PropTypes.array.isRequired,
-	covChoice: PropTypes.array.isRequired,
-	pvpTalents: PropTypes.array.isRequired,
+	formattedSpells: PropTypes.array.isRequired,
 };
 
 function ManualKeybindInputs({
-	spec,
 	invalidBinds,
 	setInvalidBinds,
 	onSubmit,
@@ -41,15 +36,14 @@ function ManualKeybindInputs({
 	keybinding,
 	setKeybinding,
 	checkIfInvalidAndAdd,
-	classSpells,
-	normalTalents,
-	covChoice,
-	pvpTalents,
+	formattedSpells,
 }) {
 	const classes = styleGuide();
 	const allSpells = useContext(AllSpellsContext);
-	const [formattedSpells, setFormattedSpells] = useState([]);
 	const [targetOptions, setTargetOptions] = useState(targetting['ALL']);
+	const [formattedClassSpells, setFormattedClassSpells] = useState(
+		formattedSpells
+	);
 
 	function handleKeyPress(e) {
 		if (!e.metaKey) {
@@ -71,79 +65,14 @@ function ManualKeybindInputs({
 		}
 	}
 
-	function updateSpellList() {
-		const talentSpells = normalTalents
-			.filter(codeString => !!codeString)
-			.map(code => allSpells[code]);
-		const spellsAddedByOtherSpells = normalTalents
-			.filter(codeString => !!codeString)
-			.map(code => allSpells[code].enabledSpells || [])
-			.flat()
-			.map(code => allSpells[code])
-			.filter(spellDetails => !spellDetails.isPassive);
-		let replacedSpellIds = talentSpells
-			.filter(spell => !!spell.idOfReplacedSpell)
-			.map(val => val.idOfReplacedSpell)
-			.flat();
-		const covSpells = covChoice
-			.filter(codeString => !!codeString) //useful for for default empty string
-			.map(code => allSpells[code]);
-		const spellsAddedByCovSpells = covChoice //might be not needed because we already have it included in the cov grouping
-			.filter(codeString => !!codeString)
-			.map(code => allSpells[code].enabledSpells || [])
-			.flat()
-			.map(code => allSpells[code])
-			.filter(spellDetails => !spellDetails.isPassive);
-		replacedSpellIds = replacedSpellIds.concat(
-			covSpells
-				.filter(spell => !!spell.idOfReplacedSpell)
-				.map(val => val.idOfReplacedSpell)
-				.flat()
-		);
-		const pvpTalentSpells = pvpTalents
-			.filter(codeString => !!codeString)
-			.map(code => allSpells[code]);
-		const spellsAddedByOtherPvpTalentSpells = pvpTalents
-			.filter(codeString => !!codeString)
-			.map(code => allSpells[code].enabledSpells || [])
-			.flat()
-			.map(code => allSpells[code])
-			.filter(spellDetails => !spellDetails.isPassive);
-		replacedSpellIds = replacedSpellIds.concat(
-			pvpTalentSpells
-				.filter(spell => !!spell.idOfReplacedSpell)
-				.map(val => val.idOfReplacedSpell)
-				.flat()
-		);
-		const formattedSpellsList = classSpells
-			.map(code => allSpells[code])
-			.concat(talentSpells)
-			.concat(covSpells)
-			.concat(spellsAddedByCovSpells)
-			.concat(pvpTalentSpells)
-			.concat(spellsAddedByOtherPvpTalentSpells)
-			.filter(spell => !spell.spec || spell.spec.includes(spec))
-			.concat(spellsAddedByOtherSpells)
-			.filter(spellDetails => !spellDetails.isPassive)
-			.filter(elem => !replacedSpellIds.includes(elem.spellId));
-
-		return formattedSpellsList;
-	}
-
-	useEffect(() => {
-		const newSpells = updateSpellList();
-		setFormattedSpells(newSpells);
-	}, [classSpells]);
-
 	useEffect(() => {
 		if (!!keybinding.spellId) {
 			setTargetOptions(
 				targetting[allSpells[keybinding.spellId].targetType]
 			);
 		} else if (!keybinding.spellId && keybinding.target) {
-			const baseSpells = updateSpellList();
-			setFormattedSpells(
-				baseSpells.filter(spell => {
+			setFormattedClassSpells(
+				formattedSpells.filter(spell => {
 					return targetting[
 						allSpells[spell.spellId].targetType
 					].includes(keybinding.target);
@@ -179,7 +108,7 @@ function ManualKeybindInputs({
 					}}
 				>
 					{/*Going to have to change this to account for talents/covenants/racials*/
-					formattedSpells.map(spell => {
+					formattedClassSpells.map(spell => {
 						const existingSpellBinds = allKeybinds.filter(
 							bind => bind.spellId === spell.spellId
 						);

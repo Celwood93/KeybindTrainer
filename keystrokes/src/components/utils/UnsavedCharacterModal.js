@@ -41,7 +41,6 @@ function UnsavedCharacterModal({ userId }) {
 					))
 			) {
 				setIsOpen(true);
-				console.log(backup);
 				if (
 					backup &&
 					backup.fromDB &&
@@ -56,6 +55,8 @@ function UnsavedCharacterModal({ userId }) {
 						)
 					);
 				}
+			} else {
+				localStorage.removeItem('backup');
 			}
 		}
 	});

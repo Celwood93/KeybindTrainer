@@ -16,6 +16,7 @@ const styleGuide = makeStyles(theme => ({
 		border: '1px solid',
 		padding: theme.spacing(1),
 		backgroundColor: theme.palette.background.paper,
+		width: '80px',
 	},
 	pvpTalentModal: {
 		display: 'flex',

@@ -142,9 +142,6 @@ function CharacterDetailPage({ userId, match }) {
 			});
 		}
 		try {
-			const res = await ref.update(updates);
-			setAlertMessage(res);
-			setIsSaved(true);
 			window.localStorage.setItem(
 				'backup',
 				JSON.stringify({
@@ -160,6 +157,9 @@ function CharacterDetailPage({ userId, match }) {
 					},
 				})
 			);
+			const res = await ref.update(updates);
+			setAlertMessage(res);
+			setIsSaved(true);
 		} catch (e) {
 			console.error('error saving character updates');
 		}
