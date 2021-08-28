@@ -12,7 +12,9 @@ import { targetting } from '../../../config/constants';
 //If i ever want to reduce rerenders here, i can make the elements (being the dropdown options)
 //this dropdown handles stateful
 //and make it so that if targettingOptions changes, we run a useeffect to see if any of
-//our elements have changed, if they have we update our elements. Elements are like:
+//our elements have changed, if they have we update our elements. The main idea
+// being that targettingOptions tells us what to change, and each individual
+// dropdown updates depending on if their data related to targettingOptions has changed.
 
 DetailedDropdownConfig.propTypes = {
 	name: PropTypes.string,
