@@ -58,6 +58,16 @@ function RapidFireModalAction({
 	}, [newKeybinds, spellsWithoutBinds]);
 
 	function setNewCurrentSpell(newSpell, oldSpell) {
+		//Problem:
+		//we could have a situation like this
+		//newSpell: Judgement target shift k
+		//newKeybinds: [judgement target ctrl p, wings self shift k]
+		//we should "find" both of these as oldSpell, but only one will return, both need to be removed
+		//with wings self being added back in and judgement target being discarded
+		//Solution -- technically need to be checking for both, we could do all the checks here though, since we dont tell the user anything about
+		//the existing judgement target bind
+		//This problem becomes more complex if wings self is actually queued to be bound, and this is an existing bind.
+		//solution: either before adding it back into the queue, check that it doesnt exist there, or change everything completely (handle it in the configuration)
 		let tempNewKeybinds = [...newKeybinds];
 		debugger;
 		if (oldSpell) {
@@ -68,12 +78,16 @@ function RapidFireModalAction({
 						bind.target === oldSpell.target
 					)
 			);
-			if (
-				!(
-					newSpell.spellId === oldSpell.spellId &&
-					newSpell.target === oldSpell.target
-				)
-			) {
+			//can be true existing and new KBs
+			const sameKM =
+				newSpell.key === oldSpell.key && newSpell.mod === oldSpell.mod;
+			//only existing KBs
+			const sameST =
+				newSpell.spellId === oldSpell.spellId &&
+				newSpell.target === oldSpell.target;
+
+			//Handling when a new keybind is replaced and added back to the queue
+			if (sameKM && !sameST) {
 				setSpellsWithoutBinds([
 					...spellsWithoutBinds,
 					{
@@ -83,6 +97,9 @@ function RapidFireModalAction({
 					},
 				]);
 			}
+			//handle when a old keybind is replaced -- same spell and target
+			//handle when a old keybind is removed -- same key and modifier
+			//handle when a new keybind is replaced and added back to the queue
 		}
 		setNewKeybinds([...tempNewKeybinds, newSpell]);
 	}
