@@ -1,4 +1,11 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, useContext } from 'react';
+import {
+	Grid,
+	Typography,
+	Tooltip,
+	Button,
+	GridListTileBar,
+} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import {
 	getNextKey,
@@ -6,6 +13,8 @@ import {
 	validatePress,
 	verifyKey,
 } from '../../utils/utils';
+import { removeWaterMark } from '../../utils/toolTipHooks';
+import { AllSpellsContext } from '../../../contexts/AllSpellsContext';
 import { isEqual } from 'lodash';
 
 RapidFireModalActionGame.propTypes = {
@@ -21,9 +30,12 @@ function RapidFireModalActionGame({
 	setNewCurrentSpell,
 	spellDetails,
 }) {
+	const allSpells = useContext(AllSpellsContext);
 	const [currentKey, setCurrentKey] = useState();
 	const [existingSpell, setExistingSpell] = useState();
 	const [userKeyPressed, setUserKeyPressed] = useState();
+
+	removeWaterMark('#rapid-fire-modal a', []);
 
 	useEffect(() => {
 		document.body.onkeydown = handleKeyPress;
@@ -96,6 +108,18 @@ function RapidFireModalActionGame({
 
 	useEffect(() => {
 		if (userKeyPressed) {
+			const userKeyPressedFormatted = {
+				key: userKeyPressed.key,
+				mod: userKeyPressed.Alt
+					? 'Alt'
+					: userKeyPressed.Ctrl
+					? 'Ctrl'
+					: userKeyPressed.Shift
+					? 'Shift'
+					: userKeyPressed.None
+					? 'None'
+					: null,
+			};
 			if (currentKey) {
 				if (isEqual(currentKey, userKeyPressed)) {
 					setNewCurrentSpell(
@@ -120,8 +144,8 @@ function RapidFireModalActionGame({
 					setCurrentKey(userKeyPressed);
 					const existingKey = newKeybinds.find(
 						bind =>
-							(bind.key === userKeyPressed.key &&
-								bind.mod === userKeyPressed.mod) ||
+							(bind.key === userKeyPressedFormatted.key &&
+								bind.mod === userKeyPressedFormatted.mod) ||
 							(bind.spellId === currentSpell.spellId &&
 								bind.target === currentSpell.target)
 					);
@@ -133,8 +157,8 @@ function RapidFireModalActionGame({
 				setCurrentKey(userKeyPressed);
 				const existingKey = newKeybinds.find(
 					bind =>
-						(bind.key === userKeyPressed.key &&
-							bind.mod === userKeyPressed.mod) ||
+						(bind.key === userKeyPressedFormatted.key &&
+							bind.mod === userKeyPressedFormatted.mod) ||
 						(bind.spellId === currentSpell.spellId &&
 							bind.target === currentSpell.target)
 				);
@@ -163,7 +187,27 @@ function RapidFireModalActionGame({
 		}
 	}
 
-	return (
+	function spellIcon() {
+		return (
+			<a
+				data-wowhead={`https://www.wowhead.com/spell=${spellDetails.spellId}`}
+				style={{ cursor: 'default' }}
+			>
+				<img
+					src={`https://wow.zamimg.com/images/wow/icons/medium/${
+						allSpells[spellDetails.spellId].iconId
+					}.jpg`}
+					alt=""
+					style={{
+						paddingTop: '10px',
+						maxHeight: '36px',
+					}}
+				/>
+			</a>
+		);
+	}
+
+	return false ? (
 		<Fragment>
 			<div>
 				<div className="App-header">
@@ -187,11 +231,70 @@ function RapidFireModalActionGame({
 							: null}{' '}
 						{currentKey.key}
 						{existingSpell
-							? ` Already exists for ${existingSpell.spellName}, overwriting`
+							? // TODO - often existing spell has spellID: "0000" so spellname doesnt work
+							  ` Already exists for ${existingSpell.spellName}, overwriting`
 							: ''}
 						. Press same key to confirm.
 					</div>
 				)}
+			</div>
+		</Fragment>
+	) : (
+		<Fragment>
+			<div style={{ backgroundColor: 'black', height: '50%' }}>
+				<Grid
+					container
+					style={{
+						height: '50%',
+						alignContent: 'center',
+					}}
+				>
+					<Grid
+						container
+						md={12}
+						spacing={2}
+						style={{
+							justifyContent: 'center',
+						}}
+					>
+						<Grid item>{spellIcon()}</Grid>
+						<Grid item>
+							<Typography
+								style={{ color: 'white' }}
+								variant="h3"
+								align="center"
+							>
+								{spellDetails && spellDetails.spellName}
+							</Typography>
+						</Grid>
+						<Grid item>{spellIcon()}</Grid>
+					</Grid>
+					<Grid item md={12}>
+						<Typography
+							style={{ color: 'white' }}
+							variant="h4"
+							align="center"
+						>
+							on
+						</Typography>
+					</Grid>
+					<Grid item md={12}>
+						<Typography
+							style={{ color: 'white' }}
+							variant="h3"
+							align="center"
+						>
+							{currentSpell && currentSpell.target}
+						</Typography>
+					</Grid>
+				</Grid>
+				<Grid
+					container
+					style={{
+						height: '50%',
+						alignContent: 'center',
+					}}
+				></Grid>
 			</div>
 		</Fragment>
 	);

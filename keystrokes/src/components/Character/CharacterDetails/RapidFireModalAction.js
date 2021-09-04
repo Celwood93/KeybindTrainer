@@ -46,13 +46,12 @@ function RapidFireModalAction({
 		setSpellsWithoutBinds(spellIdWithTarget);
 	}, [spellTargetOpts, formattedSpells]); //might not need formatted spells here
 	useEffect(() => {
-		if (spellsWithoutBinds) {
-			const numSpells =
-				newKeybinds.length - allKeybindings[keyBindingKey].length;
-			if (numSpells > spellsWithoutBinds.length) {
+		if (spellsWithoutBinds && spellsWithoutBinds.length) {
+			if (!spellsWithoutBinds.length) {
 				//save to db and shit or whatever
 			} else {
-				setCurrentSpell(spellsWithoutBinds[numSpells]);
+				//could be random but w.e
+				setCurrentSpell(spellsWithoutBinds[0]);
 			}
 		}
 	}, [newKeybinds, spellsWithoutBinds]);
@@ -62,22 +61,55 @@ function RapidFireModalAction({
 		//we could have a situation like this
 		//newSpell: Judgement target shift k
 		//newKeybinds: [judgement target ctrl p, wings self shift k]
-		//we should "find" both of these as oldSpell, but only one will return, both need to be removed
-		//with wings self being added back in and judgement target being discarded
-		//Solution -- technically need to be checking for both, we could do all the checks here though, since we dont tell the user anything about
-		//the existing judgement target bind
-		//This problem becomes more complex if wings self is actually queued to be bound, and this is an existing bind.
-		//solution: either before adding it back into the queue, check that it doesnt exist there, or change everything completely (handle it in the configuration)
+		//we need to "find" both of these as oldSpell, but only one will return, both need to
+		//be removed with wings self being added back in and judgement target being discarded
 		let tempNewKeybinds = [...newKeybinds];
-		debugger;
+		let addBackOld = false;
 		if (oldSpell) {
-			tempNewKeybinds = newKeybinds.filter(
-				bind =>
-					!(
-						bind.spellId === oldSpell.spellId &&
-						bind.target === oldSpell.target
-					)
+			//find a spell with same KM - should ushally not exist- if exists add back to queue
+			const spellWithSameKM = tempNewKeybinds.find(
+				bind => bind.key === newSpell.key && bind.mod === newSpell.mod
 			);
+
+			//Filter out old spell
+			tempNewKeybinds = tempNewKeybinds
+				//Remove old spell
+				.filter(
+					bind =>
+						!(
+							bind.spellId === oldSpell.spellId &&
+							bind.target === oldSpell.target
+						)
+				)
+				//Try to remove anything that matches the newSpell
+				.filter(
+					bind =>
+						!(
+							bind.spellId === newSpell.spellId &&
+							bind.target === newSpell.target
+						)
+				);
+			//Removes any keybinding with same key/mod
+
+			if (spellWithSameKM) {
+				tempNewKeybinds = tempNewKeybinds.filter(
+					bind =>
+						!(
+							bind.key === spellWithSameKM.key &&
+							bind.mod === spellWithSameKM.mod
+						)
+				);
+			}
+
+			let isInSpellQueue = false;
+			if (spellWithSameKM) {
+				isInSpellQueue = spellsWithoutBinds.some(
+					bind =>
+						bind.spellId === spellWithSameKM.spellId &&
+						bind.target === spellWithSameKM.target
+				);
+			}
+
 			//can be true existing and new KBs
 			const sameKM =
 				newSpell.key === oldSpell.key && newSpell.mod === oldSpell.mod;
@@ -87,21 +119,29 @@ function RapidFireModalAction({
 				newSpell.target === oldSpell.target;
 
 			//Handling when a new keybind is replaced and added back to the queue
-			if (sameKM && !sameST) {
-				setSpellsWithoutBinds([
-					...spellsWithoutBinds,
-					{
-						...oldSpell,
-						key: null,
-						mod: null,
-					},
-				]);
+			if (sameKM && !isInSpellQueue && !sameST) {
+				addBackOld = true;
 			}
-			//handle when a old keybind is replaced -- same spell and target
-			//handle when a old keybind is removed -- same key and modifier
-			//handle when a new keybind is replaced and added back to the queue
 		}
 		setNewKeybinds([...tempNewKeybinds, newSpell]);
+		let newSpellsWithoutBinds = spellsWithoutBinds.filter(
+			spell =>
+				!(
+					spell.spellId === newSpell.spellId &&
+					spell.target === newSpell.target
+				)
+		);
+		if (addBackOld) {
+			newSpellsWithoutBinds = [
+				...newSpellsWithoutBinds,
+				{
+					...oldSpell,
+					key: null,
+					mod: null,
+				},
+			];
+		}
+		setSpellsWithoutBinds(newSpellsWithoutBinds);
 	}
 
 	return (
