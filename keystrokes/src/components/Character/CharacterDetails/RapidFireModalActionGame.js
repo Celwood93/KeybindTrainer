@@ -110,15 +110,7 @@ function RapidFireModalActionGame({
 		if (userKeyPressed) {
 			const userKeyPressedFormatted = {
 				key: userKeyPressed.key,
-				mod: userKeyPressed.Alt
-					? 'Alt'
-					: userKeyPressed.Ctrl
-					? 'Ctrl'
-					: userKeyPressed.Shift
-					? 'Shift'
-					: userKeyPressed.None
-					? 'None'
-					: null,
+				mod: calculateMod(userKeyPressed),
 			};
 			if (currentKey) {
 				if (isEqual(currentKey, userKeyPressed)) {
@@ -126,15 +118,7 @@ function RapidFireModalActionGame({
 						{
 							...currentSpell,
 							key: currentKey.key,
-							mod: currentKey.Alt
-								? 'Alt'
-								: currentKey.Ctrl
-								? 'Ctrl'
-								: currentKey.Shift
-								? 'Shift'
-								: currentKey.None
-								? 'None'
-								: null,
+							mod: calculateMod(currentKey),
 						},
 						existingSpell
 					);
@@ -151,6 +135,8 @@ function RapidFireModalActionGame({
 					);
 					if (existingKey) {
 						setExistingSpell(existingKey);
+					} else {
+						setExistingSpell(undefined);
 					}
 				}
 			} else {
@@ -164,6 +150,8 @@ function RapidFireModalActionGame({
 				);
 				if (existingKey) {
 					setExistingSpell(existingKey);
+				} else {
+					setExistingSpell(undefined);
 				}
 			}
 		}
@@ -186,6 +174,18 @@ function RapidFireModalActionGame({
 			//invalid keyPress
 		}
 	}
+	//could probably move to util file
+	function calculateMod(key) {
+		return key.Alt
+			? 'Alt'
+			: key.Ctrl
+			? 'Ctrl'
+			: key.Shift
+			? 'Shift'
+			: key.None
+			? 'None'
+			: null;
+	}
 
 	function spellIcon() {
 		return (
@@ -207,56 +207,17 @@ function RapidFireModalActionGame({
 		);
 	}
 
-	return false ? (
-		<Fragment>
-			<div>
-				<div className="App-header">
-					{spellDetails && spellDetails.spellName}
-				</div>
-				<div className="App-header" id="keybind-prompt" tabIndex="1">
-					{currentSpell && (
-						<div tabIndex="1">on {currentSpell.target}</div>
-					)}
-				</div>
-				{currentKey && (
-					<div>
-						{currentKey.Alt
-							? 'Alt'
-							: currentKey.Ctrl
-							? 'Ctrl'
-							: currentKey.Shift
-							? 'Shift'
-							: currentKey.None
-							? 'None'
-							: null}{' '}
-						{currentKey.key}
-						{existingSpell
-							? // TODO - often existing spell has spellID: "0000" so spellname doesnt work
-							  ` Already exists for ${existingSpell.spellName}, overwriting`
-							: ''}
-						. Press same key to confirm.
-					</div>
-				)}
-			</div>
-		</Fragment>
-	) : (
+	return (
 		<Fragment>
 			<div style={{ backgroundColor: 'black', height: '50%' }}>
 				<Grid
 					container
+					alignContent="center"
 					style={{
 						height: '50%',
-						alignContent: 'center',
 					}}
 				>
-					<Grid
-						container
-						md={12}
-						spacing={2}
-						style={{
-							justifyContent: 'center',
-						}}
-					>
+					<Grid container spacing={2} justify="center">
 						<Grid item>{spellIcon()}</Grid>
 						<Grid item>
 							<Typography
@@ -290,11 +251,43 @@ function RapidFireModalActionGame({
 				</Grid>
 				<Grid
 					container
+					alignContent="center"
 					style={{
 						height: '50%',
-						alignContent: 'center',
+						//alignContent: 'center',
 					}}
-				></Grid>
+				>
+					{currentKey && (
+						<Grid item md={12}>
+							<Typography
+								variant="h2"
+								align="center"
+								style={{ color: 'white' }}
+							>
+								{calculateMod(currentKey)} {currentKey.key}
+							</Typography>
+
+							<Typography
+								variant="h4"
+								align="center"
+								style={{ color: 'white' }}
+							>
+								{existingSpell && // TODO - often existing spell has spellID: "0000" so spellname doesnt work
+									` Already exists for ${
+										allSpells[existingSpell.spellId]
+											.spellName
+									} on ${existingSpell.target}, overwriting.`}
+							</Typography>
+							<Typography
+								variant="h4"
+								align="center"
+								style={{ color: 'white' }}
+							>
+								Press again to confirm.
+							</Typography>
+						</Grid>
+					)}
+				</Grid>
 			</div>
 		</Fragment>
 	);

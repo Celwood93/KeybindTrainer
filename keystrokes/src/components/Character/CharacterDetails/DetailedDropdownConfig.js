@@ -74,6 +74,7 @@ function DetailedDropdownConfig({
 							padding: '0px',
 							paddingLeft: '9px',
 							color: setCheckboxStyle(),
+							zIndex: 0,
 						}}
 						checked={isChecked()}
 						color="primary"

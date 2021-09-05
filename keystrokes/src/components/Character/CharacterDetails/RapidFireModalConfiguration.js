@@ -2,6 +2,7 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { Grid, Typography, Tooltip, Button } from '@material-ui/core';
 import HelpIcon from '@material-ui/icons/Help';
 import { targettingDetails, targetting } from '../../../config/constants';
+import { sortBy } from 'lodash';
 import update from 'immutability-helper';
 import PropTypes from 'prop-types';
 import DetailedDropdownConfig from './DetailedDropdownConfig';
@@ -40,6 +41,12 @@ function RapidFireModalConfiguration({
 			})
 		);
 		return targetOpts;
+	}
+	//removes target options that dont exist in spells
+	function createTargetDetails() {
+		return Object.keys(targettingDetails).filter(targetType =>
+			formattedSpells.some(spell => spell.targetType === targetType)
+		);
 	}
 
 	function createSpellTargetOptsBaseline() {
@@ -159,35 +166,39 @@ function RapidFireModalConfiguration({
 					Reset
 				</Button>
 			</Grid>
-			<Grid container direction="row">
-				{Object.keys(targettingDetails).map(targetType => (
-					<DetailedDropdownConfig
-						key={targetType}
-						name={targettingDetails[targetType].name}
-						checkedKey={[targetType]}
-						targetType={targetType}
-						targettingOptions={targettingOpts}
-						handleChange={(targetType, option) => {
-							handleOptionChange(targetType, option);
-						}}
-						handleCheckboxClick={targetType => {
-							handleOptionCheckBoxClick(targetType);
-						}}
-						additionalDetails={
-							<Tooltip
-								title={targettingDetails[targetType].tooltip}
-							>
-								<HelpIcon
-									style={{
-										maxWidth: '15px',
-										position: 'relative',
-										top: '8px',
-									}}
-								/>
-							</Tooltip>
-						}
-					/>
-				))}
+			<Grid container direction="row" justify="center">
+				{createTargetDetails()
+					.sort()
+					.map(targetType => (
+						<DetailedDropdownConfig
+							key={targetType}
+							name={targettingDetails[targetType].name}
+							checkedKey={[targetType]}
+							targetType={targetType}
+							targettingOptions={targettingOpts}
+							handleChange={(targetType, option) => {
+								handleOptionChange(targetType, option);
+							}}
+							handleCheckboxClick={targetType => {
+								handleOptionCheckBoxClick(targetType);
+							}}
+							additionalDetails={
+								<Tooltip
+									title={
+										targettingDetails[targetType].tooltip
+									}
+								>
+									<HelpIcon
+										style={{
+											maxWidth: '15px',
+											position: 'relative',
+											top: '8px',
+										}}
+									/>
+								</Tooltip>
+							}
+						/>
+					))}
 			</Grid>
 			<hr style={{ borderTop: '3px solid #bbb' }} />
 			<Grid
@@ -195,45 +206,49 @@ function RapidFireModalConfiguration({
 				spacing={3}
 				style={{ overflowY: 'auto', maxHeight: '80%' }}
 			>
-				{formattedSpells.map(spellDetails => (
-					<Grid key={spellDetails.spellId} item md={4}>
-						<DetailedDropdownConfig
-							name={spellDetails.spellName}
-							checkedKey={[
-								spellDetails.spellId,
-								spellDetails.targetType,
-							]}
-							targetType={spellDetails.targetType}
-							targettingOptions={spellTargetOpts}
-							handleChange={(targetType, option) => {
-								handleSpellOptionChange(
-									spellDetails,
-									targetType,
-									option
-								);
-							}}
-							handleCheckboxClick={targetType => {
-								handleSpellCheckBoxClick(spellDetails.spellId);
-							}}
-							additionalDetails={
-								<a
-									data-wowhead={`https://www.wowhead.com/spell=${spellDetails.spellId}`}
-									style={{ cursor: 'default' }}
-								>
-									<img
-										src={`https://wow.zamimg.com/images/wow/icons/medium/${spellDetails.iconId}.jpg`}
-										alt=""
-										style={{
-											maxHeight: '24px',
-											position: 'relative',
-											top: '8px',
-										}}
-									/>
-								</a>
-							}
-						/>
-					</Grid>
-				))}
+				{sortBy(formattedSpells, ['targetType', 'spellName']).map(
+					spellDetails => (
+						<Grid key={spellDetails.spellId} item md={4}>
+							<DetailedDropdownConfig
+								name={spellDetails.spellName}
+								checkedKey={[
+									spellDetails.spellId,
+									spellDetails.targetType,
+								]}
+								targetType={spellDetails.targetType}
+								targettingOptions={spellTargetOpts}
+								handleChange={(targetType, option) => {
+									handleSpellOptionChange(
+										spellDetails,
+										targetType,
+										option
+									);
+								}}
+								handleCheckboxClick={targetType => {
+									handleSpellCheckBoxClick(
+										spellDetails.spellId
+									);
+								}}
+								additionalDetails={
+									<a
+										data-wowhead={`https://www.wowhead.com/spell=${spellDetails.spellId}`}
+										style={{ cursor: 'default' }}
+									>
+										<img
+											src={`https://wow.zamimg.com/images/wow/icons/medium/${spellDetails.iconId}.jpg`}
+											alt=""
+											style={{
+												maxHeight: '24px',
+												position: 'relative',
+												top: '8px',
+											}}
+										/>
+									</a>
+								}
+							/>
+						</Grid>
+					)
+				)}
 			</Grid>
 		</Fragment>
 	);

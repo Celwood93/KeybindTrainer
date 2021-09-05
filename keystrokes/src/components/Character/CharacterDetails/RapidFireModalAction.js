@@ -46,15 +46,40 @@ function RapidFireModalAction({
 		setSpellsWithoutBinds(spellIdWithTarget);
 	}, [spellTargetOpts, formattedSpells]); //might not need formatted spells here
 	useEffect(() => {
-		if (spellsWithoutBinds && spellsWithoutBinds.length) {
+		if (spellsWithoutBinds) {
 			if (!spellsWithoutBinds.length) {
-				//save to db and shit or whatever
+				saveNewKeybinds();
 			} else {
 				//could be random but w.e
 				setCurrentSpell(spellsWithoutBinds[0]);
 			}
 		}
 	}, [newKeybinds, spellsWithoutBinds]);
+
+	function skipSpellBinding() {
+		if (spellsWithoutBinds && currentSpell) {
+			setSpellsWithoutBinds(
+				spellsWithoutBinds.filter(
+					spell =>
+						!(
+							spell.spellId === currentSpell.spellId &&
+							spell.target === currentSpell.target
+						)
+				)
+			);
+		}
+	}
+
+	function saveNewKeybinds() {
+		setAllKeybindings(
+			update(allKeybindings, {
+				[keyBindingKey]: {
+					$set: newKeybinds,
+				},
+			})
+		);
+		closeInAction();
+	}
 
 	function setNewCurrentSpell(newSpell, oldSpell) {
 		//Problem:
@@ -162,7 +187,8 @@ function RapidFireModalAction({
 						color="primary"
 						variant="contained"
 						size="large"
-						onClick={() => {}}
+						//Deletes for now
+						onClick={skipSpellBinding}
 					>
 						Skip
 					</Button>
@@ -171,7 +197,7 @@ function RapidFireModalAction({
 					<Button
 						color="primary"
 						variant="contained"
-						onClick={() => {}}
+						onClick={saveNewKeybinds}
 						size="large"
 					>
 						Finish
