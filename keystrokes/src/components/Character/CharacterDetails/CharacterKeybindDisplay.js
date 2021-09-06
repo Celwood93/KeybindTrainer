@@ -5,9 +5,9 @@ import {
 	Button,
 	Typography,
 	Paper,
-	ExpansionPanel,
-	ExpansionPanelSummary,
-	ExpansionPanelDetails,
+	Accordion,
+	AccordionSummary,
+	AccordionDetails,
 } from '@material-ui/core';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -18,6 +18,7 @@ import styleGuide from '../../../stylesheets/style';
 import { TabPanel } from '../helpers/TabPanels';
 import { characterKeybindings } from '../../utils/utils';
 import KeybindEditor from './KeybindEditor';
+import TalentCalculator from './TalentCalc/TalentCalculator';
 
 CharacterKeybindDisplay.propTypes = {
 	index: PropTypes.number,
@@ -198,33 +199,30 @@ function CharacterKeybindDisplay({
 					<Grid item>
 						<Typography variant="h2">Talents</Typography>
 					</Grid>
-					<Grid item>
-						<Button
-							variant="contained"
-							id="talent-edit-button"
-							color="primary"
-							className={classes.bottomMarginNegTwo}
-						>
-							Edit
-						</Button>
-					</Grid>
 				</Grid>
 				<Grid container direction="row">
 					<Grid item md={12}>
-						<ExpansionPanel>
-							<ExpansionPanelSummary
+						<Accordion>
+							<AccordionSummary
 								expandIcon={<ExpandMoreIcon />}
 								aria-controls="panel1a-content"
-								id="panel1a-header"
+								id="panel1a-header-talents"
 							>
 								<Typography variant="h5" align="left">
-									Preview
+									Talent Calculator
 								</Typography>
-							</ExpansionPanelSummary>
-							<ExpansionPanelDetails>
-								<Typography>Work In Progress</Typography>
-							</ExpansionPanelDetails>
-						</ExpansionPanel>
+							</AccordionSummary>
+							<AccordionDetails>
+								<TalentCalculator
+									character={character}
+									setCharacter={setCharacter}
+									spec={spec}
+									keyBinding={keyBinding}
+									allKeybindings={allKeybindings}
+									setAllKeybindings={setAllKeybindings}
+								/>
+							</AccordionDetails>
+						</Accordion>
 					</Grid>
 				</Grid>
 				<br />

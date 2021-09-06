@@ -14,7 +14,19 @@
 							"-MFRzD0B9Dxl__8_qhoY": {
 								"description": "",
 								"key": "-MFRzD0B9Dxl__8_qhoY",
-								"talents": [null, 1, 2, 3]
+								"talents": {
+									"normal": {
+										"15": "",
+										"25": "",
+										"30": "",
+										"35": "",
+										"40": "",
+										"45": "",
+										"50": ""
+									},
+									"pvp": ["", "", ""]
+								},
+								"covenant": { "none": [""] }
 							}
 						}
 					],
@@ -38,7 +50,19 @@
 							"-MFRzQa8mAwUd0hkyzT7": {
 								"description": "<p>test description</p>",
 								"key": "-MFRzQa8mAwUd0hkyzT7",
-								"talents": [null, 1, 2, 3]
+								"talents": {
+									"normal": {
+										"15": "",
+										"25": "",
+										"30": "",
+										"35": "",
+										"40": "",
+										"45": "",
+										"50": ""
+									},
+									"pvp": ["", "", ""]
+								},
+								"covenant": { "none": [""] }
 							}
 						}
 					],
@@ -60,7 +84,19 @@
 							"-MFRzhiijx1xBIk9HECi": {
 								"description": "<p>test description</p>",
 								"key": "-MFRzhiijx1xBIk9HECi",
-								"talents": [null, 1, 2, 3]
+								"talents": {
+									"normal": {
+										"15": "",
+										"25": "",
+										"30": "",
+										"35": "",
+										"40": "",
+										"45": "",
+										"50": ""
+									},
+									"pvp": ["", "", ""]
+								},
+								"covenant": { "none": [""] }
 							}
 						}
 					],
@@ -84,7 +120,19 @@
 							"-MJ4SzSWtuTTKAcAqHzE": {
 								"description": "",
 								"key": "-MJ4SzSWtuTTKAcAqHzE",
-								"talents": [null, 1, 2, 3]
+								"talents": {
+									"normal": {
+										"15": "",
+										"25": "",
+										"30": "",
+										"35": "",
+										"40": "",
+										"45": "",
+										"50": ""
+									},
+									"pvp": ["", "", ""]
+								},
+								"covenant": { "none": [""] }
 							}
 						}
 					],
@@ -2179,7 +2227,7 @@
 		},
 		"Warrior": {
 			"Kyrian": ["307865", "324739"],
-			"Venthyr": ["300728", "317320", "317349", "317485"],
+			"Venthyr": ["300728", "317320"],
 			"Night Fae": ["310143", "325886"],
 			"Necrolord": ["324143", "324631"]
 		}
@@ -6694,7 +6742,7 @@
 			"spellId": "193876",
 			"spellName": "Shamanism",
 			"idOfReplacedSpell": ["32182", "2825"],
-			"enableSpells": ["204362", "204361"],
+			"enabledSpells": ["204362", "204361"],
 			"iconId": "trade_archaeology_ancientorcshamanheaddress",
 			"isPassive": true
 		},
@@ -7198,6 +7246,7 @@
 				{ "spec": "RESTORATION", "row": "2", "col": "0" }
 			],
 			"iconId": "ability_druid_improvedmoonkinform",
+			"enabledSpells": ["24858", "78674", "194153", "132469"],
 			"isPassive": true
 		},
 		"197690": {
@@ -7935,6 +7984,7 @@
 			"spellName": "Feral Affinity",
 			"talentCalcLoc": [{ "spec": "GUARDIAN", "row": "2", "col": "1" }],
 			"iconId": "talentspec_druid_feral_cat",
+			"enabledSpells": ["1822", "1079", "22570"],
 			"isPassive": true
 		},
 		"202157": {
@@ -7942,6 +7992,7 @@
 			"spellName": "Feral Affinity",
 			"talentCalcLoc": [{ "spec": "BALANCE", "row": "2", "col": "0" }],
 			"iconId": "talentspec_druid_feral_cat",
+			"enabledSpells": ["1822", "1079", "213764", "22570"],
 			"isPassive": true
 		},
 		"202162": {
@@ -9802,6 +9853,7 @@
 			"spellName": "Guardian Affinity",
 			"talentCalcLoc": [{ "spec": "FERAL", "row": "2", "col": "1" }],
 			"iconId": "talentspec_druid_feral_bear",
+			"enabledSpells": ["22842", "99"],
 			"isPassive": true
 		},
 		"217832": {
@@ -11925,9 +11977,9 @@
 			"targetType": "ONE_ENEMY"
 		},
 		"317320": {
-			"spellId": "317349",
+			"spellId": "317320",
 			"idOfReplacedSpell": ["5308", "163201"],
-			"enableSpells": ["317485", "317349"],
+			"enabledSpells": ["317485", "317349"],
 			"spellName": "Condemn",
 			"iconId": "ability_revendreth_warrior",
 			"isPassive": true

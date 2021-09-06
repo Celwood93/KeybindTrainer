@@ -8,9 +8,9 @@ import {
 	Menu,
 	MenuItem,
 	CircularProgress,
-	ExpansionPanel,
-	ExpansionPanelSummary,
-	ExpansionPanelDetails,
+	Accordion,
+	AccordionSummary,
+	AccordionDetails,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import styleGuide from '../../../stylesheets/style';
@@ -84,7 +84,6 @@ function KeybindEditor({
 	const handleClose = () => {
 		setEditOptions();
 	};
-
 	return (
 		<React.Fragment>
 			<ManualKeybindModal
@@ -99,6 +98,28 @@ function KeybindEditor({
 					spec,
 					keyBinding
 				)}
+				normalTalents={Object.keys(
+					character.specs[spec].keybindings[keyBinding][
+						characterKeybindings(character, spec, keyBinding)
+					].talents.normal
+				).map(
+					lvl =>
+						character.specs[spec].keybindings[keyBinding][
+							characterKeybindings(character, spec, keyBinding)
+						].talents.normal[lvl]
+				)}
+				covChoice={
+					Object.values(
+						character.specs[spec].keybindings[keyBinding][
+							characterKeybindings(character, spec, keyBinding)
+						].covenant
+					)[0]
+				}
+				pvpTalents={
+					character.specs[spec].keybindings[keyBinding][
+						characterKeybindings(character, spec, keyBinding)
+					].talents.pvp
+				}
 			/>
 			<RapidFireKeybindModal
 				isOpen={rapidFireModal}
@@ -153,8 +174,8 @@ function KeybindEditor({
 			</Grid>
 			<Grid container direction="row">
 				<Grid item md={12}>
-					<ExpansionPanel>
-						<ExpansionPanelSummary
+					<Accordion>
+						<AccordionSummary
 							expandIcon={<ExpandMoreIcon />}
 							aria-controls="panel1a-content"
 							id="panel1a-header-keybinds"
@@ -162,8 +183,8 @@ function KeybindEditor({
 							<Typography variant="h5" align="left">
 								Preview
 							</Typography>
-						</ExpansionPanelSummary>
-						<ExpansionPanelDetails>
+						</AccordionSummary>
+						<AccordionDetails>
 							<Grid item md={12}>
 								{!loading &&
 								allKeybindings[
@@ -188,8 +209,8 @@ function KeybindEditor({
 									<CircularProgress />
 								)}
 							</Grid>
-						</ExpansionPanelDetails>
-					</ExpansionPanel>
+						</AccordionDetails>
+					</Accordion>
 				</Grid>
 			</Grid>
 		</React.Fragment>

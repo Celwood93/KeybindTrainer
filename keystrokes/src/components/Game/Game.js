@@ -53,9 +53,9 @@ function Game({ userInfo }) {
 				const snapShot = await ref.child(path).once('value');
 				if (snapShot.exists()) {
 					const rawKeys = snapShot.val();
-					const detailedKeys = rawKeys.map(e => ({
-						...allSpells[e.spellId],
-						...e,
+					const detailedKeys = rawKeys.map(spell => ({
+						...allSpells[spell.spellId],
+						...spell,
 					}));
 					setKeyBindings(detailedKeys);
 					const newKey = getNextKey(Object.keys(detailedKeys));

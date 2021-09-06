@@ -69,7 +69,10 @@ function CharacterCreationModal({ handleSubmit, isOpen, setIsOpen }) {
 									<MenuItem
 										key={race}
 										value={race}
-										id={`${race.replace(/ /g, '')}-option`}
+										id={`${race.replace(
+											/ |:|'/g,
+											''
+										)}-option`}
 									>
 										{race}
 									</MenuItem>
@@ -92,7 +95,7 @@ function CharacterCreationModal({ handleSubmit, isOpen, setIsOpen }) {
 										<MenuItem
 											key={heroClass}
 											id={`${heroClass.replace(
-												/ /g,
+												/ |:|'/g,
 												''
 											)}-option`}
 											value={heroClass}
@@ -122,7 +125,7 @@ function CharacterCreationModal({ handleSubmit, isOpen, setIsOpen }) {
 										<MenuItem
 											key={spec}
 											id={`${spec.replace(
-												/ /g,
+												/ |:|'/g,
 												''
 											)}-option`}
 											value={characterDetails.class[

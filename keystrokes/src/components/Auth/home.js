@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { auth } from '../../config/constants';
 
 class Home extends Component {
-	logout = e => {
+	logout = _ => {
 		auth.signOut();
 	};
 
