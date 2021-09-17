@@ -61,6 +61,10 @@ const styleGuide = makeStyles(theme => ({
 	tableContainer: {
 		maxHeight: '38rem',
 	},
+	tableContainerRF: {
+		maxHeight: '280px',
+		width: 'fit-content',
+	},
 	manualModalBackground: {
 		width: '70%',
 		height: '80%',

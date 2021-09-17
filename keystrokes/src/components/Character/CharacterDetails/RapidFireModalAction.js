@@ -6,6 +6,7 @@ import update from 'immutability-helper';
 import PropTypes from 'prop-types';
 import DetailedDropdownConfig from './DetailedDropdownConfig';
 import RapidFireModalActionGame from './RapidFireModalActionGame';
+import KeybindTableRapidFire from './KeybindTableRapidFire';
 
 RapidFireModalAction.propTypes = {
 	formattedSpells: PropTypes.array.isRequired,
@@ -31,6 +32,7 @@ function RapidFireModalAction({
 		allKeybindings[keyBindingKey]
 	);
 	const [currentSpell, setCurrentSpell] = useState();
+	const [finishedState, setFinishedState] = useState(false);
 	useEffect(() => {
 		const spellIdWithTarget = Object.keys(spellTargetOpts)
 			.filter(spellKey => spellTargetOpts[spellKey])
@@ -48,7 +50,7 @@ function RapidFireModalAction({
 	useEffect(() => {
 		if (spellsWithoutBinds) {
 			if (!spellsWithoutBinds.length) {
-				saveNewKeybinds();
+				setFinishedState(true);
 			} else {
 				//could be random but w.e
 				setCurrentSpell(spellsWithoutBinds[0]);
@@ -68,6 +70,44 @@ function RapidFireModalAction({
 				)
 			);
 		}
+	}
+
+	function deleteSpell(targetSpell) {
+		if (targetSpell) {
+			setSpellsWithoutBinds(
+				spellsWithoutBinds.filter(
+					spell =>
+						!(
+							spell.spellId === targetSpell.spellId &&
+							spell.target === targetSpell.target
+						)
+				)
+			);
+		}
+	}
+
+	function redoKeybinding(targetSpell) {
+		const checkIfExists = spellsWithoutBinds.some(
+			spell =>
+				spell.spellId === targetSpell.spellId &&
+				spell.target === targetSpell.target
+		);
+		setNewKeybinds(
+			newKeybinds.filter(
+				spell =>
+					!(
+						spell.spellId === targetSpell.spellId &&
+						spell.target === targetSpell.target
+					)
+			)
+		);
+		if (!checkIfExists) {
+			setSpellsWithoutBinds([
+				...spellsWithoutBinds,
+				{ ...targetSpell, key: null, mod: null },
+			]);
+		}
+		setFinishedState(false);
 	}
 
 	function saveNewKeybinds() {
@@ -182,17 +222,19 @@ function RapidFireModalAction({
 						Cancel
 					</Button>
 				</Grid>
-				<Grid item>
-					<Button
-						color="primary"
-						variant="contained"
-						size="large"
-						//Deletes for now
-						onClick={skipSpellBinding}
-					>
-						Skip
-					</Button>
-				</Grid>
+				{!finishedState && (
+					<Grid item>
+						<Button
+							color="primary"
+							variant="contained"
+							size="large"
+							//Deletes for now
+							onClick={skipSpellBinding}
+						>
+							Skip
+						</Button>
+					</Grid>
+				)}
 				<Grid item>
 					<Button
 						color="primary"
@@ -205,7 +247,7 @@ function RapidFireModalAction({
 				</Grid>
 			</Grid>
 			<hr style={{ borderTop: '3px solid #bbb' }} />
-			{spellsWithoutBinds && currentSpell && (
+			{!finishedState && spellsWithoutBinds && currentSpell && (
 				<RapidFireModalActionGame
 					newKeybinds={newKeybinds}
 					currentSpell={currentSpell}
@@ -215,6 +257,25 @@ function RapidFireModalAction({
 					)}
 				/>
 			)}
+			{!finishedState && <hr style={{ borderTop: '3px solid #bbb' }} />}
+			<Grid direction="row" container justify="space-around">
+				<Grid>
+					<KeybindTableRapidFire
+						allKeybinds={newKeybinds}
+						editing={true}
+						editThisRow={redoKeybinding}
+					/>
+				</Grid>
+				{!finishedState && (
+					<Grid>
+						<KeybindTableRapidFire
+							allKeybinds={spellsWithoutBinds}
+							deleteThisRow={deleteSpell}
+							editing={true}
+						/>
+					</Grid>
+				)}
+			</Grid>
 		</Fragment>
 	);
 }
