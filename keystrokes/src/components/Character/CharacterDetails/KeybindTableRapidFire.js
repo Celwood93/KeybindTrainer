@@ -18,11 +18,12 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { AllSpellsContext } from '../../../contexts/AllSpellsContext';
 
 KeybindTableRapidFire.propTypes = {
-	allKeybinds: PropTypes.array.isRequired,
+	allKeybinds: PropTypes.array,
 	deleteThisRow: PropTypes.func,
 	editing: PropTypes.bool,
 	editThisRow: PropTypes.func,
 	editingKey: PropTypes.any,
+	finishedState: PropTypes.bool,
 };
 
 function KeybindTableRapidFire({
@@ -31,15 +32,16 @@ function KeybindTableRapidFire({
 	editThisRow,
 	deleteThisRow,
 	editingKey,
+	finishedState = false,
 }) {
 	const allSpells = useContext(AllSpellsContext);
 	const classes = styleGuide();
 	removeWaterMark('#keybind-row-container a', []);
 	return (
-		<Grid item>
+		<Grid item style={{ marginTop: '12px', width: '100%' }}>
 			<TableContainer
 				component={Paper}
-				style={{ width: 'fit-content', maxHeight: '280px' }}
+				style={{ maxHeight: !finishedState ? '230px' : '620px' }}
 			>
 				<Table
 					stickyHeader

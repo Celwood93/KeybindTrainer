@@ -22,6 +22,7 @@ RapidFireModalActionGame.propTypes = {
 	currentSpell: PropTypes.object,
 	setNewCurrentSpell: PropTypes.func,
 	spellDetails: PropTypes.object,
+	refreshListener: PropTypes.bool,
 };
 
 function RapidFireModalActionGame({
@@ -29,6 +30,7 @@ function RapidFireModalActionGame({
 	currentSpell,
 	setNewCurrentSpell,
 	spellDetails,
+	refreshListener,
 }) {
 	const allSpells = useContext(AllSpellsContext);
 	const [currentKey, setCurrentKey] = useState();
@@ -104,7 +106,7 @@ function RapidFireModalActionGame({
 			el.onmousedown = null;
 			el.onwheel = null;
 		};
-	}, []);
+	}, [refreshListener]); //this is to redo the listeners when leaving the menus
 
 	useEffect(() => {
 		if (userKeyPressed) {
@@ -156,6 +158,11 @@ function RapidFireModalActionGame({
 			}
 		}
 	}, [userKeyPressed]);
+
+	useEffect(() => {
+		setCurrentKey(null);
+		setExistingSpell(null);
+	}, [currentSpell]);
 
 	function handleKeyPress(e) {
 		if (!e.metaKey) {

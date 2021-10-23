@@ -1,5 +1,12 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { Grid, Typography, Tooltip, Button } from '@material-ui/core';
+import {
+	Grid,
+	Typography,
+	Tooltip,
+	Button,
+	Tabs,
+	Tab,
+} from '@material-ui/core';
 import HelpIcon from '@material-ui/icons/Help';
 import { targettingDetails, targetting } from '../../../config/constants';
 import update from 'immutability-helper';
@@ -7,6 +14,7 @@ import PropTypes from 'prop-types';
 import DetailedDropdownConfig from './DetailedDropdownConfig';
 import RapidFireModalActionGame from './RapidFireModalActionGame';
 import KeybindTableRapidFire from './KeybindTableRapidFire';
+import { a11yProps, TabPanel } from '../helpers/TabPanels';
 
 RapidFireModalAction.propTypes = {
 	formattedSpells: PropTypes.array.isRequired,
@@ -22,10 +30,10 @@ function RapidFireModalAction({
 	formattedSpells,
 	spellTargetOpts,
 	setSpellTargetOpts,
+	closeInAction,
 	setAllKeybindings,
 	allKeybindings,
 	keyBindingKey,
-	closeInAction,
 }) {
 	const [spellsWithoutBinds, setSpellsWithoutBinds] = useState();
 	const [newKeybinds, setNewKeybinds] = useState(
@@ -33,6 +41,9 @@ function RapidFireModalAction({
 	);
 	const [currentSpell, setCurrentSpell] = useState();
 	const [finishedState, setFinishedState] = useState(false);
+	const [spellChangesView, setSpellChangesView] = useState(1);
+	const [refreshListener, setRefreshListener] = useState(true); // turn back on the onwheel scroll
+
 	useEffect(() => {
 		const spellIdWithTarget = Object.keys(spellTargetOpts)
 			.filter(spellKey => spellTargetOpts[spellKey])
@@ -47,10 +58,12 @@ function RapidFireModalAction({
 			});
 		setSpellsWithoutBinds(spellIdWithTarget);
 	}, [spellTargetOpts, formattedSpells]); //might not need formatted spells here
+
 	useEffect(() => {
 		if (spellsWithoutBinds) {
 			if (!spellsWithoutBinds.length) {
 				setFinishedState(true);
+				setSpellChangesView(0);
 			} else {
 				//could be random but w.e
 				setCurrentSpell(spellsWithoutBinds[0]);
@@ -74,15 +87,17 @@ function RapidFireModalAction({
 
 	function deleteSpell(targetSpell) {
 		if (targetSpell) {
-			setSpellsWithoutBinds(
-				spellsWithoutBinds.filter(
-					spell =>
-						!(
-							spell.spellId === targetSpell.spellId &&
-							spell.target === targetSpell.target
-						)
-				)
+			const newSpellsWithoutBinds = spellsWithoutBinds.filter(
+				spell =>
+					!(
+						spell.spellId === targetSpell.spellId &&
+						spell.target === targetSpell.target
+					)
 			);
+			setSpellsWithoutBinds(newSpellsWithoutBinds);
+			if (!newSpellsWithoutBinds.length) {
+				setSpellChangesView(0);
+			}
 		}
 	}
 
@@ -209,6 +224,16 @@ function RapidFireModalAction({
 		setSpellsWithoutBinds(newSpellsWithoutBinds);
 	}
 
+	function turnOnMouseWheel() {
+		setRefreshListener(!refreshListener);
+	}
+
+	function turnOffMouseWheel() {
+		const el = document.querySelector('#rapid-fire-modal');
+		el.onmousedown = null;
+		el.onwheel = null;
+	}
+
 	return (
 		<Fragment>
 			<Grid container justify="space-between">
@@ -247,6 +272,7 @@ function RapidFireModalAction({
 				</Grid>
 			</Grid>
 			<hr style={{ borderTop: '3px solid #bbb' }} />
+
 			{!finishedState && spellsWithoutBinds && currentSpell && (
 				<RapidFireModalActionGame
 					newKeybinds={newKeybinds}
@@ -255,27 +281,53 @@ function RapidFireModalAction({
 					spellDetails={formattedSpells.find(
 						spell => spell.spellId === currentSpell.spellId
 					)}
+					refreshListener={refreshListener}
 				/>
 			)}
 			{!finishedState && <hr style={{ borderTop: '3px solid #bbb' }} />}
-			<Grid direction="row" container justify="space-around">
-				<Grid>
-					<KeybindTableRapidFire
-						allKeybinds={newKeybinds}
-						editing={true}
-						editThisRow={redoKeybinding}
-					/>
-				</Grid>
+			<Tabs
+				value={spellChangesView}
+				onChange={(event, newValue) => setSpellChangesView(newValue)}
+				textColor="primary"
+				variant="fullWidth"
+				scrollButtons="auto"
+				aria-label="scrollable auto tabs example"
+			>
+				{newKeybinds && newKeybinds.length > 0 && (
+					<Tab label="Incoming Spell Changes" {...a11yProps(1)} />
+				)}
 				{!finishedState && (
-					<Grid>
+					<Tab label="Outgoing Spell Changes" {...a11yProps(2)} />
+				)}
+			</Tabs>
+			<div
+				onMouseEnter={turnOffMouseWheel}
+				onMouseLeave={turnOnMouseWheel}
+			>
+				{newKeybinds && newKeybinds.length > 0 && (
+					<TabPanel value={spellChangesView} index={0}>
+						<KeybindTableRapidFire
+							allKeybinds={newKeybinds}
+							editing={true}
+							editThisRow={redoKeybinding}
+							finishedState={finishedState}
+						/>{' '}
+					</TabPanel>
+				)}
+
+				{!finishedState && (
+					<TabPanel
+						value={spellChangesView}
+						index={newKeybinds && newKeybinds.length > 0 ? 1 : 0}
+					>
 						<KeybindTableRapidFire
 							allKeybinds={spellsWithoutBinds}
 							deleteThisRow={deleteSpell}
 							editing={true}
 						/>
-					</Grid>
+					</TabPanel>
 				)}
-			</Grid>
+			</div>
 		</Fragment>
 	);
 }

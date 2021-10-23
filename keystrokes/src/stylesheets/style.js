@@ -55,7 +55,6 @@ const styleGuide = makeStyles(theme => ({
 		padding: theme.spacing(2, 4, 3),
 	},
 	table: {
-		marginTop: '3rem',
 		minWidth: '60%',
 	},
 	tableContainer: {
