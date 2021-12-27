@@ -93,7 +93,7 @@ describe('Tests for Manual Keybind Inputs', () => {
 				.blur();
 
 			cy.contains('Enter').should('be.enabled');
-			cy.contains('Cancel').click();
+			cy.get('#cancelManualKeybindModal').click();
 		});
 	});
 	describe('Filling in the inputs should pop up the correct information next to the option', () => {
@@ -158,7 +158,7 @@ describe('Tests for Manual Keybind Inputs', () => {
 				});
 
 			cy.get('#HammerofJustice-option').click();
-			cy.contains('Cancel').click();
+			cy.get('#cancelManualKeybindModal').click();
 		});
 		it('shows information based on what keybinbds are taken next to the target option', () => {
 			cy.contains('Character Management').click();
@@ -225,7 +225,7 @@ describe('Tests for Manual Keybind Inputs', () => {
 				'Already set for keybinding: Ctrl r'
 			);
 			cy.get('#Arena3-option').click();
-			cy.contains('Cancel').click();
+			cy.get('#cancelManualKeybindModal').click();
 		});
 	});
 	describe('Doing an already existing Spell / Target will cause a warning', () => {
@@ -248,7 +248,7 @@ describe('Tests for Manual Keybind Inputs', () => {
 				.children()
 				.eq(1)
 				.should('have.text', conflictingBinds[0]);
-			cy.contains('Cancel').click();
+			cy.get('#cancelManualKeybindModal').click();
 		});
 		it('should cause a warning with correct conflicting keybind with a conflicting Modifer and Key', () => {
 			cy.contains('Character Management').click();
@@ -275,7 +275,7 @@ describe('Tests for Manual Keybind Inputs', () => {
 				.children()
 				.eq(1)
 				.should('have.text', conflictingBinds[1]);
-			cy.contains('Cancel').click();
+			cy.get('#cancelManualKeybindModal').click();
 		});
 		it(
 			'should cause a warning with both correct conflicting keybinds' +
@@ -308,7 +308,7 @@ describe('Tests for Manual Keybind Inputs', () => {
 						'have.text',
 						conflictingBinds[1] + conflictingBinds[0]
 					);
-				cy.contains('Cancel').click();
+				cy.get('#cancelManualKeybindModal').click();
 			}
 		);
 	});
@@ -356,7 +356,7 @@ describe('Tests for Manual Keybind Inputs', () => {
 							});
 					}
 				});
-			cy.contains('Cancel').click();
+			cy.get('#cancelManualKeybindModal').click();
 		});
 	});
 	describe('Clicking edit should not prompt the warning, but changing it to a existing mod/key will cause the warning and delete the conflicting keybind', () => {
@@ -400,7 +400,7 @@ describe('Tests for Manual Keybind Inputs', () => {
 							});
 					}
 				});
-			cy.contains('Cancel').click();
+			cy.get('#cancelManualKeybindModal').click();
 		});
 	});
 });

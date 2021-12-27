@@ -203,6 +203,7 @@ function ManualKeybindModal({
 							<Button
 								color="secondary"
 								variant="contained"
+								id="cancelManualKeybindModal"
 								onClick={() => {
 									setKeybinding({
 										spellId: null,
