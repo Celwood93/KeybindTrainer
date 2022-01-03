@@ -76,6 +76,7 @@ function DetailedDropdownConfig({
 							color: setCheckboxStyle(),
 							zIndex: 0,
 						}}
+						id={`${name.toLowerCase().replace(' ', '')}-checkbox`}
 						checked={isChecked()}
 						color="primary"
 						onChange={() => {
@@ -88,7 +89,14 @@ function DetailedDropdownConfig({
 					{additionalDetails}
 					<ClickAwayListener onClickAway={handleClickAway}>
 						<span style={{ position: 'relative' }}>
-							<Button onClick={handleClick}>{name}</Button>
+							<Button
+								id={`${name
+									.toLowerCase()
+									.replace(' ', '')}-button-label`}
+								onClick={handleClick}
+							>
+								{name}
+							</Button>
 							{isOpen ? (
 								<div className={classes.detailedDropdownConfig}>
 									{targetting[targetType].map(option => {
@@ -97,6 +105,17 @@ function DetailedDropdownConfig({
 												<FormControlLabel
 													control={
 														<Checkbox
+															id={`${name
+																.toLowerCase()
+																.replace(
+																	' ',
+																	''
+																)}-${option
+																.toLowerCase()
+																.replace(
+																	' ',
+																	''
+																)}-checkbox-option`}
 															style={{
 																padding: '0px',
 																paddingLeft:

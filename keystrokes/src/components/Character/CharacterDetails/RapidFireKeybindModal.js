@@ -44,6 +44,7 @@ function RapidFireKeybindModal({
 			onClose={() => {}}
 			className={classes.modal}
 			keepMounted={true}
+			id={'rapid-fire-modal-body'}
 		>
 			<div
 				id="rapid-fire-modal"

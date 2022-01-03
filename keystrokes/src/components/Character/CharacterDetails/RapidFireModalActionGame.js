@@ -216,7 +216,10 @@ function RapidFireModalActionGame({
 
 	return (
 		<Fragment>
-			<div style={{ backgroundColor: 'black', height: '50%' }}>
+			<div
+				style={{ backgroundColor: 'black', height: '50%' }}
+				id="keybind-prompt"
+			>
 				<Grid
 					container
 					alignContent="center"

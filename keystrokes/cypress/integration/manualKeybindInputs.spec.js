@@ -403,4 +403,28 @@ describe('Tests for Manual Keybind Inputs', () => {
 			cy.get('#cancelManualKeybindModal').click();
 		});
 	});
+	describe('Filters work when changing target options', () => {
+		it('should update the spell dropdown based on target selected', () => {
+			cy.contains('Character Management').click();
+			cy.contains('TestCharacter1').click();
+
+			cy.get('#keybind-edit-button').click();
+			cy.contains('Manual').click();
+			cy.get('#target-selector').click();
+
+			cy.get('#Arena1-option').click();
+			cy.get('#spell-selector').click();
+			cy.get('#WordofGlory-option').should('not.exist');
+			cy.get('#HolyShock-option').click();
+			cy.get('#target-selector').click();
+			cy.get('#Party1-option').click();
+			cy.get('#spell-selector').click();
+			cy.get('#Judgment-option').should('not.exist');
+			cy.get('#WordofGlory-option')
+				.should('exist')
+				.click();
+
+			cy.get('#cancelManualKeybindModal').click();
+		});
+	});
 });
