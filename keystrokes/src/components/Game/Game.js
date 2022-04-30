@@ -70,8 +70,70 @@ function Game({ userInfo }) {
 
 	useEffect(() => {
 		document.body.onkeydown = handleKeyPress;
+		const el = document.querySelector('#root');
+		el.onmousedown = event => {
+			event.preventDefault();
+			if (event.which === 2 && event.button === 1) {
+				handleKeyPress({
+					altKey: event.altKey,
+					shiftKey: event.shiftKey,
+					ctrlKey: event.ctrlKey,
+					preventDefault: () => {
+						if (event.preventDefault) {
+							event.preventDefault();
+						}
+					},
+					code: 'wheelclick',
+				});
+			}
+		};
+		let time;
+
+		function throttle2(fn, wait) {
+			return function() {
+				if (time + wait - Date.now() < 0) {
+					fn();
+					time = null;
+				}
+			};
+		}
+		el.onwheel = event => {
+			event.preventDefault();
+			if (!time) {
+				time = Date.now();
+			}
+			throttle2(e => {
+				if (event.deltaY > 0) {
+					handleKeyPress({
+						altKey: event.altKey,
+						shiftKey: event.shiftKey,
+						ctrlKey: event.ctrlKey,
+						preventDefault: () => {
+							if (event.preventDefault) {
+								event.preventDefault();
+							}
+						},
+						code: 'wheeldown',
+					});
+				} else {
+					handleKeyPress({
+						altKey: event.altKey,
+						shiftKey: event.shiftKey,
+						ctrlKey: event.ctrlKey,
+						preventDefault: () => {
+							if (event.preventDefault) {
+								event.preventDefault();
+							}
+						},
+						code: 'wheelup',
+					});
+				}
+			}, 300)();
+		};
 		return () => {
 			document.body.onkeydown = null;
+			el.onmousedown = null;
+			el.onwheel = null;
 		};
 	}, [keyBindings, key]);
 
@@ -108,7 +170,10 @@ function Game({ userInfo }) {
 				keyPressed.key === expectedKey.key &&
 				keyPressed[expectedKey.mod]
 			) {
-				const newKey = getNextKey(Object.keys(keyBindings));
+				let newKey = key;
+				while (newKey === key) {
+					newKey = getNextKey(Object.keys(keyBindings));
+				}
 				setKey(newKey);
 				setFailedFirstTry(false);
 			} else {

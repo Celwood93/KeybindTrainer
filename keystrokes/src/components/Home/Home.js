@@ -67,7 +67,12 @@ function Home(props) {
 				<AllSpellsContext.Provider value={allSpells}>
 					<BrowserRouter>
 						<div className="App">
-							<Route path="/" component={Nav} />
+							<Route
+								path="/"
+								render={props => (
+									<Nav {...props} userId={userId} />
+								)}
+							/>
 							<Switch>
 								<Route path="/" exact component={LandingPage} />
 								<Route
@@ -78,6 +83,7 @@ function Home(props) {
 											{...props}
 											collectUserInfo={collectUserInfo}
 											userPath={userPath}
+											user={user}
 										/>
 									)}
 								/>
@@ -87,7 +93,7 @@ function Home(props) {
 										<CharacterDetailPage
 											{...props}
 											userId={userId}
-										/> //this will probably need more stuff to make it so you cant just jump on someones account. maybe this is where i need privilages?
+										/>
 									)}
 								/>
 								<Route

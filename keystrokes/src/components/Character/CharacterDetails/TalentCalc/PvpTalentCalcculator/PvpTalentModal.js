@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Modal, Grid, Button } from '@material-ui/core';
+import React, { useContext } from 'react';
+import { Modal, Grid } from '@material-ui/core';
 import update from 'immutability-helper';
 import PropTypes from 'prop-types';
 import { removeLingeringPopups } from '../../../../utils/toolTipHooks';

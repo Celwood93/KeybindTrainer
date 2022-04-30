@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, CircularProgress, Typography } from '@material-ui/core';
+import { Grid, CircularProgress } from '@material-ui/core';
 import update from 'immutability-helper';
 import { ref } from '../../../../../config/constants';
 import { AllSpellsContext } from '../../../../../contexts/AllSpellsContext';
 import ButtonTalCovFrame from '../ButtonTalCovFrame';
 import CovenantBox from './CovenantBox';
 import { characterKeybindings } from '../../../../utils/utils';
-import _default from 'immutability-helper';
 
 CovenantCalculator.propTypes = {
 	character: PropTypes.object,

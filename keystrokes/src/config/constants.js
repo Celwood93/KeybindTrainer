@@ -43,6 +43,43 @@ export const targetting = {
 	],
 };
 
+export const targettingDetails = {
+	ONE_ENEMY: {
+		name: 'Enemy Target',
+		tooltip: 'Spells that are only usable on one enemy target at a time.',
+	},
+	MANY_ENEMY: {
+		name: 'Enemy Targets',
+		tooltip: 'Spells that are usable on many enemies at once.',
+	},
+	ONE_FRIENDLY: {
+		name: 'Ally Target',
+		tooltip:
+			'Spells that are only usable on one friendly target at a time.',
+	},
+	MANY_FRIENDLY: {
+		name: 'Ally Targets',
+		tooltip: 'Spells that are usable on many friendly targets at once.',
+	},
+	ONE_ANY: {
+		name: 'Any Target',
+		tooltip: 'Spells that are usable on a Ally or Enemy target.',
+	},
+	SELF: {
+		name: 'Self',
+		tooltip:
+			'Spells that are only usable on yourself or a radius around yourself.',
+	},
+	PLACED: {
+		name: 'Placed',
+		tooltip: 'Spells that are triggered at your mouse cursor.',
+	},
+	FRIENDLY_NOT_SELF: {
+		name: 'Assist Ally',
+		tooltip: 'Spells that are usable on allies, but not yourself.',
+	},
+};
+
 export const mods = ['None', 'Shift', 'Ctrl', 'Alt'];
 
 export const characterDetails = {
