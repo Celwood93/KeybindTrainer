@@ -24,7 +24,7 @@ describe('Tests for Talent Calculator', () => {
 			cy.get('#spell-selector').click();
 			cy.get('#BestowFaith-option').click();
 			cy.get('#spell-selector').should('have.text', 'Bestow Faith');
-			cy.contains('Cancel').click();
+			cy.get('#cancelManualKeybindModal').click();
 		});
 		it('should not have passive talent spells show up in keybinding options', () => {
 			cy.contains('Character Management').click();
@@ -53,7 +53,7 @@ describe('Tests for Talent Calculator', () => {
 				});
 
 			cy.get('#BeaconofLight-option').click();
-			cy.contains('Cancel').click();
+			cy.get('#cancelManualKeybindModal').click();
 		});
 		it('should disable a keybinding if it uses a spell that is deselected from the normal talent calculator and returns if its reselected', () => {
 			cy.contains('Character Management').click();
@@ -119,7 +119,7 @@ describe('Tests for Talent Calculator', () => {
 
 				cy.get('#spell-selector').click();
 				cy.get('#AvengingWrath-option').click();
-				cy.contains('Cancel').click();
+				cy.get('#cancelManualKeybindModal').click();
 
 				cy.get('#panel1a-header-talents').click();
 				cy.get('#talent-container-216331').click(); //Avenging Crusader
@@ -144,7 +144,7 @@ describe('Tests for Talent Calculator', () => {
 					});
 
 				cy.get('#BeaconofLight-option').click();
-				cy.contains('Cancel').click();
+				cy.get('#cancelManualKeybindModal').click();
 			}
 		);
 
@@ -235,7 +235,7 @@ describe('Tests for Talent Calculator', () => {
 					'have.text',
 					'Incapacitating Roar'
 				);
-				cy.contains('Cancel').click();
+				cy.get('#cancelManualKeybindModal').click();
 
 				cy.get('#talent-container-197491').rightclick(); //Guardian affinity for resto
 
@@ -261,7 +261,7 @@ describe('Tests for Talent Calculator', () => {
 					});
 
 				cy.get('#EntanglingRoots-option').click();
-				cy.contains('Cancel').click();
+				cy.get('#cancelManualKeybindModal').click();
 			}
 		);
 		it('should disable all additional spells in keybindings that the talent adds when deselected', () => {
@@ -438,7 +438,7 @@ describe('Tests for Talent Calculator', () => {
 			cy.get('#spell-selector').click();
 			cy.get('#AshenHallow-option').click();
 			cy.get('#spell-selector').should('have.text', 'Ashen Hallow');
-			cy.contains('Cancel').click();
+			cy.get('#cancelManualKeybindModal').click();
 		});
 		it('should disable a keybinding if it uses a spell that is deselected from the covenant calculator and returns if its reselected', () => {
 			cy.visit(
@@ -524,7 +524,7 @@ describe('Tests for Talent Calculator', () => {
 
 				cy.get('#spell-selector').click();
 				cy.get('#Execute-option').click();
-				cy.contains('Cancel').click();
+				cy.get('#cancelManualKeybindModal').click();
 
 				cy.get('#talent-container-Venthyr').click();
 
@@ -548,7 +548,7 @@ describe('Tests for Talent Calculator', () => {
 					});
 
 				cy.get('#Slam-option').click();
-				cy.contains('Cancel').click();
+				cy.get('#cancelManualKeybindModal').click();
 			}
 		);
 
@@ -731,7 +731,7 @@ describe('Tests for Talent Calculator', () => {
 			cy.get('#spell-selector').click();
 			cy.get('#DivineFavor-option').click();
 			cy.get('#spell-selector').should('have.text', 'Divine Favor');
-			cy.contains('Cancel').click();
+			cy.get('#cancelManualKeybindModal').click();
 		});
 
 		it('should swap spells between the 3 different selectors', () => {
@@ -790,7 +790,7 @@ describe('Tests for Talent Calculator', () => {
 				});
 
 			cy.get('#BeaconofLight-option').click();
-			cy.contains('Cancel').click();
+			cy.get('#cancelManualKeybindModal').click();
 		});
 		it('should disable a keybinding if it uses a spell that is deselected from the normal talent calculator and returns if its reselected', () => {
 			cy.contains('Character Management').click();
@@ -860,7 +860,7 @@ describe('Tests for Talent Calculator', () => {
 
 				cy.get('#spell-selector').click();
 				cy.get('#AstralShift-option').click();
-				cy.contains('Cancel').click();
+				cy.get('#cancelManualKeybindModal').click();
 
 				cy.get('#panel1a-header-talents').click();
 				cy.get('#pvp-talent-selector-1').click();
@@ -886,7 +886,7 @@ describe('Tests for Talent Calculator', () => {
 					});
 
 				cy.get('#GhostWolf-option').click();
-				cy.contains('Cancel').click();
+				cy.get('#cancelManualKeybindModal').click();
 			}
 		);
 

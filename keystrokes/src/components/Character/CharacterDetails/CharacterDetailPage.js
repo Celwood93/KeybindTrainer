@@ -242,6 +242,7 @@ function CharacterDetailPage({ userId, match }) {
 								<Button
 									variant="contained"
 									disabled={checkIfValidSelect()}
+									id="select-character"
 									className={classes.bottomMarginNegTwo}
 									onClick={selectCharacter}
 								>
@@ -252,6 +253,7 @@ function CharacterDetailPage({ userId, match }) {
 						<Button
 							variant="contained"
 							color="secondary"
+							id="save-character-changes"
 							onClick={saveCharacter}
 							className={classes.bottomMarginNegTwo}
 						>

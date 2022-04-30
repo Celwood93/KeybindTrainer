@@ -64,6 +64,7 @@ function CharacterList({ collectUserInfo, userPath, user, ...props }) {
 						.map(id => (
 							<div
 								key={id}
+								id={id}
 								className={
 									id === selectedCharacter
 										? classes.characterListItemSelected

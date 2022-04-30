@@ -41,7 +41,9 @@ function RapidFireModalAction({
 	);
 	const [currentSpell, setCurrentSpell] = useState();
 	const [finishedState, setFinishedState] = useState(false);
-	const [spellChangesView, setSpellChangesView] = useState(1);
+	const [spellChangesView, setSpellChangesView] = useState(
+		newKeybinds && newKeybinds.length > 0 ? 1 : 0
+	);
 	const [refreshListener, setRefreshListener] = useState(true); // turn back on the onwheel scroll
 
 	useEffect(() => {
@@ -240,6 +242,7 @@ function RapidFireModalAction({
 				<Grid item>
 					<Button
 						color="secondary"
+						id="close-rapid-fire"
 						variant="contained"
 						onClick={closeInAction}
 						size="large"

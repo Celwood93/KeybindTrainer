@@ -46,6 +46,12 @@ export const removeWaterMark = (path, dep) => {
 				element.addEventListener('mousemove', getRidOfIt);
 			}
 		});
+		return () => {
+			const waterMark = document.querySelector('.wowhead-tooltip');
+			if (waterMark) {
+				waterMark.remove();
+			}
+		};
 	};
 	if (process.env.REACT_APP_DISABLE_TOOLTIPS !== 'disabled') {
 		if (!dep) {
