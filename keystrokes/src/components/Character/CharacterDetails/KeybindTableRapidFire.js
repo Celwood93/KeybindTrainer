@@ -36,7 +36,7 @@ function KeybindTableRapidFire({
 }) {
 	const allSpells = useContext(AllSpellsContext);
 	const classes = styleGuide();
-	removeWaterMark('#keybind-row-container a', []);
+	removeWaterMark('#keybind-row-container-rf a', []);
 	return (
 		<Grid item style={{ marginTop: '12px', width: '100%' }}>
 			<TableContainer
@@ -63,7 +63,7 @@ function KeybindTableRapidFire({
 							<TableCell align="right"></TableCell>
 						</TableRow>
 					</TableHead>
-					<TableBody>
+					<TableBody id="keybind-row-container-body">
 						{allKeybinds &&
 							allKeybinds
 								.filter(bind => !bind.disabled)

@@ -60,7 +60,7 @@ function NormalTalentCalculator({
 	) : (
 		<Grid
 			container
-			style={{ width: '611px', height: '400px', marginLeft: '-87px' }}
+			style={{ width: '611px', height: '400px', marginLeft: '81px' }}
 		>
 			{normalTalents &&
 				normalTalents.length > 0 &&

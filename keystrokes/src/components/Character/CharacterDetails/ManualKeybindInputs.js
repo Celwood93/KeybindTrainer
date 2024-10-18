@@ -70,7 +70,8 @@ function ManualKeybindInputs({
 			setTargetOptions(
 				targetting[allSpells[keybinding.spellId].targetType]
 			);
-		} else if (!keybinding.spellId && keybinding.target) {
+		}
+		if (keybinding.target) {
 			setFormattedClassSpells(
 				formattedSpells.filter(spell => {
 					return targetting[
@@ -384,7 +385,10 @@ function ManualKeybindInputs({
 					}
 					variant="contained"
 					size="large"
-					onClick={onSubmit}
+					onClick={() => {
+						setFormattedClassSpells(formattedSpells);
+						onSubmit();
+					}}
 				>
 					Enter
 				</Button>

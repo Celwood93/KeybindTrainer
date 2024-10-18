@@ -161,8 +161,15 @@ function RapidFireModalConfiguration({
 				justify="space-evenly"
 				alignItems="center"
 			>
-				<Typography variant="button">Preset Configurations</Typography>{' '}
-				<Button variant="contained" size="small" onClick={resetFilter}>
+				<Typography id={'preset-config-label'} variant="button">
+					Preset Configurations
+				</Typography>{' '}
+				<Button
+					id={'reset-config-button'}
+					variant="contained"
+					size="small"
+					onClick={resetFilter}
+				>
 					Reset
 				</Button>
 			</Grid>

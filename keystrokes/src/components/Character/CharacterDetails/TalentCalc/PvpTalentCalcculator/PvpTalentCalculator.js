@@ -198,7 +198,7 @@ function PvpTalentCalculator({
 					justify="center"
 					alignItems="center"
 					direction="column"
-					style={{ marginBottom: '10px', paddingLeft: '65px' }}
+					style={{ marginBottom: '10px', paddingTop: '50px' }}
 					spacing={3}
 				>
 					{selectedPvpTalents &&
