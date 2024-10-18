@@ -24,8 +24,8 @@ function CharacterDetailPage({ userId, match }) {
 	const [loading, setLoading] = useState(true);
 	const [isSaved, setIsSaved] = useState(false);
 	const [alert, setAlert] = alerter();
-	const [character, setCharacter] = useState(0);
-	const [allKeybindings, setAllKeybindings] = useState({});
+	const [character, setTheCharacter] = useState(0);
+	const [allKeybindings, setAllTheKeybindings] = useState({});
 	const [keyBinding, setKeybinding] = useState();
 	const [spec, setSpec] = useState();
 	const classes = styleGuide();
@@ -40,6 +40,20 @@ function CharacterDetailPage({ userId, match }) {
 				const snapShot = await ref.child(path).once('value');
 				if (snapShot.exists()) {
 					const charDetails = snapShot.val();
+					window.localStorage.setItem(
+						'backup',
+						JSON.stringify({
+							characterId: characterId,
+							userId: userId,
+							fromDB: {
+								character: charDetails,
+							},
+							updated: {
+								character: charDetails,
+								keybindings: {},
+							},
+						})
+					);
 					setKeybinding(
 						charDetails.specs[charDetails.selectedSpec]
 							.selectedKeybindings
@@ -58,22 +72,50 @@ function CharacterDetailPage({ userId, match }) {
 		if (!fields) {
 			collectCharacterInfo();
 		} else {
-			newKeybindings(fields.spec, Character(fields));
+			newKeybindings(fields.spec, Character(fields), {
+				characterId: characterId,
+				userId: userId,
+				fromDB: {
+					character: {},
+				},
+				updated: {
+					character: {},
+				},
+			});
 			setLoading(false);
 		}
 	}, []);
 
 	enableToolTips();
 
-	useEffect(() => {
-		return () => {
-			console.log('we out');
-		};
-	}, []);
+	function setCharacter(newCharacter) {
+		setTheCharacter(newCharacter);
+		const backupChar = JSON.parse(window.localStorage.getItem('backup'));
+		if (backupChar) {
+			backupChar.updated.character = newCharacter;
+			window.localStorage.setItem('backup', JSON.stringify(backupChar));
+		}
+	}
+	function setAllKeybindings(newKeybindings, backup = {}) {
+		setAllTheKeybindings(newKeybindings);
+		let backupKeybindings = JSON.parse(
+			window.localStorage.getItem('backup')
+		);
+		if (!backupKeybindings) {
+			backupKeybindings = backup;
+		}
+		if (backupKeybindings.updated) {
+			backupKeybindings.updated.keybindings = newKeybindings;
+			window.localStorage.setItem(
+				'backup',
+				JSON.stringify(backupKeybindings)
+			);
+		}
+	}
 
-	function newKeybindings(spec, char) {
+	function newKeybindings(spec, char, backup = {}) {
 		const key = ref.child('/Keybindings').push().key;
-		setAllKeybindings({ ...allKeybindings, [key]: [] });
+		setAllKeybindings({ ...allKeybindings, [key]: [] }, backup);
 		setSpec(spec);
 		setKeybinding(
 			(char.specs[spec] &&
@@ -100,6 +142,21 @@ function CharacterDetailPage({ userId, match }) {
 			});
 		}
 		try {
+			window.localStorage.setItem(
+				'backup',
+				JSON.stringify({
+					characterId: characterId,
+					userId: userId,
+					fromDB: {
+						character: character,
+						keybindings: allKeybindings,
+					},
+					updated: {
+						character: character,
+						keybindings: allKeybindings,
+					},
+				})
+			);
 			const res = await ref.update(updates);
 			setAlertMessage(res);
 			setIsSaved(true);
@@ -185,6 +242,7 @@ function CharacterDetailPage({ userId, match }) {
 								<Button
 									variant="contained"
 									disabled={checkIfValidSelect()}
+									id="select-character"
 									className={classes.bottomMarginNegTwo}
 									onClick={selectCharacter}
 								>
@@ -195,6 +253,7 @@ function CharacterDetailPage({ userId, match }) {
 						<Button
 							variant="contained"
 							color="secondary"
+							id="save-character-changes"
 							onClick={saveCharacter}
 							className={classes.bottomMarginNegTwo}
 						>

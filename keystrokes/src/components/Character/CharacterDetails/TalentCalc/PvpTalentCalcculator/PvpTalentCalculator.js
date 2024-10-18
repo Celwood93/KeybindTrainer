@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, CircularProgress, Modal } from '@material-ui/core';
+import { Grid, CircularProgress } from '@material-ui/core';
 import { isEqual } from 'lodash';
 import update from 'immutability-helper';
 import { ref, characterDetails } from '../../../../../config/constants';
@@ -71,7 +71,6 @@ function PvpTalentCalculator({
 					changedIndex = index;
 				}
 			});
-			console.log(currentPvpTalentIds);
 			const isSpellAlreadyInList = currentPvpTalentIds.findIndex(
 				code => code === selectedPvpTalents[changedIndex]
 			);
@@ -179,7 +178,6 @@ function PvpTalentCalculator({
 			character.specs[spec].keybindings[keyBinding][
 				characterKeybindings(character, spec, keyBinding)
 			].talents.pvp;
-		console.log(charPvpTalents);
 		return charPvpTalents ? charPvpTalents : ['', '', ''];
 	}
 
@@ -200,7 +198,7 @@ function PvpTalentCalculator({
 					justify="center"
 					alignItems="center"
 					direction="column"
-					style={{ marginBottom: '10px', paddingLeft: '65px' }}
+					style={{ marginBottom: '10px', paddingTop: '50px' }}
 					spacing={3}
 				>
 					{selectedPvpTalents &&

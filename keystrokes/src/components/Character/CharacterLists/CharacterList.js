@@ -8,9 +8,10 @@ import { ref } from '../../../config/constants';
 CharacterList.propTypes = {
 	collectUserInfo: PropTypes.func.isRequired,
 	userPath: PropTypes.string.isRequired,
+	user: PropTypes.object.isRequired,
 };
 
-function CharacterList({ collectUserInfo, userPath, ...props }) {
+function CharacterList({ collectUserInfo, userPath, user, ...props }) {
 	const [characters, setCharacters] = useState({});
 	const [selectedCharacter, setSelectedCharacter] = useState('');
 	const [open, setOpen] = useState(false);
@@ -20,7 +21,6 @@ function CharacterList({ collectUserInfo, userPath, ...props }) {
 		async function gettingUser() {
 			try {
 				const user = await collectUserInfo();
-
 				if (user) {
 					setCharacters(user.characters || {});
 					setSelectedCharacter(user.selectedCharacter);
@@ -30,7 +30,7 @@ function CharacterList({ collectUserInfo, userPath, ...props }) {
 			}
 		}
 		gettingUser();
-	}, []);
+	}, [userPath, user]);
 
 	async function handleSubmit(fields) {
 		const key = ref.child('/Characters').push().key;
@@ -64,6 +64,7 @@ function CharacterList({ collectUserInfo, userPath, ...props }) {
 						.map(id => (
 							<div
 								key={id}
+								id={id}
 								className={
 									id === selectedCharacter
 										? classes.characterListItemSelected

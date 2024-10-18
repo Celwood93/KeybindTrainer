@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import KeybindTable from './KeybindTable';
 import ManualKeybindInputs from './ManualKeybindInputs';
 import styleGuide from '../../../stylesheets/style';
-import { ref, characterDetails } from '../../../config/constants';
 import { AllSpellsContext } from '../../../contexts/AllSpellsContext';
 
 ManualKeybindModal.propTypes = {
@@ -16,22 +15,16 @@ ManualKeybindModal.propTypes = {
 	setAllKeybindings: PropTypes.func.isRequired,
 	allKeybindings: PropTypes.object.isRequired,
 	keyBindingKey: PropTypes.string.isRequired,
-	normalTalents: PropTypes.array.isRequired,
-	covChoice: PropTypes.array.isRequired,
-	pvpTalents: PropTypes.array.isRequired,
+	formattedSpells: PropTypes.array.isRequired,
 };
 
 function ManualKeybindModal({
 	isOpen,
 	setIsOpen,
-	characterClass,
-	characterSpec,
 	setAllKeybindings,
 	allKeybindings,
 	keyBindingKey,
-	normalTalents,
-	covChoice,
-	pvpTalents,
+	formattedSpells,
 }) {
 	const classes = styleGuide();
 	const allSpells = useContext(AllSpellsContext);
@@ -42,36 +35,15 @@ function ManualKeybindModal({
 		key: null,
 	});
 	const [allKeybinds, setAllKeybinds] = useState([]);
-	const [loading, setLoading] = useState(true);
-	const [classSpells, setClassSpells] = useState();
 	const [editingKey, setEditingKey] = useState();
 	const [invalidBinds, setInvalidBinds] = useState([]);
 	const [isKBConflictOpen, setIsKBConflictOpen] = useState(false);
-	const spec = characterDetails.class[characterClass][
-		characterSpec
-	].toUpperCase();
+
 	useEffect(() => {
 		if (allKeybindings[keyBindingKey]) {
 			setAllKeybinds(allKeybindings[keyBindingKey]);
 		}
 	}, [allKeybindings, keyBindingKey]);
-
-	useEffect(() => {
-		async function getSpells() {
-			try {
-				const snapShot = await ref
-					.child(`/Spells/${characterClass}`)
-					.once('value');
-				if (snapShot.exists()) {
-					setClassSpells(snapShot.val());
-					setLoading(false);
-				}
-			} catch (e) {
-				console.error(`failed to get spells for ${characterClass}`);
-			}
-		}
-		getSpells();
-	}, [characterClass]);
 
 	function checkIfInvalidAndAdd(currKeybinding) {
 		setInvalidBinds(
@@ -166,139 +138,132 @@ function ManualKeybindModal({
 	return (
 		<Modal open={isOpen} onClose={() => {}} className={classes.modal}>
 			<div className={classes.manualModalBackground}>
-				{loading ? (
-					<div>Loading</div>
-				) : (
-					<React.Fragment>
-						<Modal
-							open={isKBConflictOpen}
-							onClose={() => {}}
-							className={classes.modal}
-						>
-							<div className={classes.keybindingConflictModal}>
-								<Typography>
-									The following keybinds will be deleted:{' '}
-								</Typography>
-								<ul id="warning-modal-items">
-									{invalidBinds
-										.map(spell => ({
-											...allSpells[spell.spellId],
-											...spell,
-										}))
-										.map(bind => (
-											<li key={bind.target}>
-												{bind.disabled ? (
-													<div
-														style={{
-															fontSize: '1rem',
-															color: 'red',
-														}}
-													>
-														{`Currently Disabled: ${bind.spellName} ${bind.target} ${bind.mod} ${bind.key}`}
-													</div>
-												) : (
-													<Typography>{`${bind.spellName} ${bind.target} ${bind.mod} ${bind.key}`}</Typography>
-												)}
-											</li>
-										))}
-								</ul>
+				<React.Fragment>
+					<Modal
+						open={isKBConflictOpen}
+						onClose={() => {}}
+						className={classes.modal}
+					>
+						<div className={classes.keybindingConflictModal}>
+							<Typography>
+								The following keybinds will be deleted:{' '}
+							</Typography>
+							<ul id="warning-modal-items">
+								{invalidBinds
+									.map(spell => ({
+										...allSpells[spell.spellId],
+										...spell,
+									}))
+									.map(bind => (
+										<li key={bind.target}>
+											{bind.disabled ? (
+												<div
+													style={{
+														fontSize: '1rem',
+														color: 'red',
+													}}
+												>
+													{`Currently Disabled: ${bind.spellName} ${bind.target} ${bind.mod} ${bind.key}`}
+												</div>
+											) : (
+												<Typography>{`${bind.spellName} ${bind.target} ${bind.mod} ${bind.key}`}</Typography>
+											)}
+										</li>
+									))}
+							</ul>
 
-								<Grid container justify="space-between">
-									<Grid item>
-										<Button
-											color="secondary"
-											variant="contained"
-											onClick={() => {
-												setIsKBConflictOpen(false);
-											}}
-											size="large"
-										>
-											Cancel
-										</Button>
-									</Grid>
-									<Grid item>
-										<Button
-											color="primary"
-											variant="contained"
-											size="large"
-											onClick={confirmDelete}
-										>
-											Confirm
-										</Button>
-									</Grid>
+							<Grid container justify="space-between">
+								<Grid item>
+									<Button
+										color="secondary"
+										variant="contained"
+										onClick={() => {
+											setIsKBConflictOpen(false);
+										}}
+										size="large"
+									>
+										Cancel
+									</Button>
 								</Grid>
-							</div>
-						</Modal>
-						<Grid container justify="space-between">
-							<Grid item>
-								<Button
-									color="secondary"
-									variant="contained"
-									onClick={() => {
-										setKeybinding({
-											spellId: null,
-											target: null,
-											mod: null,
-											key: null,
-										});
-										setAllKeybinds(
-											allKeybindings[keyBindingKey]
-										);
-										setInvalidBinds([]);
-										setEditingKey();
-										setIsOpen(false);
-									}}
-									size="large"
-								>
-									Cancel
-								</Button>
+								<Grid item>
+									<Button
+										color="primary"
+										variant="contained"
+										size="large"
+										onClick={confirmDelete}
+									>
+										Confirm
+									</Button>
+								</Grid>
 							</Grid>
-							<Grid item>
-								<Button
-									color="primary"
-									variant="contained"
-									size="large"
-									onClick={() => {
-										setAllKeybindings(
-											update(allKeybindings, {
-												[keyBindingKey]: {
-													$set: allKeybinds,
-												},
-											})
-										);
-										setAllKeybinds(
-											allKeybindings[keyBindingKey]
-										);
-										setIsOpen(false);
-									}}
-								>
-									Apply
-								</Button>
-							</Grid>
+						</div>
+					</Modal>
+					<Grid container justify="space-between">
+						<Grid item>
+							<Button
+								color="secondary"
+								variant="contained"
+								id="cancelManualKeybindModal"
+								onClick={() => {
+									setKeybinding({
+										spellId: null,
+										target: null,
+										mod: null,
+										key: null,
+									});
+									setAllKeybinds(
+										allKeybindings[keyBindingKey]
+									);
+									setInvalidBinds([]);
+									setEditingKey();
+									setIsOpen(false);
+								}}
+								size="large"
+							>
+								Cancel
+							</Button>
 						</Grid>
-						<ManualKeybindInputs
-							spec={spec}
-							invalidBinds={invalidBinds}
-							setInvalidBinds={setInvalidBinds}
-							onSubmit={onSubmit}
-							allKeybinds={allKeybinds}
-							keybinding={keybinding}
-							setKeybinding={setKeybinding}
-							checkIfInvalidAndAdd={checkIfInvalidAndAdd}
-							classSpells={classSpells}
-							normalTalents={normalTalents}
-							covChoice={covChoice}
-							pvpTalents={pvpTalents}
-						/>
-						<KeybindTable
-							allKeybinds={allKeybinds}
-							editing={true}
-							editingKey={editingKey}
-							editThisRow={editThisRow}
-							deleteThisRow={deleteThisRow}
-						/>
-					</React.Fragment>
-				)}
+						<Grid item>
+							<Button
+								color="primary"
+								variant="contained"
+								size="large"
+								onClick={() => {
+									setAllKeybindings(
+										update(allKeybindings, {
+											[keyBindingKey]: {
+												$set: allKeybinds,
+											},
+										})
+									);
+									setAllKeybinds(
+										allKeybindings[keyBindingKey]
+									);
+									setIsOpen(false);
+								}}
+							>
+								Apply
+							</Button>
+						</Grid>
+					</Grid>
+					<ManualKeybindInputs
+						invalidBinds={invalidBinds}
+						setInvalidBinds={setInvalidBinds}
+						onSubmit={onSubmit}
+						allKeybinds={allKeybinds}
+						keybinding={keybinding}
+						setKeybinding={setKeybinding}
+						checkIfInvalidAndAdd={checkIfInvalidAndAdd}
+						formattedSpells={formattedSpells}
+					/>
+					<KeybindTable
+						allKeybinds={allKeybinds}
+						editing={true}
+						editingKey={editingKey}
+						editThisRow={editThisRow}
+						deleteThisRow={deleteThisRow}
+					/>
+				</React.Fragment>
 			</div>
 		</Modal>
 	);

@@ -7,6 +7,17 @@ const styleGuide = makeStyles(theme => ({
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
+	detailedDropdownConfig: {
+		position: 'absolute',
+		top: 28,
+		right: 0,
+		left: 0,
+		zIndex: 1,
+		border: '1px solid',
+		padding: theme.spacing(1),
+		backgroundColor: theme.palette.background.paper,
+		width: '80px',
+	},
 	pvpTalentModal: {
 		display: 'flex',
 		alignItems: 'center',
@@ -44,15 +55,34 @@ const styleGuide = makeStyles(theme => ({
 		padding: theme.spacing(2, 4, 3),
 	},
 	table: {
-		marginTop: '3rem',
 		minWidth: '60%',
 	},
 	tableContainer: {
 		maxHeight: '38rem',
 	},
+	tableContainerRF: {
+		maxHeight: '280px',
+		width: 'fit-content',
+	},
 	manualModalBackground: {
 		width: '70%',
 		height: '80%',
+		backgroundColor: theme.palette.background.paper,
+		border: '2px solid #000',
+		boxShadow: theme.shadows[5],
+		padding: theme.spacing(2, 4, 3),
+	},
+
+	rapidFireModalBackground: {
+		width: '70%',
+		height: '80%',
+		backgroundColor: theme.palette.background.paper,
+		border: '2px solid #000',
+		boxShadow: theme.shadows[5],
+		padding: theme.spacing(2, 4, 3),
+	},
+	unsavedCharacterModalBackground: {
+		width: '30%',
 		backgroundColor: theme.palette.background.paper,
 		border: '2px solid #000',
 		boxShadow: theme.shadows[5],

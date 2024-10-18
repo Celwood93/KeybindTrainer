@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
 import {
@@ -15,8 +15,10 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import styleGuide from '../../../stylesheets/style';
 import { ref } from '../../../config/constants';
+import { AllSpellsContext } from '../../../contexts/AllSpellsContext';
 import { characterKeybindings } from '../../utils/utils';
 import ManualKeybindModal from './ManualKeybindModal';
+import { characterDetails } from '../../../config/constants';
 import KeybindTable from './KeybindTable';
 import RapidFireKeybindModal from './RapidFireKeybindModal';
 
@@ -35,10 +37,33 @@ function KeybindEditor({
 	keyBinding,
 }) {
 	const classes = styleGuide();
+	const allSpells = useContext(AllSpellsContext);
 	const [editOptions, setEditOptions] = useState();
+	const [formattedSpells, setFormattedSpells] = useState([]);
+	const [classSpells, setClassSpells] = useState([]);
 	const [rapidFireModal, setRapidFireModal] = useState(false);
 	const [manualModal, setManualModal] = useState(false);
 	const [loading, setLoading] = useState(true);
+	const [loadingSpells, setLoadingSpells] = useState(true);
+
+	useEffect(() => {
+		async function getSpells() {
+			try {
+				const snapShot = await ref
+					.child(`/Spells/${character.class}`)
+					.once('value');
+				if (snapShot.exists()) {
+					setClassSpells(snapShot.val());
+					setLoadingSpells(false);
+				} else {
+					console.log('snapshot did not exist for character spells');
+				}
+			} catch (e) {
+				console.error(`failed to get spells for ${character.class}`);
+			}
+		}
+		getSpells();
+	}, [character.class]);
 
 	useEffect(() => {
 		async function collectKeybindings() {
@@ -47,13 +72,13 @@ function KeybindEditor({
 				spec,
 				keyBinding
 			)}`;
-			try {
-				const snapShot = await ref.child(path).once('value');
-				if (
-					!Object.keys(allKeybindings).includes(
-						characterKeybindings(character, spec, keyBinding)
-					)
-				) {
+			if (
+				!Object.keys(allKeybindings).includes(
+					characterKeybindings(character, spec, keyBinding)
+				)
+			) {
+				try {
+					const snapShot = await ref.child(path).once('value');
 					const keybindingsWeGot = snapShot.exists()
 						? snapShot.val()
 						: [];
@@ -62,20 +87,129 @@ function KeybindEditor({
 						spec,
 						keyBinding
 					);
+					const storage = window.localStorage.getItem('backup');
+					if (storage) {
+						const jsonStorage = JSON.parse(storage);
+						jsonStorage.fromDB['keybindings'] = jsonStorage.fromDB
+							.keybindings
+							? update(jsonStorage.fromDB.keybindings, {
+									[key]: { $set: keybindingsWeGot },
+							  })
+							: update(
+									{},
+									{
+										[key]: { $set: keybindingsWeGot },
+									}
+							  );
+						window.localStorage.setItem(
+							'backup',
+							JSON.stringify(jsonStorage)
+						);
+					}
 					setAllKeybindings(
 						update(allKeybindings, {
 							[key]: { $set: keybindingsWeGot },
 						})
 					);
+				} catch (e) {
+					console.error(
+						`failed to collect keybindings for path ${path}`,
+						e
+					);
 				}
-				//Set something to say "character not found"
-				setLoading(false);
-			} catch (e) {
-				console.error(`failed to collect keybindings for path ${path}`);
 			}
+			//Set something to say "character not found"
+			setLoading(false);
 		}
 		collectKeybindings();
-	});
+	}, [spec, keyBinding]);
+
+	function updateSpellList() {
+		const stringSpec = characterDetails.class[character.class][
+			spec
+		].toUpperCase();
+		const normalTalents = Object.keys(
+			character.specs[spec].keybindings[keyBinding][
+				characterKeybindings(character, spec, keyBinding)
+			].talents.normal
+		).map(
+			lvl =>
+				character.specs[spec].keybindings[keyBinding][
+					characterKeybindings(character, spec, keyBinding)
+				].talents.normal[lvl]
+		);
+		const covChoice = Object.values(
+			character.specs[spec].keybindings[keyBinding][
+				characterKeybindings(character, spec, keyBinding)
+			].covenant
+		)[0];
+
+		const pvpTalents =
+			character.specs[spec].keybindings[keyBinding][
+				characterKeybindings(character, spec, keyBinding)
+			].talents.pvp;
+
+		const talentSpells = normalTalents
+			.filter(codeString => !!codeString)
+			.map(code => allSpells[code]);
+		const spellsAddedByOtherSpells = normalTalents
+			.filter(codeString => !!codeString)
+			.map(code => allSpells[code].enabledSpells || [])
+			.flat()
+			.map(code => allSpells[code])
+			.filter(spellDetails => !spellDetails.isPassive);
+		let replacedSpellIds = talentSpells
+			.filter(spell => !!spell.idOfReplacedSpell)
+			.map(val => val.idOfReplacedSpell)
+			.flat();
+		const covSpells = covChoice
+			.filter(codeString => !!codeString) //useful for for default empty string
+			.map(code => allSpells[code]);
+		const spellsAddedByCovSpells = covChoice //might be not needed because we already have it included in the cov grouping
+			.filter(codeString => !!codeString)
+			.map(code => allSpells[code].enabledSpells || [])
+			.flat()
+			.map(code => allSpells[code])
+			.filter(spellDetails => !spellDetails.isPassive);
+		replacedSpellIds = replacedSpellIds.concat(
+			covSpells
+				.filter(spell => !!spell.idOfReplacedSpell)
+				.map(val => val.idOfReplacedSpell)
+				.flat()
+		);
+		const pvpTalentSpells = pvpTalents
+			.filter(codeString => !!codeString)
+			.map(code => allSpells[code]);
+		const spellsAddedByOtherPvpTalentSpells = pvpTalents
+			.filter(codeString => !!codeString)
+			.map(code => allSpells[code].enabledSpells || [])
+			.flat()
+			.map(code => allSpells[code])
+			.filter(spellDetails => !spellDetails.isPassive);
+		replacedSpellIds = replacedSpellIds.concat(
+			pvpTalentSpells
+				.filter(spell => !!spell.idOfReplacedSpell)
+				.map(val => val.idOfReplacedSpell)
+				.flat()
+		);
+		const formattedSpellsList = classSpells
+			.map(code => allSpells[code])
+			.concat(talentSpells)
+			.concat(covSpells)
+			.concat(spellsAddedByCovSpells)
+			.concat(pvpTalentSpells)
+			.concat(spellsAddedByOtherPvpTalentSpells)
+			.filter(spell => !spell.spec || spell.spec.includes(stringSpec))
+			.concat(spellsAddedByOtherSpells)
+			.filter(spellDetails => !spellDetails.isPassive)
+			.filter(elem => !replacedSpellIds.includes(elem.spellId));
+
+		return formattedSpellsList;
+	}
+
+	useEffect(() => {
+		setFormattedSpells(updateSpellList());
+	}, [classSpells, character, spec]);
 
 	const handleClick = event => {
 		setEditOptions(event.currentTarget);
@@ -86,45 +220,36 @@ function KeybindEditor({
 	};
 	return (
 		<React.Fragment>
-			<ManualKeybindModal
-				isOpen={manualModal}
-				characterClass={character.class}
-				characterSpec={spec}
-				setIsOpen={setManualModal}
-				setAllKeybindings={setAllKeybindings}
-				allKeybindings={allKeybindings}
-				keyBindingKey={characterKeybindings(
-					character,
-					spec,
-					keyBinding
-				)}
-				normalTalents={Object.keys(
-					character.specs[spec].keybindings[keyBinding][
-						characterKeybindings(character, spec, keyBinding)
-					].talents.normal
-				).map(
-					lvl =>
-						character.specs[spec].keybindings[keyBinding][
-							characterKeybindings(character, spec, keyBinding)
-						].talents.normal[lvl]
-				)}
-				covChoice={
-					Object.values(
-						character.specs[spec].keybindings[keyBinding][
-							characterKeybindings(character, spec, keyBinding)
-						].covenant
-					)[0]
-				}
-				pvpTalents={
-					character.specs[spec].keybindings[keyBinding][
-						characterKeybindings(character, spec, keyBinding)
-					].talents.pvp
-				}
-			/>
-			<RapidFireKeybindModal
-				isOpen={rapidFireModal}
-				setIsOpen={setRapidFireModal}
-			/>
+			{!loadingSpells && (
+				<React.Fragment>
+					<ManualKeybindModal
+						isOpen={manualModal}
+						characterClass={character.class}
+						characterSpec={spec}
+						setIsOpen={setManualModal}
+						setAllKeybindings={setAllKeybindings}
+						allKeybindings={allKeybindings}
+						keyBindingKey={characterKeybindings(
+							character,
+							spec,
+							keyBinding
+						)}
+						formattedSpells={formattedSpells}
+					/>
+					<RapidFireKeybindModal
+						isOpen={rapidFireModal}
+						setIsOpen={setRapidFireModal}
+						formattedSpells={formattedSpells}
+						setAllKeybindings={setAllKeybindings}
+						allKeybindings={allKeybindings}
+						keyBindingKey={characterKeybindings(
+							character,
+							spec,
+							keyBinding
+						)}
+					/>
+				</React.Fragment>
+			)}
 			<Grid
 				container
 				direction="row"
